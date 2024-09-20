@@ -7,9 +7,11 @@ const App = () => {
   return (
     <>
       <header></header>
-      <main>
+      <main className='flex '>
         <aside><Sidebar /></aside>
+        <div className='p-7 w-full overflow-y-auto'>
         <Outlet />
+        </div>
       </main>
     </>
   )
