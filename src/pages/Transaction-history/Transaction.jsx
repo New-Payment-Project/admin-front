@@ -14,6 +14,9 @@ const Transaction = () => {
         { transaction: "001", amount: "-$500", status: "Processing", date: "2024-09-01", category: "Electronics" },
         { transaction: "002", amount: "+$1200", status: "Success", date: "2024-09-05", category: "Furniture" },
         { transaction: "003", amount: "-$800", status: "Declined", date: "2024-09-10", category: "Groceries" },
+        { transaction: "001", amount: "-$500", status: "Processing", date: "2024-09-01", category: "Electronics" },
+        { transaction: "002", amount: "+$1200", status: "Success", date: "2024-09-05", category: "Furniture" },
+        { transaction: "003", amount: "-$800", status: "Declined", date: "2024-09-10", category: "Groceries" },
       ],
     },
     account2: {
@@ -22,6 +25,9 @@ const Transaction = () => {
       accountNumber: "●●●● ●●●● ●●●● 8888",
       balance: "$12,564.20",
       transactions: [
+        { transaction: "001", amount: "+$600", status: "Success", date: "2024-09-15", category: "Clothing" },
+        { transaction: "002", amount: "-$300", status: "Processing", date: "2024-09-20", category: "Bills" },
+        { transaction: "003", amount: "+$700", status: "Success", date: "2024-09-25", category: "Health" },
         { transaction: "001", amount: "+$600", status: "Success", date: "2024-09-15", category: "Clothing" },
         { transaction: "002", amount: "-$300", status: "Processing", date: "2024-09-20", category: "Bills" },
         { transaction: "003", amount: "+$700", status: "Success", date: "2024-09-25", category: "Health" },

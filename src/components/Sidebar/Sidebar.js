@@ -10,7 +10,7 @@ const Sidebar = () => {
   const buttonStyle =
     "flex items-center gap-[12px] text-start px-[12px] py-[16px] focus:bg-gradient-to-r from-[#0179FE] to-[#4893FF] focus:text-white rounded-[6px] transition duration-300 ease-in-out hover:bg-blue-200 hover:text-blue-900";
   return (
-    <div className="drawer lg:drawer-open">
+    <div className="drawer lg:drawer-open z-50">
       <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
       <div className="drawer-content flex flex-col items-center justify-center">
         <label
