@@ -7,10 +7,9 @@ const App = () => {
       <header></header>
       <main>
         <aside>Sidebar</aside>
-        <Outlet />
+       <Outlet />
       </main>
     </>
   )
 }
-
 export default App
