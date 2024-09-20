@@ -5,8 +5,18 @@ import { RiFileList3Line } from "react-icons/ri";
 import { FaCircleDollarToSlot } from "react-icons/fa6";
 import { HiOutlineLogout } from "react-icons/hi";
 import AvatarLogo from "../../assets/Avatar.png";
+import { Link, useNavigate } from "react-router-dom";
 
 const Sidebar = () => {
+  const navigate = useNavigate();
+
+  const Logout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("password");
+    localStorage.removeItem("login");
+    navigate("/login");
+  };
+
   const buttonStyle =
     "flex items-center gap-[12px] text-start px-[12px] py-[16px] focus:bg-gradient-to-r from-[#0179FE] to-[#4893FF] focus:text-white rounded-[6px] transition duration-300 ease-in-out hover:bg-blue-200 hover:text-blue-900";
   return (
@@ -54,24 +64,24 @@ const Sidebar = () => {
               </div>
             </div>
             <div className="w-full flex flex-col font-semibold leading-[24px] text-[16px]">
-              <button className={`${buttonStyle}`}>
+              <Link to={"/home"} className={`${buttonStyle}`}>
                 <BiHomeAlt2 className="text-[24px]" /> Home
-              </button>
-              <button className={`${buttonStyle}`}>
+              </Link>
+              <Link to={"/banks"} className={`${buttonStyle}`}>
                 <BiDollarCircle className="text-[24px]" /> My Banks
-              </button>
-              <button className={`${buttonStyle}`}>
+              </Link>
+              <Link to={"/transaction-history"} className={`${buttonStyle}`}>
                 <RiFileList3Line className="text-[24px]" />
                 Transaction History
-              </button>
-              <button className={`${buttonStyle}`}>
+              </Link>
+              <Link to={"/transfers"} className={`${buttonStyle}`}>
                 <FaCircleDollarToSlot className="text-[24px]" />
                 Payment Transfer
-              </button>
-              <button className={`${buttonStyle}`}>
+              </Link>
+              <Link to={"/connect-bank"} className={`${buttonStyle}`}>
                 <CiCreditCard1 className="text-[24px]" />
                 Connect Bank
-              </button>
+              </Link>
             </div>
           </div>
           <div className="flex items-center justify-start gap-[22px]">
@@ -80,7 +90,10 @@ const Sidebar = () => {
               <p className="text-[14px] font-semibold">Username</p>
               <p className="text-[14px]">user@gmail.com</p>
             </div>
-            <button className="flex items-center justify-end w-full">
+            <button
+              onClick={Logout}
+              className="flex items-center justify-end w-full"
+            >
               <HiOutlineLogout className="text-[25px]" />
             </button>
           </div>

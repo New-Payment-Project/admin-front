@@ -17,8 +17,20 @@ const RouterConfig = () => {
                     element: <Home />,
                 },
                 {
+                    path: "/banks",
+                    element: <Home />,
+                },
+                {
                     path: "/transaction-history",
                     element: <Transaction />,
+                },
+                {
+                    path: "/transfers",
+                    element: <Home />,
+                },
+                {
+                    path: "/connect-bank",
+                    element: <Home />,
                 },
             ],
         },
