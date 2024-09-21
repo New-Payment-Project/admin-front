@@ -4,6 +4,9 @@ import axios from 'axios';
 import loginImg from "../assets/login-bg.jpeg";
 import { ToastContainer, toast, Flip } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useDispatch, useSelector } from 'react-redux';
+import { login } from '../slices/authSlice';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
   const { 
@@ -11,11 +14,19 @@ const Login = () => {
     handleSubmit, 
     formState: { errors } 
   } = useForm();
+  
+  const dispatch = useDispatch();  // Initialize dispatch
+  const store = useSelector((store) => store);  // For debugging or further usage
+  console.log(store);
+  const navigate = useNavigate()
 
   const onSubmit = async (data) => {
     try {
-      // Replace with your API endpoint
       const response = await axios.post('https://payment-server-vo2y.onrender.com/api/auth/login', data);
+
+      // Dispatch the login action and pass the user data
+      dispatch(login(response.data));
+
       toast.success("Login successful!", {
         position: "bottom-right",
         autoClose: 3000,
@@ -25,8 +36,8 @@ const Login = () => {
         draggable: true,
         progress: undefined,
       });
-      console.log(response.data);
-      localStorage.setItem('login', JSON.stringify(response.data))
+      localStorage.setItem('login', JSON.stringify(response.data));
+      navigate('/')
     } catch (error) {
       toast.error("Login failed. Please check your credentials.", {
         position: "bottom-right",
@@ -66,7 +77,7 @@ const Login = () => {
           <h1 className='text-3xl text-black font-semibold mb-4'>Log in</h1>
           <p className='text-gray-600 mb-8'>Welcome back! Please enter your details.</p>
           
-          {/* Email Field */}
+          {/* Login Field */}
           <div className="mb-6">
             <label 
               htmlFor="login" 
