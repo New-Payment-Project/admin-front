@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import loginImg from "../assets/login-bg.jpeg";
 import { ToastContainer, toast, Flip } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { login } from '../slices/authSlice';
 import { useNavigate } from 'react-router-dom';
 
@@ -15,16 +15,15 @@ const Login = () => {
     formState: { errors } 
   } = useForm();
   
-  const dispatch = useDispatch();  // Initialize dispatch
-  const store = useSelector((store) => store);  // For debugging or further usage
-  console.log(store);
-  const navigate = useNavigate()
+  const dispatch = useDispatch(); 
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);  // Add loading state
 
   const onSubmit = async (data) => {
+    setLoading(true);  // Set loading to true when submission starts
     try {
       const response = await axios.post('https://payment-server-vo2y.onrender.com/api/auth/login', data);
 
-      // Dispatch the login action and pass the user data
       dispatch(login(response.data));
 
       toast.success("Login successful!", {
@@ -36,8 +35,10 @@ const Login = () => {
         draggable: true,
         progress: undefined,
       });
+
       localStorage.setItem('login', JSON.stringify(response.data));
-      navigate('/')
+      localStorage.setItem('user', JSON.stringify(response.data.user));
+      navigate('/');
     } catch (error) {
       toast.error("Login failed. Please check your credentials.", {
         position: "bottom-right",
@@ -49,12 +50,13 @@ const Login = () => {
         progress: undefined,
       });
       console.error("Login failed:", error.response?.data || error.message);
+    } finally {
+      setLoading(false);  // Set loading to false after request finishes
     }
   };
 
   return (
     <div className='flex h-screen bg-white'>
-      {/* ToastContainer for displaying toast messages */}
       <ToastContainer 
         position="bottom-right"
         autoClose={5000}
@@ -123,9 +125,14 @@ const Login = () => {
           
           <button 
             type="submit" 
-            className="text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center"
+            className="text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center flex items-center justify-center"
+            disabled={loading}  // Disable the button during loading
           >
-            Log in
+            {loading ? (
+              <span className="loading loading-spinner loading-xs"></span>  // Show spinner if loading
+            ) : (
+              "Log in"  // Show default text if not loading
+            )}
           </button>
         </form>
       </div>
