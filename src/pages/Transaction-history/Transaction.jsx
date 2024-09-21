@@ -60,8 +60,8 @@ const Transaction = () => {
             value={selectedAccount} // Ensure the correct account is selected
           >
             <option disabled>Select Account</option>
-            <option value="account1">Account 1</option>
-            <option value="account2">Account 2</option>
+            <option value="account1">Payme</option>
+            <option value="account2">Click</option>
           </select>
         </div>
       </div>
