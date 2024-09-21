@@ -1,20 +1,36 @@
-"use client"
+"use client";
 
 import { useState } from 'react'
-import { ArrowRightIcon,} from "lucide-react"
+import { ArrowRightIcon, } from "lucide-react"
 import Charts from './Charts'
 
 export default function Home() {
-  const [activeTab, setActiveTab] = useState('chase')
+  const [activeTab, setActiveTab] = useState("chase");
 
   return (
-    <div className="flex h-screen ">
+    <div className="flex h-screen bg-gray-100 rounded-xl">
       <div className="flex-1 p-8">
         <h1 className="text-3xl font-bold mb-2">Welcome, Abdulloh</h1>
-        <p className="text-gray-600 mb-8">Access & manage your account and transactions efficiently.</p>
+        <p className="text-gray-600 mb-8">
+          Access & manage your account and transactions efficiently.
+        </p>
 
-  
-        <Charts/>
+
+        <Charts />
+        <div className="bg-white rounded-lg shadow-md mb-8">
+          <div className="p-6">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-xl font-semibold">2 Bank Accounts</h2>
+            </div>
+            <div className="flex items-center">
+              <div className="w-32 h-32 rounded-full border-[16px] border-blue-200 border-t-blue-600"></div>
+              <div className="ml-6">
+                <p className="text-sm text-gray-500">Total Current Balance</p>
+                <p className="text-4xl font-bold">$2,698.12</p>
+              </div>
+            </div>
+          </div>
+        </div>
 
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-semibold">Recent transactions</h2>
@@ -26,13 +42,18 @@ export default function Home() {
 
         <div className=" rounded-lg shadow-md">
           <div className="flex border-b">
-            {['chase', 'boa', 'fpb'].map((tab) => (
+            {["chase", "boa", "fpb"].map((tab) => (
               <button
                 key={tab}
-                className={`flex-1 py-2 px-4 ${activeTab === tab ? 'border-b-2 border-blue-600' : ''}`}
+                className={`flex-1 py-2 px-4 ${activeTab === tab ? "border-b-2 border-blue-600" : ""
+                  }`}
                 onClick={() => setActiveTab(tab)}
               >
-                {tab === 'chase' ? 'Chase Bank' : tab === 'boa' ? 'Bank of America' : 'First Platypus Bank'}
+                {tab === "chase"
+                  ? "Chase Bank"
+                  : tab === "boa"
+                    ? "Bank of America"
+                    : "First Platypus Bank"}
               </button>
             ))}
           </div>
@@ -47,7 +68,9 @@ export default function Home() {
                   <p className="text-blue-600 font-bold">$2,588.12</p>
                 </div>
               </div>
-              <span className="text-green-600 text-sm bg-green-100 px-2 py-1 rounded-full">savings</span>
+              <span className="text-green-600 text-sm bg-green-100 px-2 py-1 rounded-full">
+                savings
+              </span>
             </div>
             <table className="w-full">
               <thead>
@@ -71,11 +94,15 @@ export default function Home() {
                   </td>
                   <td className="py-2 text-red-500">- $15.00</td>
                   <td className="py-2">
-                    <span className="bg-gray-200 text-gray-800 text-xs px-2 py-1 rounded-full">Processing</span>
+                    <span className="bg-gray-200 text-gray-800 text-xs px-2 py-1 rounded-full">
+                      Processing
+                    </span>
                   </td>
                   <td className="py-2 text-sm text-gray-500">Wed 1:00pm</td>
                   <td className="py-2">
-                    <span className="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">Subscriptions</span>
+                    <span className="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">
+                      Subscriptions
+                    </span>
                   </td>
                 </tr>
                 <tr>
@@ -89,11 +116,15 @@ export default function Home() {
                   </td>
                   <td className="py-2 text-green-500">+ $88.00</td>
                   <td className="py-2">
-                    <span className="bg-green-200 text-green-800 text-xs px-2 py-1 rounded-full">Success</span>
+                    <span className="bg-green-200 text-green-800 text-xs px-2 py-1 rounded-full">
+                      Success
+                    </span>
                   </td>
                   <td className="py-2 text-sm text-gray-500">Wed 2:45am</td>
                   <td className="py-2">
-                    <span className="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full">Deposit</span>
+                    <span className="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full">
+                      Deposit
+                    </span>
                   </td>
                 </tr>
               </tbody>
@@ -104,5 +135,5 @@ export default function Home() {
 
 
     </div>
-  )
+  );
 }
