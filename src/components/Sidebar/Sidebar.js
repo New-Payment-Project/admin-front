@@ -7,12 +7,14 @@ import { HiOutlineLogout } from "react-icons/hi";
 import AvatarLogo from "../../assets/Avatar.png";
 import { Link, useNavigate } from "react-router-dom";
 import { logout } from "../../slices/authSlice";
+import { useDispatch } from "react-redux";
 
 const Sidebar = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const Logout = () => {
-    logout()
+    dispatch(logout());
     localStorage.removeItem('login');
     localStorage.removeItem('user');
     navigate("/login");

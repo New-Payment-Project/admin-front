@@ -4,7 +4,6 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Loadable from "../components/Loadable/Loadable";
 import Login from "../pages/Login";
 import PrivateRoute from "../components/PrivateRoute";  // Import private route
-// import Transaction from "../pages/Transaction-history/Transaction";
 
 const App = Loadable(lazy(() => import("../App")));
 const Home = Loadable(lazy(() => import("../pages/Home/Home")));
@@ -13,13 +12,17 @@ const RouterConfig = () => {
     const router = createBrowserRouter([
         {
             path: "/",
-            element: <App />,
+            element: (
+                <PrivateRoute> 
+                    <App />
+                </PrivateRoute>
+            ),
             children: [
                 {
                     path: "/home",
                     element: (
                         <PrivateRoute> 
-                        <Home />
+                            <Home />
                         </PrivateRoute>
                     ),
                 },
@@ -27,7 +30,7 @@ const RouterConfig = () => {
                     path: "/banks",
                     element: (
                         <PrivateRoute> 
-                        <Home />
+                            <Home />
                         </PrivateRoute>
                     ),
                 },
@@ -35,7 +38,7 @@ const RouterConfig = () => {
                     path: "/transaction-history",
                     element: (
                         <PrivateRoute> 
-                        <Home />
+                            <Home />
                         </PrivateRoute>
                     ),
                 },
@@ -43,7 +46,7 @@ const RouterConfig = () => {
                     path: "/transfers",
                     element: (
                         <PrivateRoute> 
-                        <Home />
+                            <Home />
                         </PrivateRoute>
                     ),
                 },
@@ -51,7 +54,7 @@ const RouterConfig = () => {
                     path: "/connect-bank",
                     element: (
                         <PrivateRoute> 
-                        <Home />
+                            <Home />
                         </PrivateRoute>
                     ),
                 },
@@ -63,7 +66,7 @@ const RouterConfig = () => {
         },
     ]);
 
-  return <RouterProvider router={router} />;
+    return <RouterProvider router={router} />;
 };
 
 export default RouterConfig;

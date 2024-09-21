@@ -17,10 +17,10 @@ const Login = () => {
   
   const dispatch = useDispatch(); 
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);  // Add loading state
+  const [loading, setLoading] = useState(false);
 
   const onSubmit = async (data) => {
-    setLoading(true);  // Set loading to true when submission starts
+    setLoading(true);  
     try {
       const response = await axios.post('https://payment-server-vo2y.onrender.com/api/auth/login', data);
 
@@ -38,7 +38,7 @@ const Login = () => {
 
       localStorage.setItem('login', JSON.stringify(response.data));
       localStorage.setItem('user', JSON.stringify(response.data.user));
-      navigate('/');
+      navigate('/home');
     } catch (error) {
       toast.error("Login failed. Please check your credentials.", {
         position: "bottom-right",
@@ -51,7 +51,7 @@ const Login = () => {
       });
       console.error("Login failed:", error.response?.data || error.message);
     } finally {
-      setLoading(false);  // Set loading to false after request finishes
+      setLoading(false);  
     }
   };
 
@@ -79,7 +79,6 @@ const Login = () => {
           <h1 className='text-3xl text-black font-semibold mb-4'>Log in</h1>
           <p className='text-gray-600 mb-8'>Welcome back! Please enter your details.</p>
           
-          {/* Login Field */}
           <div className="mb-6">
             <label 
               htmlFor="login" 
@@ -99,7 +98,6 @@ const Login = () => {
             {errors.login && <p className="text-red-500 text-sm mt-1">{errors.login.message}</p>}
           </div>
 
-          {/* Password Field */}
           <div className="mb-6">
             <label 
               htmlFor="password" 
@@ -126,12 +124,12 @@ const Login = () => {
           <button 
             type="submit" 
             className="text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center flex items-center justify-center"
-            disabled={loading}  // Disable the button during loading
+            disabled={loading} 
           >
             {loading ? (
-              <span className="loading loading-spinner loading-xs"></span>  // Show spinner if loading
+              <span className="loading loading-spinner loading-xs"></span>
             ) : (
-              "Log in"  // Show default text if not loading
+              "Log in"
             )}
           </button>
         </form>
