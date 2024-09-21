@@ -1,6 +1,7 @@
 import React, { lazy } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Loadable from "../components/Loadable/Loadable";
+import Login from "../pages/Login";
 
 const App = Loadable(lazy(() => import("../App")));
 const Home = Loadable(lazy(() => import("../pages/Home/Home")));
@@ -16,7 +17,12 @@ const RouterConfig = () => {
                     element: <Home />,
                 },
             ],
+
         },
+        {
+            element: <Login/>,
+            path:"/login"
+        }
     ]);
 
     return <RouterProvider router={router} />;

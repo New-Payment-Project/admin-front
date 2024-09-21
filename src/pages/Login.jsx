@@ -26,7 +26,7 @@ const Login = () => {
         progress: undefined,
       });
       console.log(response.data);
-      // Handle successful login, e.g., redirect or display a success message
+      localStorage.setItem('login', JSON.stringify(response.data))
     } catch (error) {
       toast.error("Login failed. Please check your credentials.", {
         position: "bottom-right",
@@ -69,25 +69,21 @@ const Login = () => {
           {/* Email Field */}
           <div className="mb-6">
             <label 
-              htmlFor="email" 
+              htmlFor="login" 
               className="block mb-2 text-sm font-medium text-gray-700"
             >
-              Your email
+              Your login
             </label>
             <input 
-              type="email" 
-              id="email" 
-              {...register("email", { 
-                required: "Email is required", 
-                pattern: {
-                  value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
-                  message: "Invalid email format"
-                }
+              type="text" 
+              id="login" 
+              {...register("login", { 
+                required: "Login is required", 
               })} 
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" 
               placeholder="name@domain.com"
             />
-            {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>}
+            {errors.login && <p className="text-red-500 text-sm mt-1">{errors.login.message}</p>}
           </div>
 
           {/* Password Field */}
@@ -114,7 +110,6 @@ const Login = () => {
             {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>}
           </div>
           
-          {/* Submit Button */}
           <button 
             type="submit" 
             className="text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center"
