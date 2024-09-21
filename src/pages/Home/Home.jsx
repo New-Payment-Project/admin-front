@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from 'react'
-import { ArrowRightIcon,} from "lucide-react"
+import { ArrowRightIcon, } from "lucide-react"
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState('chase')
@@ -16,7 +16,7 @@ export default function Home() {
           <div className="p-6">
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-xl font-semibold">2 Bank Accounts</h2>
-              
+
             </div>
             <div className="flex items-center">
               <div className="w-32 h-32 rounded-full border-[16px] border-blue-200 border-t-blue-600"></div>
@@ -114,7 +114,7 @@ export default function Home() {
         </div>
       </div>
 
-     
+
     </div>
   )
 }
