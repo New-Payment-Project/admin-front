@@ -6,8 +6,6 @@ import AvatarLogo from "../../assets/Avatar.png";
 import { BiTransferAlt } from "react-icons/bi";
 import { PiBank } from "react-icons/pi";
 
-
-
 const Sidebar = () => {
   const buttonStyle =
     "flex items-center gap-[12px] text-start px-[12px] py-[16px] focus:bg-gradient-to-r from-[#0179FE] to-[#4893FF] focus:text-white rounded-[6px] transition duration-300 ease-in-out hover:bg-blue-200 hover:text-blue-900";
@@ -57,10 +55,12 @@ const Sidebar = () => {
             </div>
             <div className="w-full flex flex-col font-semibold leading-[24px] text-[16px]">
               <button className={`${buttonStyle}`}>
-                <BiHomeAlt2 className="text-[24px]" /> Home
+                <BiHomeAlt2 className="text-[24px]" />
+                 Home
               </button>
               <button className={`${buttonStyle}`}>
-                <BiDollarCircle className="text-[24px]" /> My Banks
+                <BiDollarCircle className="text-[24px]" /> 
+                My Banks
               </button>
               <button className={`${buttonStyle}`}>
                 <RiFileList3Line className="text-[24px]" />
