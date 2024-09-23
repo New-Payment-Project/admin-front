@@ -7,6 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useDispatch } from 'react-redux';
 import { login } from '../slices/authSlice';
 import { useNavigate } from 'react-router-dom';
+import CryptoJS from 'crypto-js';
 
 const Login = () => {
   const { 
@@ -22,10 +23,21 @@ const Login = () => {
   const onSubmit = async (data) => {
     setLoading(true);  
     try {
+      // Send user data (without hashing password) to the backend
       const response = await axios.post('https://payment-server-vo2y.onrender.com/api/auth/login', data);
-
+  
+      const token = response.data.token;
+  
+      // Hash the token using CryptoJS
+      const hashedToken = CryptoJS.SHA256(token).toString();  // Example with SHA256
+  
+      // Store the hashed token in localStorage
+      localStorage.setItem('login', hashedToken);
+      localStorage.setItem('token', JSON.stringify(response.data.token))
+      // Dispatch the login action to update Redux state
       dispatch(login(response.data));
-
+  
+      // Show success notification
       toast.success("Login successful!", {
         position: "bottom-right",
         autoClose: 3000,
@@ -35,11 +47,11 @@ const Login = () => {
         draggable: true,
         progress: undefined,
       });
-
-      localStorage.setItem('login', JSON.stringify(response.data));
-      localStorage.setItem('user', JSON.stringify(response.data.user));
+  
+      // Navigate to the home page
       navigate('/home');
     } catch (error) {
+      // Show error notification
       toast.error("Login failed. Please check your credentials.", {
         position: "bottom-right",
         autoClose: 3000,
@@ -49,11 +61,12 @@ const Login = () => {
         draggable: true,
         progress: undefined,
       });
+      
       console.error("Login failed:", error.response?.data || error.message);
     } finally {
       setLoading(false);  
     }
-  };
+  };  
 
   return (
     <div className='flex h-screen bg-white'>
