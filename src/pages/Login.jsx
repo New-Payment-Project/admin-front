@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import loginImg from "../assets/login-bg.jpeg";
 import { ToastContainer, toast, Flip } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useDispatch } from 'react-redux';
+import { login } from '../slices/authSlice';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
   const { 
@@ -11,11 +14,18 @@ const Login = () => {
     handleSubmit, 
     formState: { errors } 
   } = useForm();
+  
+  const dispatch = useDispatch(); 
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   const onSubmit = async (data) => {
+    setLoading(true);  
     try {
-      // Replace with your API endpoint
       const response = await axios.post('https://payment-server-vo2y.onrender.com/api/auth/login', data);
+
+      dispatch(login(response.data));
+
       toast.success("Login successful!", {
         position: "bottom-right",
         autoClose: 3000,
@@ -25,8 +35,10 @@ const Login = () => {
         draggable: true,
         progress: undefined,
       });
-      console.log(response.data);
-      // Handle successful login, e.g., redirect or display a success message
+
+      localStorage.setItem('login', JSON.stringify(response.data));
+      localStorage.setItem('user', JSON.stringify(response.data.user));
+      navigate('/home');
     } catch (error) {
       toast.error("Login failed. Please check your credentials.", {
         position: "bottom-right",
@@ -38,12 +50,13 @@ const Login = () => {
         progress: undefined,
       });
       console.error("Login failed:", error.response?.data || error.message);
+    } finally {
+      setLoading(false);  
     }
   };
 
   return (
     <div className='flex h-screen bg-white'>
-      {/* ToastContainer for displaying toast messages */}
       <ToastContainer 
         position="bottom-right"
         autoClose={5000}
@@ -66,31 +79,25 @@ const Login = () => {
           <h1 className='text-3xl text-black font-semibold mb-4'>Log in</h1>
           <p className='text-gray-600 mb-8'>Welcome back! Please enter your details.</p>
           
-          {/* Email Field */}
           <div className="mb-6">
             <label 
-              htmlFor="email" 
+              htmlFor="login" 
               className="block mb-2 text-sm font-medium text-gray-700"
             >
-              Your email
+              Your login
             </label>
             <input 
-              type="email" 
-              id="email" 
-              {...register("email", { 
-                required: "Email is required", 
-                pattern: {
-                  value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
-                  message: "Invalid email format"
-                }
+              type="text" 
+              id="login" 
+              {...register("login", { 
+                required: "Login is required", 
               })} 
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" 
               placeholder="name@domain.com"
             />
-            {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>}
+            {errors.login && <p className="text-red-500 text-sm mt-1">{errors.login.message}</p>}
           </div>
 
-          {/* Password Field */}
           <div className="mb-6">
             <label 
               htmlFor="password" 
@@ -114,12 +121,16 @@ const Login = () => {
             {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>}
           </div>
           
-          {/* Submit Button */}
           <button 
             type="submit" 
-            className="text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center"
+            className="text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center flex items-center justify-center"
+            disabled={loading} 
           >
-            Log in
+            {loading ? (
+              <span className="loading loading-spinner loading-xs"></span>
+            ) : (
+              "Log in"
+            )}
           </button>
         </form>
       </div>

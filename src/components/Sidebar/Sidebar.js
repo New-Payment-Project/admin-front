@@ -4,14 +4,17 @@ import { RiFileList3Line } from "react-icons/ri";
 import { HiOutlineLogout } from "react-icons/hi";
 import AvatarLogo from "../../assets/Avatar.png";
 import { Link, useNavigate } from "react-router-dom";
+import { logout } from "../../slices/authSlice";
+import { useDispatch } from "react-redux";
 
 const Sidebar = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const Logout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("password");
-    localStorage.removeItem("login");
+    dispatch(logout());
+    localStorage.removeItem('login');
+    localStorage.removeItem('user');
     navigate("/login");
   };
 
@@ -24,6 +27,7 @@ const Sidebar = () => {
     { label: "Transaction History", route: "/transaction-history", icon: <RiFileList3Line className="text-[24px]" /> },
   ];
 
+  
   return (
     <div className="drawer lg:drawer-open z-50">
       <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
