@@ -1,9 +1,8 @@
-// src/router/Router.js
 import React, { lazy } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Loadable from "../components/Loadable/Loadable";
 import Login from "../pages/Login";
-import PrivateRoute from "../components/PrivateRoute";  // Import private route
+import PrivateRoute from "../components/PrivateRoute";
 
 const App = Loadable(lazy(() => import("../App")));
 const Home = Loadable(lazy(() => import("../pages/Home/Home")));
