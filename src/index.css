@@ -137,6 +137,8 @@
     @apply flex w-full flex-col gap-6;
   }
 
+
+
   .view-all-btn {
     @apply text-14 rounded-lg border border-gray-300 px-4 py-2.5 font-semibold text-gray-700;
   }

@@ -20,7 +20,7 @@ const RouterConfig = () => {
             ),
             children: [
                 {
-                    path: "/home",
+                    path: "/",
                     element: (
                         <PrivateRoute> 
                             <Home />
