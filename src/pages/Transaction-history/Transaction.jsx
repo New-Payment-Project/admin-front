@@ -1,6 +1,4 @@
 import React, { useState } from "react";
-import PageHeader from "../../components/Page-header/PageHeader";
-import Table from "../../components/Table/Table";
 
 const Transaction = () => {
   const accounts = {
@@ -45,10 +43,6 @@ const Transaction = () => {
   return (
     <div className="flex flex-col w-full">
       <div className="flex justify-between w-full">
-        <PageHeader
-          title={"Transaction history"}
-          desc={"Gain Insights and Track Your Transactions Over Time"}
-        />
         <div>
           <select
             className="select font-semibold select-bordered w-full max-w-xs"
@@ -74,9 +68,6 @@ const Transaction = () => {
         </div>
       </div>
 
-      <div className="pt-[32px] pb-[24px]">
-        <Table transactions={currentAccount.transactions} />
-      </div>
     </div>
   );
 };

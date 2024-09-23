@@ -28,7 +28,7 @@ const RouterConfig = () => {
                     ),
                 },
                 {
-                    path: "/banks",
+                    path: "/my-banks",
                     element: (
                         <PrivateRoute> 
                             <Home />
@@ -39,15 +39,7 @@ const RouterConfig = () => {
                     path: "/transaction-history",
                     element: (
                         <PrivateRoute> 
-                            <Home />
-                        </PrivateRoute>
-                    ),
-                },
-                {
-                    path: "/transfers",
-                    element: (
-                        <PrivateRoute> 
-                            <Home />
+                            <Transaction />
                         </PrivateRoute>
                     ),
                 },
