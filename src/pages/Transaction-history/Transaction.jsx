@@ -1,9 +1,6 @@
 import React, { useState } from "react";
-import PageHeader from "../../components/Page-header/PageHeader";
-import Table from "../../components/Table/Table";
 
 const Transaction = () => {
-  // Mini database for accounts
   const accounts = {
     account1: {
       bankName: "Chase",
@@ -35,38 +32,30 @@ const Transaction = () => {
     },
   };
 
-  const [selectedAccount, setSelectedAccount] = useState("account1"); // Default selected account
+  const [selectedAccount, setSelectedAccount] = useState("account1");
 
-  // Handle account change
   const handleAccountChange = (e) => {
-    setSelectedAccount(e.target.value); // Update state with the selected account
+    setSelectedAccount(e.target.value);
   };
 
-  // Get the selected account data
   const currentAccount = accounts[selectedAccount];
 
   return (
     <div className="flex flex-col w-full">
-      {/* Header */}
       <div className="flex justify-between w-full">
-        <PageHeader
-          title={"Transaction history"}
-          desc={"Gain Insights and Track Your Transactions Over Time"}
-        />
         <div>
           <select
             className="select font-semibold select-bordered w-full max-w-xs"
             onChange={handleAccountChange}
-            value={selectedAccount} // Ensure the correct account is selected
+            value={selectedAccount}
           >
             <option disabled>Select Account</option>
-            <option value="account1">Account 1</option>
-            <option value="account2">Account 2</option>
+            <option value="account1">Payme</option>
+            <option value="account2">Click</option>
           </select>
         </div>
       </div>
 
-      {/* Account Information */}
       <div className="bg-[#1570EF] w-full h-[150px] rounded-[12px] p-[24px] text-white mt-[32px] flex justify-between">
         <div className="flex flex-col justify-center my-auto h-full space-y-[10px]">
           <p className="font-bold text-[24px]">{currentAccount.bankName}</p>
@@ -79,10 +68,6 @@ const Transaction = () => {
         </div>
       </div>
 
-      {/* Transactions Table */}
-      <div className="pt-[32px] pb-[24px]">
-        <Table transactions={currentAccount.transactions} />
-      </div>
     </div>
   );
 };
