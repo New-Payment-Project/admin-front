@@ -12,7 +12,8 @@ const MobileNav = ({ user }) => {
   };
 
   return (
-    <div className='z-50'>
+    <div className='min-w-screen'>
+      {/* Hamburger Menu Icon */}
       <img
         src='/icons/hamburger.svg'
         width={30}

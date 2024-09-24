@@ -40,9 +40,9 @@ const Sidebar = ({ user }) => {
   };
 
   return (
-    <section className="sidebar">
-      <nav className="flex flex-col gap-4">
-        <Link to="/" className="mb-12 flex items-center gap-2">
+    <section className="sidebar z-50">
+      <nav className="flex flex-col gap-4 z-50">
+        <Link to="/" className="mb-12 flex items-center gap-2" style={{userSelect: 'none'}}>
           <img
             src="/norbekov-logo.png"
             width={64}
@@ -60,6 +60,7 @@ const Sidebar = ({ user }) => {
               to={item.route}
               key={item.label}
               className={`sidebar-link ${isActive ? 'bg-bank-gradient' : ''}`}
+              style={{ userSelect: 'none' }}
             >
               <div className="flex relative w-6 h-6">
                 <img

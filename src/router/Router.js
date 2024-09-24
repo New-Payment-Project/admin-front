@@ -3,10 +3,10 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Loadable from "../components/Loadable/Loadable";
 import Login from "../pages/Login";
 import PrivateRoute from "../components/PrivateRoute";  // Import private route
-import Transaction from "../pages/Transaction-history/Transaction";
 
 const App = Loadable(lazy(() => import("../App")));
 const Home = Loadable(lazy(() => import("../pages/Home/Home")));
+const Transaction = Loadable(lazy(() => import("../pages/Transaction-history/Transaction")));
 
 const RouterConfig = () => {
     const router = createBrowserRouter([
@@ -19,7 +19,7 @@ const RouterConfig = () => {
             ),
             children: [
                 {
-                    path: "/home",
+                    path: "/",
                     element: (
                         <PrivateRoute> 
                             <Home />
