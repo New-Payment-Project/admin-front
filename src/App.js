@@ -21,7 +21,7 @@ const App = () => {
         </aside>
 
         <div className="flex-1">
-          <header className="home home-header mb-6">
+          <header className="home home-header">
             <div className="home-content">
               <HeaderBox
                 type="greeting"
