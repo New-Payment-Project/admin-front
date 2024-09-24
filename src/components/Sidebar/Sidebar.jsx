@@ -1,9 +1,43 @@
 import { Link, useLocation } from 'react-router-dom';
 import { sidebarLinks } from '../../constants';
+import { useDispatch } from 'react-redux';
+import { logout } from '../../slices/authSlice';
+import { useRef } from 'react';
+
+// Modal Component
+const LogoutModal = ({ confirmLogout }) => {
+  return (
+    <dialog id="logout_modal" className="modal">
+      <div className="modal-box">
+        <p className="font-bold text-base text-red-600">Are you sure you want to logout?</p>
+        <div className="modal-action">
+          <button className="btn btn-error" onClick={confirmLogout}>Yes</button>
+          <button className="btn" onClick={() => document.getElementById('logout_modal').close()}>No</button>
+        </div>
+      </div>
+    </dialog>
+  );
+};
 
 const Sidebar = ({ user }) => {
   const location = useLocation();
   const pathName = location.pathname;
+  const dispatch = useDispatch();
+  const modalRef = useRef();
+
+  // Confirm Logout Function
+  const confirmLogout = () => {
+    localStorage.removeItem('login');
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    dispatch(logout());
+    document.getElementById('logout_modal').close(); // Close modal after logout
+  };
+
+  // Open the Modal Function
+  const openModal = () => {
+    document.getElementById('logout_modal').showModal();
+  };
 
   return (
     <section className="sidebar">
@@ -34,15 +68,20 @@ const Sidebar = ({ user }) => {
                   className={`${isActive ? 'brightness-[3] invert-0' : ''}`}
                 />
               </div>
-              <p className={`sidebar-label ${isActive ? "!text-white" : ""}`}>{item.label}</p>
+              <p className={`sidebar-label ${isActive ? '!text-white' : ''}`}>{item.label}</p>
             </Link>
           );
         })}
-
+        
         USER
       </nav>
 
-      FOOTER
+      <button onClick={openModal} className='flex gap-2 items-center px-5'>
+        <span className='text-base text-gray-700 font-semibold'>Logout</span>
+        <img src='/icons/logout.svg' alt='logout-icon' />
+      </button>
+
+      <LogoutModal confirmLogout={confirmLogout} />
     </section>
   );
 };

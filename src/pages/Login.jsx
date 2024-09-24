@@ -49,7 +49,7 @@ const Login = () => {
       });
   
       // Navigate to the home page
-      navigate('/home');
+      navigate('/');
     } catch (error) {
       // Show error notification
       toast.error("Login failed. Please check your credentials.", {

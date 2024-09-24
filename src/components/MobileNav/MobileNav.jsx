@@ -13,7 +13,6 @@ const MobileNav = ({ user }) => {
 
   return (
     <div className='z-50'>
-      {/* Hamburger Menu Icon */}
       <img
         src='/icons/hamburger.svg'
         width={30}
@@ -53,7 +52,7 @@ const MobileNav = ({ user }) => {
                 key={item.label}
                 className={`sidebar-link flex items-center gap-2 px-4 py-2 transition-colors duration-300 ${isActive ? 'bg-bank-gradient text-white' : 'text-gray-700 hover:bg-gray-200'
                   }`}
-                onClick={toggleSidebar} // Optionally close sidebar on link click
+                onClick={toggleSidebar}
               >
                 <img
                   src={item.imgURL}
