@@ -12,11 +12,7 @@ const MobileNav = ({ user }) => {
   };
 
   return (
-<<<<<<< HEAD
     <div className='min-w-screen'>
-=======
-    <div className='z-50'>
->>>>>>> d4178110d0d02e933f49e929c33786c0f94d30a5
       {/* Hamburger Menu Icon */}
       <img
         src='/icons/hamburger.svg'

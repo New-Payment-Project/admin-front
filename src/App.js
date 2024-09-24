@@ -16,7 +16,7 @@ const App = () => {
       </div>
 
       <div className="flex flex-1">
-        <aside className="h-full z-50 top-0 left-0 bg-gray-100 " style={{userSelect: 'none'}}>
+        <aside className="h-full z-50 top-0 left-0 bg-gray-100 " style={{ userSelect: 'none' }}>
           <Sidebar user={loggedIn} />
         </aside>
 
@@ -37,7 +37,7 @@ const App = () => {
             </div>
           </header>
 
-          <main className="font-inter flex-1" style={{userSelect: 'none'}} >
+          <main className="font-inter flex-1" style={{ userSelect: 'none' }} >
             <Outlet />
           </main>
         </div>
