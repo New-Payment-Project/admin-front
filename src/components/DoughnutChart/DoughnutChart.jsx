@@ -12,7 +12,7 @@ const DoughnutChart = ({ accounts }) => {
                 backgroundColor: ['#0747b6', '#2265d8', '#2f91fa']
             }
         ],
-        labels: ['Bank 1', 'Bank 2', 'Bank 3']
+        labels: ['UZUM', 'PAYME', 'CLICK']
     }
     return <Doughnut data={data}
         options={{

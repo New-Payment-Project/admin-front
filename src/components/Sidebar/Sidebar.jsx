@@ -1,5 +1,7 @@
 import { Link, useLocation } from 'react-router-dom';
 import { sidebarLinks } from '../../constants';
+import { logout } from '../../slices/authSlice';
+import UserInfo from '../UserInfo/UserInfo';
 
 const Sidebar = ({ user }) => {
   const location = useLocation();
@@ -35,15 +37,14 @@ const Sidebar = ({ user }) => {
                   className={`${isActive ? 'brightness-[3] invert-0' : ''}`}
                 />
               </div>
-              <p className={`sidebar-label ${isActive ? "!text-white" : ""}`}>{item.label}</p>
+              <p className={`sidebar-label ${isActive ? '!text-white' : ''}`}>{item.label}</p>
             </Link>
           );
         })}
-
+        
         USER
       </nav>
-
-      FOOTER
+        <UserInfo/>
     </section>
   );
 };
