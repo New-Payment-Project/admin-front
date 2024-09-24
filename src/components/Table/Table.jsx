@@ -6,7 +6,6 @@ const Table = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Fetch transactions from the API
   useEffect(() => {
     const fetchTransactions = async () => {
       try {
@@ -24,14 +23,13 @@ const Table = () => {
     fetchTransactions();
   }, []);
 
-  // Function to set row color based on status
   const getRowClass = (status) => {
     if (status === "completed") {
-      return "bg-[#F6FEF9]"; // Light green background for completed
+      return "bg-[#F6FEF9]"; 
     } else if (status === "failed") {
-      return "bg-[#FFFBFA]"; // Light red background for failed
+      return "bg-[#FFFBFA]"; 
     }
-    return ""; // No specific color for other statuses
+    return ""; 
   };
 
   return (
@@ -44,7 +42,6 @@ const Table = () => {
         <div className="text-center py-4 text-red-500">{error}</div>
       ) : (
         <div className="overflow-x-auto">
-          {/* Table view for larger screens */}
           <div className="hidden md:block">
             <div className="max-w-full overflow-x-auto">
               <table className="min-w-full table-auto text-xs md:text-sm text-left">

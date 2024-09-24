@@ -4,6 +4,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Loadable from "../components/Loadable/Loadable";
 import Login from "../pages/Login";
 import PrivateRoute from "../components/PrivateRoute";  // Import private route
+import Banks from "../pages/My-banks/Mybanks";
 
 const App = Loadable(lazy(() => import("../App")));
 const Home = Loadable(lazy(() => import("../pages/Home/Home")));
@@ -31,7 +32,7 @@ const RouterConfig = () => {
                     path: "/my-banks",
                     element: (
                         <PrivateRoute> 
-                            <Home />
+                            <Banks/>
                         </PrivateRoute>
                     ),
                 },

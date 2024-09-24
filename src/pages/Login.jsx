@@ -38,7 +38,7 @@ const Login = () => {
 
       localStorage.setItem('login', JSON.stringify(response.data));
       localStorage.setItem('user', JSON.stringify(response.data.user));
-      navigate('/home');
+      navigate('/');
     } catch (error) {
       toast.error("Login failed. Please check your credentials.", {
         position: "bottom-right",
