@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { sidebarLinks } from '../../constants';
+import UserInfo from '../UserInfo/UserInfo';
 
 const MobileNav = ({ user }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -12,7 +13,7 @@ const MobileNav = ({ user }) => {
   };
 
   return (
-    <div className='min-w-screen'>
+    <div className='min-w-screen min-h-full'>
       {/* Hamburger Menu Icon */}
       <img
         src='/icons/hamburger.svg'
@@ -42,7 +43,7 @@ const MobileNav = ({ user }) => {
         </Link>
 
         {/* Navigation Links */}
-        <nav className="flex flex-col gap-6 pt-4">
+        <nav className="flex flex-col gap-6 pt-4 px-4">
           {sidebarLinks.map((item) => {
             // Check if the current route matches the link's route
             const isActive = pathName === item.route || pathName.startsWith(`${item.route}/`);
@@ -51,7 +52,7 @@ const MobileNav = ({ user }) => {
               <Link
                 to={item.route}
                 key={item.label}
-                className={`sidebar-link flex items-center gap-2 px-4 py-2 transition-colors duration-300 ${isActive ? 'bg-bank-gradient text-white' : 'text-gray-700 hover:bg-gray-200'
+                className={`rounded-lg py-3 flex items-center gap-2 px-4 transition-colors duration-300 ${isActive ? 'bg-bank-gradient text-white' : 'text-gray-700 hover:bg-gray-200'
                   }`}
                 onClick={toggleSidebar}
               >
@@ -65,6 +66,7 @@ const MobileNav = ({ user }) => {
             );
           })}
         </nav>
+        <UserInfo/>
       </div>
     </div>
   );
