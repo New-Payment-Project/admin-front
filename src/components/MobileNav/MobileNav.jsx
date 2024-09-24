@@ -12,8 +12,7 @@ const MobileNav = ({ user }) => {
   };
 
   return (
-    <div className='min-w-screen'>
-      {/* Hamburger Menu Icon */}
+    <div className='z-50'>
       <img
         src='/icons/hamburger.svg'
         width={30}
@@ -66,14 +65,6 @@ const MobileNav = ({ user }) => {
           })}
         </nav>
       </div>
-
-      {/* Overlay (to close sidebar when clicked outside) */}
-      {isSidebarOpen && (
-        <div
-          className="fixed inset-0 bg-black bg-opacity-50"
-          onClick={toggleSidebar}
-        />
-      )}
     </div>
   );
 };
