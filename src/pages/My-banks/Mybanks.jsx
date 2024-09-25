@@ -4,11 +4,13 @@ const BankCard = ({ card }) => {
   const getCardStyle = (issuer) => {
     switch (issuer) {
       case "Payme":
-        return "bg-gradient-to-r from-blue-500 to-blue-700"
+        return "bg-gradient-to-r from-blue-500 to-blue-800"
       case "Click":
-        return "bg-gradient-to-r from-green-500 to-green-700"
+        return "bg-gradient-to-r from-green-500 to-green-900"
       case "Uzum Bank":
-        return "bg-gradient-to-r from-purple-500 to-purple-700"
+        return "bg-gradient-to-r from-purple-500 to-purple-900"
+      case "MasterCard":
+        return "bg-gradient-to-r from-red-500 to-yellow-700"
       default:
         return "bg-gradient-to-r from-gray-500 to-gray-700"
     }
@@ -58,53 +60,20 @@ export default function Component() {
     {
       issuer: "Uzum Bank",
       number: "1234 1234 1234 1234",
-      name: " Norbekov Abduvaliy",
+      name: "Norbekov Abduvaliy",
       expiry: "06/24",
-      icon: "https://api.logobank.uz/media/logos_png/UZUM_BANK-01.png",
+      icon: "https://depozit.uz/image_uploads/banks/55/original/1f135319fd6cc7502052a2a5b74831b5_webp.webp",
+    },
+    {
+      issuer: "MasterCard",
+      number: "5678 5678 5678 5678",
+      name: "Norbekov Abduvaliy",
+      expiry: "09/26",
+      icon: "https://upload.wikimedia.org/wikipedia/commons/b/b7/MasterCard_Logo.svg",
     },
   ]
 
-  const [cards, setCards] = useState(initialCards)
-  const [newCard, setNewCard] = useState({
-    number: "",
-    name: "",
-    expiry: "",
-    cvc: "",
-    issuer: "Payme",
-    icon: "https://api.logobank.uz/media/logos_png/payme-01.png",
-  })
-  const [showForm, setShowForm] = useState(false)
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target
-    setNewCard({ ...newCard, [name]: value })
-  }
-
-  const handleIssuerChange = (e) => {
-    const value = e.target.value
-    let icon = ""
-    if (value === "Payme") {
-      icon = "https://api.logobank.uz/media/logos_png/payme-01.png"
-    } else if (value === "Click") {
-      icon = "https://pr.uz/wp-content/uploads/2023/04/click-01.png"
-    } else if (value === "Uzum Bank") {
-      icon = "https://api.logobank.uz/media/logos_png/UZUM_BANK-01.png"
-    }
-    setNewCard({ ...newCard, issuer: value, icon })
-  }
-
-  const addCard = () => {
-    setCards([...cards, newCard])
-    setNewCard({
-      number: "",
-      name: "",
-      expiry: "",
-      cvc: "",
-      issuer: "Payme",
-      icon: "https://api.logobank.uz/media/logos_png/payme-01.png",
-    })
-    setShowForm(false)
-  }
+  const [cards] = useState(initialCards)
 
   return (
     <div className="p-4 space-y-6">
@@ -114,106 +83,6 @@ export default function Component() {
           <BankCard key={index} card={card} />
         ))}
       </div>
-
-      {!showForm && (
-        <button
-          onClick={() => setShowForm(true)}
-          className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors text-sm"
-        >
-          Add New Card
-        </button>
-      )}
-
-      {showForm && (
-        <div className="mt-4 bg-white shadow-md rounded-lg p-4">
-          <div className="space-y-3">
-            <div className="space-y-1">
-              <label htmlFor="issuer" className="block text-sm font-medium text-gray-700">
-                Select Card Type
-              </label>
-              <select
-                id="issuer"
-                name="issuer"
-                value={newCard.issuer}
-                onChange={handleIssuerChange}
-                className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md"
-              >
-                <option value="Payme">Payme</option>
-                <option value="Click">Click</option>
-                <option value="Uzum Bank">Uzum Bank</option>
-              </select>
-            </div>
-
-            <div className="space-y-1">
-              <label htmlFor="number" className="block text-sm font-medium text-gray-700">
-                Card Number
-              </label>
-              <input
-                type="text"
-                id="number"
-                name="number"
-                placeholder="Card Number"
-                value={newCard.number}
-                onChange={handleInputChange}
-                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-              />
-            </div>
-
-            <div className="space-y-1">
-              <label htmlFor="name" className="block text-sm font-medium text-gray-700">
-                Cardholder Name
-              </label>
-              <input
-                type="text"
-                id="name"
-                name="name"
-                placeholder="Cardholder Name"
-                value={newCard.name}
-                onChange={handleInputChange}
-                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-              />
-            </div>
-
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-1">
-                <label htmlFor="expiry" className="block text-sm font-medium text-gray-700">
-                  Expiry Date
-                </label>
-                <input
-                  type="text"
-                  id="expiry"
-                  name="expiry"
-                  placeholder="MM/YY"
-                  value={newCard.expiry}
-                  onChange={handleInputChange}
-                  className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                />
-              </div>
-              <div className="space-y-1">
-                <label htmlFor="cvc" className="block text-sm font-medium text-gray-700">
-                  CVC
-                </label>
-                <input
-                  type="text"
-                  id="cvc"
-                  name="cvc"
-                  placeholder="CVC"
-                  value={newCard.cvc}
-                  onChange={handleInputChange}
-                  className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                />
-              </div>
-            </div>
-
-            <button
-              onClick={addCard}
-              className="w-full px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors text-sm"
-            >
-              Add Card
-            </button>
-          </div>
-        </div>
-      )}
     </div>
   )
 }
