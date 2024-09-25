@@ -7,14 +7,10 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useDispatch } from 'react-redux';
 import { login } from '../slices/authSlice';
 import { useNavigate } from 'react-router-dom';
+import CryptoJS from 'crypto-js';
 
 const Login = () => {
-  const { 
-    register, 
-    handleSubmit, 
-    formState: { errors } 
-  } = useForm();
-  
+  const { register, handleSubmit, formState: { errors } } = useForm();
   const dispatch = useDispatch(); 
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
@@ -23,6 +19,19 @@ const Login = () => {
     setLoading(true);  
     try {
       const response = await axios.post('https://payment-server-vo2y.onrender.com/api/auth/login', data);
+      const token = response.data.token;
+      const userLogin = data.login;
+
+      const secretKey = process.env.REACT_APP_SECRET_KEY || 'your-secret-key';
+      const encryptedToken = CryptoJS.AES.encrypt(token, secretKey).toString();
+      const encryptedLogin = CryptoJS.AES.encrypt(userLogin, secretKey).toString();
+
+      console.log('Encrypted Login:', encryptedLogin);
+
+      localStorage.setItem('token', encryptedToken);
+      localStorage.setItem('login', encryptedLogin);
+      localStorage.setItem('name', response.data.user.name);
+      localStorage.setItem('surname', response.data.user.surname);
 
       dispatch(login(response.data));
 
@@ -36,8 +45,6 @@ const Login = () => {
         progress: undefined,
       });
 
-      localStorage.setItem('login', JSON.stringify(response.data));
-      localStorage.setItem('user', JSON.stringify(response.data.user));
       navigate('/');
     } catch (error) {
       toast.error("Login failed. Please check your credentials.", {
@@ -49,11 +56,12 @@ const Login = () => {
         draggable: true,
         progress: undefined,
       });
+
       console.error("Login failed:", error.response?.data || error.message);
     } finally {
       setLoading(false);  
     }
-  };
+  };    
 
   return (
     <div className='flex h-screen bg-white'>
@@ -72,26 +80,18 @@ const Login = () => {
       />
       
       <div className='flex flex-col justify-center lg:w-1/2 p-10 bg-white'>
-        <form 
-          onSubmit={handleSubmit(onSubmit)} 
-          className='container mx-auto max-w-md'
-        >
+        <form onSubmit={handleSubmit(onSubmit)} className='container mx-auto max-w-md'>
           <h1 className='text-3xl text-black font-semibold mb-4'>Log in</h1>
           <p className='text-gray-600 mb-8'>Welcome back! Please enter your details.</p>
           
           <div className="mb-6">
-            <label 
-              htmlFor="login" 
-              className="block mb-2 text-sm font-medium text-gray-700"
-            >
+            <label htmlFor="login" className="block mb-2 text-sm font-medium text-gray-700">
               Your login
             </label>
             <input 
               type="text" 
               id="login" 
-              {...register("login", { 
-                required: "Login is required", 
-              })} 
+              {...register("login", { required: "Login is required" })} 
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" 
               placeholder="name@domain.com"
             />
@@ -99,10 +99,7 @@ const Login = () => {
           </div>
 
           <div className="mb-6">
-            <label 
-              htmlFor="password" 
-              className="block mb-2 text-sm font-medium text-gray-700"
-            >
+            <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-700">
               Your password
             </label>
             <input 
@@ -136,11 +133,7 @@ const Login = () => {
       </div>
 
       <div className='w-1/2 h-full flex justify-center items-center rounded-r-lg relative'>
-        <img 
-          src={loginImg} 
-          alt="Login visual" 
-          className='object-contain h-3/4 w-3/4' 
-        />
+        <img src={loginImg} alt="Login visual" className='object-contain h-3/4 w-3/4' />
       </div>
     </div>
   );
