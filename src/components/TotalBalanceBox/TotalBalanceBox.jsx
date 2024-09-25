@@ -15,7 +15,7 @@ const TotalBalanceBox = ({ accoounts = [], totalBanks, totalCurrentBalance }) =>
                     </h2>
                     <div className='flex flex-col gap-2'>
                         <p className='total-balance-label'>
-                            Общий счет:
+                            Общий счет
                         </p>
                         <div className='total-balance-amount flex-center gap-2'>
                             <AnimatedCounter amount={totalCurrentBalance} />
