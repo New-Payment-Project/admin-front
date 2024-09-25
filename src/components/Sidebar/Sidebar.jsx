@@ -1,6 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
 import { sidebarLinks } from '../../constants';
-import { logout } from '../../slices/authSlice';
 import UserInfo from '../UserInfo/UserInfo';
 
 const Sidebar = ({ user }) => {
@@ -41,8 +40,6 @@ const Sidebar = ({ user }) => {
             </Link>
           );
         })}
-        
-        USER
       </nav>
         <UserInfo/>
     </section>
