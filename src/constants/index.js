@@ -18,6 +18,10 @@ export const sidebarLinks = [
     imgURL: "/icons/plus.svg",
     route: "/create-course",
     label: "Create Course",
+  },{
+    imgURL: "/icons/plus.svg",
+    route: "/create-link",
+    label: "Create Link",
   },
 ];
 

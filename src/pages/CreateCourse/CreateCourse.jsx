@@ -9,7 +9,7 @@ const CreateCourse = () => {
     description: "",
     category: "",
     price: "",
-    route: ""  // Changed from instructor to route
+    route: ""  
   });
 
   const handleInputChange = (e) => {
@@ -37,7 +37,7 @@ const CreateCourse = () => {
           description: "",
           category: "",
           price: "",
-          route: ""  // Reset route
+          route: ""  
         });
       } else {
         toast.error("Error creating course!");
@@ -50,102 +50,104 @@ const CreateCourse = () => {
   };
 
   return (
-    <div className="px-8 pb-10 bg-base-100 rounded-lg shadow-lg mx-auto">
+    <div className="px-8 py-12 bg-white rounded-lg shadow-lg max-w-full mx-auto mt-12">
       <ToastContainer />
-      <h1 className="text-3xl font-bold">Create Course</h1>
-      <p className="mb-6">Fill in the details to create a course</p>
+      <h1 className="text-4xl font-bold text-gray-800 mb-4">Create New Course</h1>
+      <p className="text-gray-600 mb-8">Fill in the details to add a new course to the platform.</p>
 
-      <form onSubmit={handleSubmit} className="space-y-2 lg:flex lg:justify-center gap-[15%] w-full">
-        <div className="w-full flex-1">
-          <div className="form-control">
-            <label className="label">
-              <span className="label-text font-semibold">Course Name</span>
-            </label>
-            <input
-              type="text"
-              name="title"
-              value={courseData.title}
-              onChange={handleInputChange}
-              placeholder="Enter course name"
-              className="input input-bordered w-full"
-              required
-            />
+      <form onSubmit={handleSubmit} className="space-y-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <div>
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text font-semibold text-gray-700">Course Name</span>
+              </label>
+              <input
+                type="text"
+                name="title"
+                value={courseData.title}
+                onChange={handleInputChange}
+                placeholder="Enter course name"
+                className="input input-bordered w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                required
+              />
+            </div>
+
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text font-semibold text-gray-700">Course Description</span>
+              </label>
+              <textarea
+                name="description"
+                value={courseData.description}
+                onChange={handleInputChange}
+                placeholder="Enter course description"
+                rows="4"
+                className="textarea textarea-bordered w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                required
+              />
+            </div>
           </div>
 
-          <div className="form-control">
-            <label className="label">
-              <span className="label-text font-semibold">Course Description</span>
-            </label>
-            <textarea
-              name="description"
-              value={courseData.description}
-              onChange={handleInputChange}
-              placeholder="Enter course description"
-              rows="4"
-              className="textarea textarea-bordered pb-5 w-full"
-              required
-            />
+          <div>
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text font-semibold text-gray-700">Course Category</span>
+              </label>
+              <input
+                type="text"
+                name="category"
+                value={courseData.category}
+                onChange={handleInputChange}
+                placeholder="Enter category of course"
+                className="input input-bordered w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                required
+              />
+            </div>
+
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text font-semibold text-gray-700">Course Price</span>
+              </label>
+              <input
+                type="number"
+                name="price"
+                value={courseData.price}
+                onChange={handleInputChange}
+                placeholder="Enter course price"
+                className="input input-bordered w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                required
+              />
+            </div>
+
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text font-semibold text-gray-700">Course Route</span>
+              </label>
+              <input
+                type="text"
+                name="route"
+                value={courseData.route}
+                onChange={handleInputChange}
+                placeholder="Enter course route"
+                className="input input-bordered w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                required
+              />
+            </div>
           </div>
         </div>
 
-        <div className="w-full flex-1">
-          <div className="form-control">
-            <label className="label">
-              <span className="label-text font-semibold">Course Category</span>
-            </label>
-            <input
-              type="text"
-              name="category"
-              value={courseData.category}
-              onChange={handleInputChange}
-              className="input input-bordered w-full"
-              placeholder="Enter category of course"
-              required
-            />
-          </div>
-
-          <div className="form-control">
-            <label className="label">
-              <span className="label-text font-semibold">Course Price</span>
-            </label>
-            <input
-              type="number"
-              name="price"
-              value={courseData.price}
-              onChange={handleInputChange}
-              placeholder="Enter course price"
-              className="input input-bordered w-full"
-              required
-            />
-          </div>
-
-          <div className="form-control">
-            <label className="label">
-              <span className="label-text font-semibold">Route</span>
-            </label>
-            <input
-              type="text"
-              name="route"
-              value={courseData.route}
-              onChange={handleInputChange}
-              placeholder="Enter course route"
-              className="input input-bordered w-full"
-              required
-            />
-          </div>
-
-          <button 
-            type="submit" 
-            className="text-white bg-blue-700 mt-3 hover:bg-blue-800 font-medium rounded-lg text-sm w-full px-5 py-3 text-center flex items-center justify-center"
-            disabled={loading} 
-          >
-            {loading ? (
-              <span className="loading loading-spinner loading-xs"></span>
-            ) : (
-              "Create Course"
-            )}
-          </button>
-        </div>
+        <button
+          type="submit"
+          className="w-full bg-blue-600 text-white font-semibold py-3 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-400 flex justify-center items-center"
+          disabled={loading}
+        >
+          {loading ? (
+            <span className="loading loading-spinner loading-xs"></span>
+          ) : (
+            "Create Course"
+          )}
+        </button>
       </form>
     </div>
   );
