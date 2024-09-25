@@ -14,6 +14,11 @@ export const sidebarLinks = [
     route: "/transaction-history",
     label: "Transaction History",
   },
+  {
+    imgURL: "/icons/plus.svg",
+    route: "/create-course",
+    label: "Create Course",
+  },
 ];
 
 // good_user / good_password - Bank of America
