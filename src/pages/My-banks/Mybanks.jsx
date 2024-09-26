@@ -4,13 +4,13 @@ const BankCard = ({ card }) => {
   const getCardStyle = (issuer) => {
     switch (issuer) {
       case "Payme":
-        return "bg-gradient-to-r from-blue-500 to-blue-800";
+        return "bg-gradient-to-r from-blue-400 to-accent";
       case "Click":
-        return "bg-gradient-to-r from-green-500 to-green-900";
+        return "bg-gradient-to-r from-green-500 to-green-800";
       case "Uzum Bank":
-        return "bg-gradient-to-r from-purple-500 to-purple-900";
+        return "bg-gradient-to-r from-purple-400 to-purple-800";
       case "MasterCard":
-        return "bg-gradient-to-r from-red-500 to-yellow-700";
+        return "bg-gradient-to-r from-red-400 to-orange-800";
       default:
         return "bg-gradient-to-r from-gray-500 to-gray-700";
     }
@@ -23,19 +23,19 @@ const BankCard = ({ card }) => {
       )} text-white shadow-xl`}
     >
       <div className="p-4 flex flex-col justify-between h-full">
-        <div className="flex justify-between items-start">
+        <div className="flex items-start justify-between font-mono">
           <img
             src={card.icon}
             alt={card.issuer}
-            className="w-20 h-20 object-contain" // Updated size
+            className="w-10 h-10 object-contain" 
           />
           <span className="text-lg font-bold">{card.issuer}</span>
         </div>
        
-        <div className="flex justify-start items-center my-auto gap-2 font-bold text-xl">
+        <div className="flex justify-end items-center  gap-2 font-bold font-mono">
           <span>
             {Math.floor(card.price)
-              .toString()
+              .toString() 
               .replace(/\B(?=(\d{3})+(?!\d))/g, " ")}
           </span>
           <p>uzs</p>
