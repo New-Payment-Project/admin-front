@@ -22,7 +22,7 @@ const App = () => {
         <img src='/norbekov-logo.png' width={60} height={60} alt='menu icon' />
         <MobileNav user={loggedIn} />
       </div>
-
+    
       <div className="flex flex-1">
         <aside className="h-full z-50 top-0 left-0 bg-gray-100 " style={{ userSelect: 'none' }}>
           <Sidebar user={loggedIn} />
@@ -33,7 +33,7 @@ const App = () => {
             <div className="home-content">
               <HeaderBox
                 type="greeting"
-                title="Welcome"
+                title="Добро Пожаловать, "
                 user={
                   <motion.span
                     initial="hidden"
@@ -43,7 +43,7 @@ const App = () => {
                     {name}
                   </motion.span>
                 }
-                subtext="Access and manage your account and transactions efficiently"
+                subtext="Получите доступ и эффективно управляйте своей учетной записью и транзакциями"
               />
               
               <TotalBalanceBox

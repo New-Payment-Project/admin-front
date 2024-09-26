@@ -2,22 +2,26 @@ export const sidebarLinks = [
   {
     imgURL: "/icons/home.svg",
     route: "/",
-    label: "Home",
+    label: "Главная",
   },
   {
     imgURL: "/icons/dollar-circle.svg",
     route: "/my-banks",
-    label: "My Banks",
+    label: "Мои Банки",
   },
   {
     imgURL: "/icons/transaction.svg",
     route: "/transaction-history",
-    label: "Transaction History",
+    label: "История Транзакций",
   },
   {
     imgURL: "/icons/plus.svg",
     route: "/create-course",
     label: "Create Course",
+  },{
+    imgURL: "/icons/plus.svg",
+    route: "/create-link",
+    label: "Create Link",
   },
 ];
 

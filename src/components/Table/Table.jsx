@@ -66,7 +66,7 @@ const Table = () => {
   };
 
   return (
-    <div className="px-4 md:px-8 py-6">
+    <div className="px-4 md:px-8 py-2">
       {loading ? (
         <div className="text-center py-4 mx-auto">
           <span className="loading loading-spinner loading-lg"></span>
@@ -82,7 +82,7 @@ const Table = () => {
                 onClick={toggleDropdown} // Toggle dropdown on click
               >
                 <img src="/icons/filter-lines.svg" className="text-red-600" alt="" />
-                Apply Filter
+                Фильтр
               </button>
               {/* Dropdown menu for status filtering */}
               {isDropdownOpen && ( // Conditionally render the dropdown
@@ -91,31 +91,31 @@ const Table = () => {
                     className="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-100"
                     onClick={() => handleFilterChange(null)}
                   >
-                    All
+                    Все
                   </button>
                   <button
                     className="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-100"
                     onClick={() => handleFilterChange("pending")}
                   >
-                    Pending
+                    Выставлен
                   </button>
                   <button
                     className="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-100"
                     onClick={() => handleFilterChange("processing")}
                   >
-                    Processing
+                    В процессе
                   </button>
                   <button
                     className="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-100"
                     onClick={() => handleFilterChange("completed")}
                   >
-                    Completed
+                    Успешно
                   </button>
                   <button
                     className="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-100"
                     onClick={() => handleFilterChange("failed")}
                   >
-                    Failed
+                    Неуспешно
                   </button>
                 </div>
               )}
@@ -128,19 +128,19 @@ const Table = () => {
                 <thead className="bg-gray-50 text-gray-600">
                   <tr>
                     <th className="px-4 py-2 text-xs font-medium uppercase tracking-wider">
-                      Transaction
+                      Транзакции
                     </th>
                     <th className="px-4 py-2 text-xs font-medium uppercase tracking-wider">
-                      Amount
+                      Сумма
                     </th>
                     <th className="px-4 py-2 text-xs font-medium uppercase tracking-wider">
-                      Status
+                      Статус
                     </th>
                     <th className="px-4 py-2 text-xs font-medium uppercase tracking-wider">
-                      Date
+                      Дата
                     </th>
                     <th className="px-4 py-2 text-xs font-medium uppercase tracking-wider">
-                      Category
+                      Категория
                     </th>
                   </tr>
                 </thead>
@@ -176,7 +176,7 @@ const Table = () => {
                   ) : (
                     <tr>
                       <td colSpan="5" className="text-center py-4">
-                        No transactions found
+                      Транзакции не найдены
                       </td>
                     </tr>
                   )}
@@ -185,14 +185,14 @@ const Table = () => {
             </div>
           </div>
 
-          <div className="flex justify-between items-center mt-4">
+          <div className="flex justify-between items-center md:mb-0 mb-2 lg:mb-0 mt-4">
             <button
               onClick={() => handlePageChange(currentPage - 1)}
               disabled={currentPage === 1}
               className="px-3 py-1 bg-white text-gray-600 border rounded disabled:opacity-50 flex items-center gap-2"
             >
               <img src="icons/arrow-left.svg" />
-              Previous
+              Пред.
             </button>
 
             <div className="flex space-x-2">
@@ -216,7 +216,7 @@ const Table = () => {
               disabled={currentPage === totalPages}
               className="px-3 py-1 bg-white text-gray-600 border rounded disabled:opacity-50 flex items-center gap-2"
             >
-              Next
+              След.
               <img src="icons/arrow-right.svg" />
             </button>
           </div>
@@ -251,13 +251,13 @@ const Table = () => {
                       ></span>
                       {transaction.status}
                     </div>
-                    <p>Amount: {transaction.amount} so'm</p>
-                    <p>Category: {transaction.category}</p>
+                    <p>Сумма: {transaction.amount} so'm</p>
+                    <p>Категория: {transaction.category}</p>
                   </div>
                 </div>
               ))
             ) : (
-              <p className="text-center py-4">No transactions found</p>
+              <p className="text-center py-4">Транзакции не найдены</p>
             )}
           </div>
         </div>
