@@ -5,6 +5,7 @@ import Login from "../pages/Login";
 import PrivateRoute from "../components/PrivateRoute";  // Import private route
 import CreateCourse from "../pages/CreateCourse/CreateCourse";
 import CreateLink from "../pages/CreateLink/CreateLink";
+import Banks from "../pages/My-banks/Mybanks"
 
 const App = Loadable(lazy(() => import("../App")));
 const Home = Loadable(lazy(() => import("../pages/Home/Home")));
@@ -32,7 +33,7 @@ const RouterConfig = () => {
                     path: "/my-banks",
                     element: (
                         <PrivateRoute> 
-                            <Home />
+                            <Banks/>
                         </PrivateRoute>
                     ),
                 },

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import CreateIndividualLink from "../../components/CreateIndividualLink";
 
 const CoursesTable = () => {
   const [courses, setCourses] = useState([]);
@@ -39,6 +40,7 @@ const CoursesTable = () => {
 
   return (
     <div className="px-4 md:px-8 py-2">
+          <CreateIndividualLink/>
       {loading ? (
         <div className="text-center py-4 mx-auto">
           <span className="loading loading-spinner loading-lg"></span>
@@ -46,8 +48,7 @@ const CoursesTable = () => {
       ) : error ? (
         <div className="text-center py-4 text-red-500">{error}</div>
       ) : (
-        <>
-          {/* Table layout for medium and larger screens */}
+        <div className="overflow-x-auto">
           <div className="hidden md:block">
             <div className="max-w-full overflow-x-auto shadow-md rounded-lg">
               <table className="min-w-full table-auto text-xs md:text-sm text-left border border-gray-200">
@@ -73,7 +74,7 @@ const CoursesTable = () => {
                       <tr key={index} className="hover:bg-gray-50">
                         <td className="px-4 py-2">{course.title}</td>
                         <td className="px-4 py-2">{course.description}</td>
-                        <td className="px-4 py-2">{course.price} so'm</td>
+                        <td className="px-4 py-2">{course.price} USD</td>
                         <td className="px-4 py-2">{course.route}</td>
                       </tr>
                     ))
@@ -89,23 +90,6 @@ const CoursesTable = () => {
             </div>
           </div>
 
-          {/* Card layout for smaller screens */}
-          <div className="md:hidden">
-            {currentCourses.length > 0 ? (
-              currentCourses.map((course, index) => (
-                <div key={index} className="bg-white p-4 rounded-lg shadow-md mb-4">
-                  <h3 className="font-semibold text-lg">{course.title}</h3>
-                  <p className="text-sm">{course.description}</p>
-                  <p className="text-sm font-bold">{course.price} so'm</p>
-                  <p className="text-sm">{course.route}</p>
-                </div>
-              ))
-            ) : (
-              <div className="text-center py-4">No courses found</div>
-            )}
-          </div>
-
-          {/* Pagination controls */}
           <div className="flex justify-between items-center mt-4">
             <button
               onClick={() => handlePageChange(currentPage - 1)}
@@ -139,7 +123,7 @@ const CoursesTable = () => {
               Next
             </button>
           </div>
-        </>
+        </div>
       )}
     </div>
   );
