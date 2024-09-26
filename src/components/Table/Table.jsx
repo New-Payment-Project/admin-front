@@ -66,7 +66,7 @@ const Table = () => {
   };
 
   return (
-    <div className="px-4 md:px-8 py-6">
+    <div className="px-4 md:px-8 py-2">
       {loading ? (
         <div className="text-center py-4 mx-auto">
           <span className="loading loading-spinner loading-lg"></span>
@@ -185,7 +185,7 @@ const Table = () => {
             </div>
           </div>
 
-          <div className="flex justify-between items-center mt-4">
+          <div className="flex justify-between items-center md:mb-0 mb-2 lg:mb-0 mt-4">
             <button
               onClick={() => handlePageChange(currentPage - 1)}
               disabled={currentPage === 1}

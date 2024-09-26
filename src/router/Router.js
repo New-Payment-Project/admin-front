@@ -3,7 +3,9 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Loadable from "../components/Loadable/Loadable";
 import Login from "../pages/Login";
 import PrivateRoute from "../components/PrivateRoute";  // Import private route
-import Banks from "../pages/My-banks/Mybanks";
+import CreateCourse from "../pages/CreateCourse/CreateCourse";
+import CreateLink from "../pages/CreateLink/CreateLink";
+import Banks from "../pages/My-banks/Mybanks"
 
 const App = Loadable(lazy(() => import("../App")));
 const Home = Loadable(lazy(() => import("../pages/Home/Home")));
@@ -48,6 +50,22 @@ const RouterConfig = () => {
                     element: (
                         <PrivateRoute> 
                             <Home />
+                        </PrivateRoute>
+                    ),
+                },
+                {
+                    path: "/create-course",
+                    element: (
+                        <PrivateRoute> 
+                            <CreateCourse />
+                        </PrivateRoute>
+                    ),
+                },
+                {
+                    path: "/create-link",
+                    element: (
+                        <PrivateRoute> 
+                            <CreateLink />
                         </PrivateRoute>
                     ),
                 },
