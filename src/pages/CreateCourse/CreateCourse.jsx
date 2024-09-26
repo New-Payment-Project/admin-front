@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
+import { IoIosAddCircleOutline } from "react-icons/io";
+
 
 const CreateCourse = () => {
   const [loading, setLoading] = useState(false);
@@ -31,7 +33,7 @@ const CreateCourse = () => {
       });
 
       if (response.ok) {
-        toast.success("Course created successfully!");
+        toast.success("Курс успешно создан!");
         setCourseData({
           title: "",
           description: "",
@@ -40,10 +42,10 @@ const CreateCourse = () => {
           route: ""  
         });
       } else {
-        toast.error("Error creating course!");
+        toast.error("Ошибка при создании курса!");
       }
     } catch (error) {
-      toast.error("Something went wrong!");
+      toast.error("Что-то пошло не так!");
     } finally {
       setLoading(false); 
     }
@@ -145,7 +147,7 @@ const CreateCourse = () => {
           {loading ? (
             <span className="loading loading-spinner loading-xs"></span>
           ) : (
-            "Create Course"
+            <span className="flex items-center gap-2"><IoIosAddCircleOutline size={20}/> Create Course</span>
           )}
         </button>
       </form>
