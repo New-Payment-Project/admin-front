@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
-import 'react-toastify/dist/ReactToastify.css';
+import "react-toastify/dist/ReactToastify.css";
 import { IoIosAddCircleOutline } from "react-icons/io";
-
 
 const CreateCourse = () => {
   const [loading, setLoading] = useState(false);
@@ -11,7 +10,7 @@ const CreateCourse = () => {
     description: "",
     category: "",
     price: "",
-    route: ""  
+    route: "",
   });
 
   const handleInputChange = (e) => {
@@ -21,16 +20,19 @@ const CreateCourse = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true); 
+    setLoading(true);
 
     try {
-      const response = await fetch("https://course-server-327v.onrender.com/api/v1/courses", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(courseData),
-      });
+      const response = await fetch(
+        "https://course-server-327v.onrender.com/api/v1/courses",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(courseData),
+        }
+      );
 
       if (response.ok) {
         toast.success("Курс успешно создан!");
@@ -39,7 +41,7 @@ const CreateCourse = () => {
           description: "",
           category: "",
           price: "",
-          route: ""  
+          route: "",
         });
       } else {
         toast.error("Ошибка при создании курса!");
@@ -47,97 +49,55 @@ const CreateCourse = () => {
     } catch (error) {
       toast.error("Что-то пошло не так!");
     } finally {
-      setLoading(false); 
+      setLoading(false);
     }
   };
 
   return (
-    <div className="px-8 py-12 bg-white rounded-lg shadow-lg max-w-full mx-auto mt-12">
+    <div className="px-8 pb-12 bg-white rounded-lg shadow-lg max-w-full mx-auto">
       <ToastContainer />
-      <h1 className="text-4xl font-bold text-gray-800 mb-4">Create New Course</h1>
-      <p className="text-gray-600 mb-8">Fill in the details to add a new course to the platform.</p>
+      <h1 className="text-4xl font-bold text-gray-800 mb-2">Создать Новый Курс</h1>
+      <p className="text-gray-600 mb-4">Заполните информацию для добавления нового курса на платформу.</p>
 
-      <form onSubmit={handleSubmit} className="space-y-6">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <div>
-            <div className="form-control">
-              <label className="label">
-                <span className="label-text font-semibold text-gray-700">Course Name</span>
-              </label>
-              <input
-                type="text"
-                name="title"
-                value={courseData.title}
-                onChange={handleInputChange}
-                placeholder="Enter course name"
-                className="input input-bordered w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
-                required
-              />
-            </div>
+      <form onSubmit={handleSubmit} className="space-y-2">
+        <label className="label">
+          <span className="label-text font-semibold text-gray-700">Название Курса</span>
+        </label>
+        <input
+          type="text"
+          name="title"
+          value={courseData.title}
+          onChange={handleInputChange}
+          placeholder="Введите название курса"
+          className="input input-bordered w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+          required
+        />
 
-            <div className="form-control">
-              <label className="label">
-                <span className="label-text font-semibold text-gray-700">Course Description</span>
-              </label>
-              <textarea
-                name="description"
-                value={courseData.description}
-                onChange={handleInputChange}
-                placeholder="Enter course description"
-                rows="4"
-                className="textarea textarea-bordered w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
-                required
-              />
-            </div>
-          </div>
+        <label className="label">
+          <span className="label-text font-semibold text-gray-700">Цена Курса</span>
+        </label>
+        <input
+          type="number"
+          name="price"
+          value={courseData.price}
+          onChange={handleInputChange}
+          placeholder="Введите цену курса"
+          className="input input-bordered w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+          required
+        />
 
-          <div>
-            <div className="form-control">
-              <label className="label">
-                <span className="label-text font-semibold text-gray-700">Course Category</span>
-              </label>
-              <input
-                type="text"
-                name="category"
-                value={courseData.category}
-                onChange={handleInputChange}
-                placeholder="Enter category of course"
-                className="input input-bordered w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
-                required
-              />
-            </div>
-
-            <div className="form-control">
-              <label className="label">
-                <span className="label-text font-semibold text-gray-700">Course Price</span>
-              </label>
-              <input
-                type="number"
-                name="price"
-                value={courseData.price}
-                onChange={handleInputChange}
-                placeholder="Enter course price"
-                className="input input-bordered w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
-                required
-              />
-            </div>
-
-            <div className="form-control">
-              <label className="label">
-                <span className="label-text font-semibold text-gray-700">Course Route</span>
-              </label>
-              <input
-                type="text"
-                name="route"
-                value={courseData.route}
-                onChange={handleInputChange}
-                placeholder="Enter course route"
-                className="input input-bordered w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
-                required
-              />
-            </div>
-          </div>
-        </div>
+        <label className="label">
+          <span className="label-text font-semibold text-gray-700">Маршрут или Направление Курса</span>
+        </label>
+        <input
+          type="text"
+          name="route"
+          value={courseData.route}
+          onChange={handleInputChange}
+          placeholder="Введите маршрут курса"
+          className="input input-bordered w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+          required
+        />
 
         <button
           type="submit"
@@ -147,7 +107,9 @@ const CreateCourse = () => {
           {loading ? (
             <span className="loading loading-spinner loading-xs"></span>
           ) : (
-            <span className="flex items-center gap-2"><IoIosAddCircleOutline size={20}/> Create Course</span>
+            <span className="flex items-center gap-2">
+              <IoIosAddCircleOutline size={20} /> Создать Курс
+            </span>
           )}
         </button>
       </form>
