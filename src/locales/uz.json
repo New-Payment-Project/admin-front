@@ -39,5 +39,19 @@
     "choose-course": "Kerakli kursni tanlang",
     "create-individual-link": "Individual havola yaratish",
     "close": "Yopish",
-    "language": "/flags/uzb.png"
+    "language": "/flags/uzb.png",
+    "confirm-exit": "Chiqishni tasdiqlang",
+    "exit-desc": "Siz rostan ham chiqishni xoxlaysizmi?",
+    "exit": "Chiqish",
+    "stay": "Qolish",
+    "login": "Tizimga kirish",
+    "login-details": "Qaytib kelganingizdan xursandmiz! Tafsilotlaringizni kiriting.",
+    "your-login": "Sizning loginingiz",
+    "your-login-placeholder": "ism@gmail.com",
+    "your-password": "Sizning parolingiz",
+    "login-reqiured": "Kirish talab qilinadi",
+    "password-reqiured": "Parol talab qilinadi",
+    "password-min": "Parol kamida 6 ta belgidan iborat bo'lishi kerak",
+    "login-success": "Tizimga kirish muvaffaqiyatli bajarildi",
+    "login-failed": "Kirish xatosi. Hisob maʼlumotlaringizni tekshiring."
   }

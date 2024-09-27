@@ -39,7 +39,20 @@
     "choose-course": "Выберите подходящий курс",
     "create-individual-link": "Создать индивидуальную ссылку",
     "close": "Закрыть",
-    "language": "/flags/ru.png"
-
+    "language": "/flags/ru.png",
+    "confirm-exit": "Подтвердите выход",
+    "exit-desc": "Вы действительно хотите выйти?",
+    "exit": "Выйти",
+    "stay": "Отмена",
+    "login": "Вход в систему",
+    "login-details": "Добро пожаловать! ",
+    "your-login": "Ваш логин",
+    "your-login-placeholder": "имя@gmail.com",
+    "your-password": "Ваш пароль",
+    "login-reqiured": "Логин обязателен",
+    "password-reqiured": "Пароль обязателен",
+    "password-min": "Пароль должен состоять как минимум из 6 символов",
+    "login-success": "Успешный вход",
+    "login-failed": "Ошибка входа. Пожалуйста, проверьте свои учетные данные."
   }
   

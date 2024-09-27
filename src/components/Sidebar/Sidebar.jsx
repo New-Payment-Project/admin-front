@@ -50,7 +50,6 @@ const Sidebar = ({ user }) => {
             </Link>
           );
         })}
-
         <UserInfo />
       </nav>
     </section>

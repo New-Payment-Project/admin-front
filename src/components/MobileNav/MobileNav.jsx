@@ -26,7 +26,7 @@ const MobileNav = ({ user }) => {
 
       {/* Sidebar */}
       <div
-        className={`fixed top-0 left-0 h-full w-64 bg-white shadow-lg transition-transform transform ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}
+        className={`fixed top-0 left-0 z-50 h-full w-64 bg-white shadow-lg transition-transform transform ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}
       >
 
         {/* Sidebar Content */}
@@ -52,14 +52,14 @@ const MobileNav = ({ user }) => {
               <Link
                 to={item.route}
                 key={item.label}
-                className={`rounded-lg py-3 flex items-center gap-2 px-4 transition-colors duration-300 ${isActive ? 'bg-bank-gradient text-white' : 'text-gray-700 hover:bg-gray-200'
+                className={`rounded-lg py-3 flex items-center gap-2 px-4 transition-colors duration-300 ${isActive ? 'bg-bank-gradient text-white bg-white' : 'text-gray-700 hover:bg-gray-200'
                   }`}
                 onClick={toggleSidebar}
               >
                 <img
                   src={item.imgURL}
                   alt={item.label}
-                  className="w-6 h-6"
+                  className={`size-6 ${isActive && 'brightness-[3] invert-0'}`}
                 />
                 <p>{item.label}</p>
               </Link>
