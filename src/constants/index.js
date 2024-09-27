@@ -1,29 +1,33 @@
-export const sidebarLinks = [
+
+export const sidebarLinks  =  [
   {
     imgURL: "/icons/home.svg",
     route: "/",
-    label: "Главная",
+    label: 'home',
   },
   {
     imgURL: "/icons/dollar-circle.svg",
     route: "/my-banks",
-    label: "Мои Банки",
+    label: 'my-banks',
   },
   {
     imgURL: "/icons/transaction.svg",
     route: "/transaction-history",
-    label: "История Транзакций",
+    label: 'transaction-history',
   },
   {
     imgURL: "/icons/plus.svg",
     route: "/create-course",
-    label: "Create Course",
-  },{
+    label: 'create-course',
+  },
+  {
     imgURL: "/icons/plus.svg",
     route: "/create-link",
-    label: "Create Link",
+    label: 'create-link',
   },
 ];
+
+export default sidebarLinks
 
 // good_user / good_password - Bank of America
 export const TEST_USER_ID = "6627ed3d00267aa6fa3e";

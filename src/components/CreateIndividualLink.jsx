@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 
 const CreateIndividualLink = () => {
   const [courses, setCourses] = useState([]);
   const [selectedCourse, setSelectedCourse] = useState(null);
+  const { t } = useTranslation()
 
   useEffect(() => {
     const fetchCourses = async () => {
@@ -38,16 +40,16 @@ const CreateIndividualLink = () => {
         className="btn btn-primary btn-outline"
         onClick={() => document.getElementById('my_modal_1').showModal()}
       >
-        Create Link
+        {t('create-link')}
       </button>
 
       <dialog id="my_modal_1" className="modal">
         <div className="modal-box">
-          <h3 className="font-bold text-lg">Select a Course</h3>
+          <h3 className="font-bold text-lg">{t('select-course')}</h3>
 
           <div className="space-y-4 py-4">
             <label htmlFor="courseSelect" className="block text-sm font-medium text-gray-700">
-              Select a course ({courses.length} courses available):
+              {t('select-course')} ({courses.length} {t('courses-available')}):
             </label>
             <div className="relative">
               <select
@@ -56,7 +58,7 @@ const CreateIndividualLink = () => {
                 onChange={handleCourseChange}
                 defaultValue=""
               >
-                <option value="" disabled>Choose a course</option>
+                <option value="" disabled>{t('choose-course')}</option>
                 {courses.map((course) => (
                   <option key={course._id} value={course._id}>
                     {course.title}
@@ -77,7 +79,7 @@ const CreateIndividualLink = () => {
             {selectedCourse && (
               <div className="space-y-2">
                 <label htmlFor="coursePrice" className="block text-sm font-medium text-gray-700">
-                  Course Price:
+                  {t('course-price')}:
                 </label>
                 <input
                   type="text"
@@ -93,13 +95,13 @@ const CreateIndividualLink = () => {
               onClick={handleCreateLink}
               className="w-full px-4 py-3 text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-300"
             >
-              Create Individual Link
+              {t('create-individual-link')}
             </button>
           </div>
 
           <div className="modal-action">
             <form method="dialog">
-              <button className="btn">Close</button>
+              <button className="btn">{t('close')}</button>
             </form>
           </div>
         </div>

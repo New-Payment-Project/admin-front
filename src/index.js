@@ -9,7 +9,7 @@ import './i18n'
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-    <Provider store={store}>   {/* Wrap the app in the Redux Provider */}
+    <Provider store={store}>
         <RouterConfig />
     </Provider>
 );

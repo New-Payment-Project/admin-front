@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { useTranslation } from 'react-i18next';
 
 const Table = () => {
   const [transactions, setTransactions] = useState([]);
@@ -10,6 +11,7 @@ const Table = () => {
   const [filter, setFilter] = useState(null); // To store the current filter
   const [isDropdownOpen, setIsDropdownOpen] = useState(false); // To track dropdown visibility
   const itemsPerPage = 5;
+  const { t } = useTranslation();
 
   useEffect(() => {
     const fetchTransactions = async () => {
@@ -82,7 +84,7 @@ const Table = () => {
                 onClick={toggleDropdown} // Toggle dropdown on click
               >
                 <img src="/icons/filter-lines.svg" className="text-red-600" alt="" />
-                Фильтр
+                {t("filter")}
               </button>
               {/* Dropdown menu for status filtering */}
               {isDropdownOpen && ( // Conditionally render the dropdown
@@ -91,7 +93,7 @@ const Table = () => {
                     className="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-100"
                     onClick={() => handleFilterChange(null)}
                   >
-                    Все
+                    {t("all")}
                   </button>
                   <button
                     className="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-100"
@@ -109,13 +111,13 @@ const Table = () => {
                     className="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-100"
                     onClick={() => handleFilterChange("completed")}
                   >
-                    Успешно
+                    {t("success")}
                   </button>
                   <button
                     className="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-100"
                     onClick={() => handleFilterChange("failed")}
                   >
-                    Неуспешно
+                    {t("failed")}
                   </button>
                 </div>
               )}
@@ -128,19 +130,19 @@ const Table = () => {
                 <thead className="bg-gray-50 text-gray-600">
                   <tr>
                     <th className="px-4 py-2 text-xs font-medium uppercase tracking-wider">
-                      Транзакции
+                      {t('transactions')}
                     </th>
                     <th className="px-4 py-2 text-xs font-medium uppercase tracking-wider">
-                      Сумма
+                      {t('transaction-amount')}
                     </th>
                     <th className="px-4 py-2 text-xs font-medium uppercase tracking-wider">
-                      Статус
+                      {t('transaction-status')}
                     </th>
                     <th className="px-4 py-2 text-xs font-medium uppercase tracking-wider">
-                      Дата
+                    {t('transaction-date')}
                     </th>
                     <th className="px-4 py-2 text-xs font-medium uppercase tracking-wider">
-                      Категория
+                    {t('transaction-category')}
                     </th>
                   </tr>
                 </thead>
@@ -176,7 +178,7 @@ const Table = () => {
                   ) : (
                     <tr>
                       <td colSpan="5" className="text-center py-4">
-                      Транзакции не найдены
+                      {t('transaction-not-found')}
                       </td>
                     </tr>
                   )}
@@ -192,7 +194,7 @@ const Table = () => {
               className="px-3 py-1 bg-white text-gray-600 border rounded disabled:opacity-50 flex items-center gap-2"
             >
               <img src="icons/arrow-left.svg" />
-              Пред.
+              {t('pagination-previous')}
             </button>
 
             <div className="flex space-x-2">
@@ -216,7 +218,7 @@ const Table = () => {
               disabled={currentPage === totalPages}
               className="px-3 py-1 bg-white text-gray-600 border rounded disabled:opacity-50 flex items-center gap-2"
             >
-              След.
+              {t('pagination-next')}
               <img src="icons/arrow-right.svg" />
             </button>
           </div>
@@ -251,8 +253,8 @@ const Table = () => {
                       ></span>
                       {transaction.status}
                     </div>
-                    <p>Сумма: {transaction.amount} so'm</p>
-                    <p>Категория: {transaction.category}</p>
+                    <p>{t('transaction-amount')}: {transaction.amount} so'm</p>
+                    <p>{t('transaction-category')}: {transaction.category}</p>
                   </div>
                 </div>
               ))

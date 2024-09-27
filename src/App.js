@@ -5,8 +5,13 @@ import Sidebar from './components/Sidebar/Sidebar';
 import HeaderBox from './components/HeaderBox/HeaderBox';
 import TotalBalanceBox from './components/TotalBalanceBox/TotalBalanceBox';
 import MobileNav from './components/MobileNav/MobileNav';
+import { useTranslation } from 'react-i18next';
+
 
 const App = () => {
+  const { t } = useTranslation();
+
+  
   const loggedIn = { firstname: "Asilbek", lastName: "Karimov" };
   const name = localStorage.getItem('name') || 'Guest'; // Используем имя или "Guest"
 
@@ -33,7 +38,7 @@ const App = () => {
             <div className="home-content">
               <HeaderBox
                 type="greeting"
-                title="Добро Пожаловать, "
+                title={t('welcome')}
                 user={
                   <motion.span
                     initial="hidden"
@@ -43,7 +48,7 @@ const App = () => {
                     {name}
                   </motion.span>
                 }
-                subtext="Получите доступ и эффективно управляйте своей учетной записью и транзакциями"
+                subtext={t('welcome-desc')}
               />
               
               <TotalBalanceBox
@@ -64,3 +69,4 @@ const App = () => {
 };
 
 export default App;
+ 

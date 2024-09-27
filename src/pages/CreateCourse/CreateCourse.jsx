@@ -2,9 +2,11 @@ import React, { useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { IoIosAddCircleOutline } from "react-icons/io";
+import { useTranslation } from "react-i18next";
 
 const CreateCourse = () => {
   const [loading, setLoading] = useState(false);
+  const { t } = useTranslation()
   const [courseData, setCourseData] = useState({
     title: "",
     description: "",
@@ -56,45 +58,46 @@ const CreateCourse = () => {
   return (
     <div className="px-8 pb-12 bg-white rounded-lg shadow-lg max-w-full mx-auto">
       <ToastContainer />
-      <h1 className="text-4xl font-bold text-gray-800 mb-2">Создать Новый Курс</h1>
-      <p className="text-gray-600 mb-4">Заполните информацию для добавления нового курса на платформу.</p>
+
+      <h1 className="text-4xl font-bold text-gray-800 mb-2">{t('create-course')}</h1>
+      <p className="text-gray-600 mb-4">{t('course-desc')}</p>
 
       <form onSubmit={handleSubmit} className="space-y-2">
         <label className="label">
-          <span className="label-text font-semibold text-gray-700">Название Курса</span>
+          <span className="label-text font-semibold text-gray-700">{t('course-title')}</span>
         </label>
         <input
           type="text"
           name="title"
           value={courseData.title}
           onChange={handleInputChange}
-          placeholder="Введите название курса"
+          placeholder={t('course-title-placeholder')}
           className="input input-bordered w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
           required
         />
 
         <label className="label">
-          <span className="label-text font-semibold text-gray-700">Цена Курса</span>
+          <span className="label-text font-semibold text-gray-700">{t('course-price')}</span>
         </label>
         <input
           type="number"
           name="price"
           value={courseData.price}
           onChange={handleInputChange}
-          placeholder="Введите цену курса"
+          placeholder={t('course-price-placeholder')}
           className="input input-bordered w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
           required
         />
 
         <label className="label">
-          <span className="label-text font-semibold text-gray-700">Маршрут или Направление Курса</span>
+          <span className="label-text font-semibold text-gray-700">{t('course-route')}</span>
         </label>
         <input
           type="text"
           name="route"
           value={courseData.route}
           onChange={handleInputChange}
-          placeholder="Введите маршрут курса"
+          placeholder={t('course-route-placeholder')}
           className="input input-bordered w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
           required
         />
@@ -108,7 +111,7 @@ const CreateCourse = () => {
             <span className="loading loading-spinner loading-xs"></span>
           ) : (
             <span className="flex items-center gap-2">
-              <IoIosAddCircleOutline size={20} /> Создать Курс
+              <IoIosAddCircleOutline size={20} />{t('create-course-btn')}
             </span>
           )}
         </button>

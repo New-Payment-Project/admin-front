@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import CreateIndividualLink from "../../components/CreateIndividualLink";
+import { useTranslation } from "react-i18next";
 
 const CoursesTable = () => {
   const [courses, setCourses] = useState([]);
@@ -9,6 +10,7 @@ const CoursesTable = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [itemsPerPage] = useState(5);
+  const { t } = useTranslation()
 
   useEffect(() => {
     const fetchCourses = async () => {
@@ -55,16 +57,13 @@ const CoursesTable = () => {
                 <thead className="bg-gray-50 text-gray-600">
                   <tr>
                     <th className="px-4 py-2 text-xs font-medium uppercase tracking-wider">
-                      Title
+                      {t('table-course-title')}
                     </th>
                     <th className="px-4 py-2 text-xs font-medium uppercase tracking-wider">
-                      Description
+                    {t('table-course-price')}
                     </th>
                     <th className="px-4 py-2 text-xs font-medium uppercase tracking-wider">
-                      Price
-                    </th>
-                    <th className="px-4 py-2 text-xs font-medium uppercase tracking-wider">
-                      Route
+                    {t('table-course-route')}
                     </th>
                   </tr>
                 </thead>
@@ -73,15 +72,14 @@ const CoursesTable = () => {
                     currentCourses.map((course, index) => (
                       <tr key={index} className="hover:bg-gray-50">
                         <td className="px-4 py-2">{course.title}</td>
-                        <td className="px-4 py-2">{course.description}</td>
-                        <td className="px-4 py-2">{course.price} USD</td>
+                        <td className="px-4 py-2">{course.price} {t('currency')}</td>
                         <td className="px-4 py-2">{course.route}</td>
                       </tr>
                     ))
                   ) : (
                     <tr>
                       <td colSpan="4" className="text-center py-4">
-                        No courses found
+                      {t('course-not-found')}
                       </td>
                     </tr>
                   )}
@@ -96,7 +94,7 @@ const CoursesTable = () => {
               disabled={currentPage === 1}
               className="px-3 py-1 bg-white text-gray-600 border rounded disabled:opacity-50 flex items-center gap-2"
             >
-              Previous
+              {t('pagination-previous')}
             </button>
 
             <div className="flex space-x-2">
@@ -120,7 +118,7 @@ const CoursesTable = () => {
               disabled={currentPage === totalPages}
               className="px-3 py-1 bg-white text-gray-600 border rounded disabled:opacity-50 flex items-center gap-2"
             >
-              Next
+              {t('pagination-next')}
             </button>
           </div>
         </div>

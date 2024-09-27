@@ -1,30 +1,27 @@
-import i18n from "i18next";
-import { initReactI18next } from "react-i18next";
+import i18n from 'i18next';
+import { initReactI18next } from 'react-i18next';
+import LanguageDetector from 'i18next-browser-languagedetector';
 
-const resources = {
-  en: {
-    translation: {
-      "Welcome to React": "Welcome to React and react-i18next"
-    }
-  },
-  ru: {
-    translation: {
-      "Welcome to React": "Bienvenue à React et react-i18next"
-    }
-  }
-};
+import ru from './locales/ru.json';
+import uz from './locales/uz.json';
 
 i18n
-  .use(initReactI18next) // passes i18n down to react-i18next
+  .use(LanguageDetector)
+  .use(initReactI18next)
   .init({
-    resources,
-    lng: "en", // language to use, more information here: https://www.i18next.com/overview/configuration-options#languages-namespaces-resources
-    // you can use the i18n.changeLanguage function to change the language manually: https://www.i18next.com/overview/api#changelanguage
-    // if you're using a language detector, do not define the lng option
-
+    resources: {
+      ru: {
+        translation: ru,
+      },
+      uz: {
+        translation: uz,
+      },
+    },
+    fallbackLng: 'ru',
+    debug: true,
     interpolation: {
-      escapeValue: false // react already safes from xss
-    }
+      escapeValue: false,
+    },
   });
 
-  export default i18n;
+export default i18n;
