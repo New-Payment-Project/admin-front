@@ -25,6 +25,11 @@ export const sidebarLinks  =  [
     route: "/create-link",
     label: 'create-link',
   },
+  {
+    imgURL: "/icons/transaction.svg",
+    route: "/orders",
+    label: 'Заказы',
+  },
 ];
 
 export default sidebarLinks
