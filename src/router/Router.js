@@ -26,7 +26,7 @@ const RouterConfig = () => {
                     path: "/",
                     element: (
                         <PrivateRoute> 
-                            <Home />
+                            <Home/> {/* <Home />*/}
                         </PrivateRoute>
                     ),
                 },
