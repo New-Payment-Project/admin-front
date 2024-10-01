@@ -50,7 +50,8 @@ const Orders = () => {
       ) : error ? (
         <div className="text-center py-4 text-red-500">{error}</div>
       ) : (
-        <div className="overflow-x-auto">
+        <div className="overflow-x-auto mb-10">
+          {/* Desktop Table */}
           <div className="hidden md:block">
             <div className="max-w-full overflow-x-auto shadow-md rounded-lg">
               <table className="min-w-full table-auto text-xs md:text-sm text-left border border-gray-200">
@@ -117,6 +118,46 @@ const Orders = () => {
             </div>
           </div>
 
+          {/* Mobile Cards */}
+          <div className="md:hidden">
+            {currentOrders.length > 0 ? (
+              currentOrders.map((order, index) => (
+                <div
+                  key={index}
+                  className="mb-4 p-4 border rounded-lg shadow-md bg-white"
+                >
+                  <p className="mb-2">
+                    <strong>Номер счета:</strong>{" "}
+                    {order.user_id?.invoiceNumber || "нет данных"}
+                  </p>
+                  <p className="mb-2">
+                    <strong>Клиент:</strong>{" "}
+                    {order.user_id?.clientName || "нет данных"}
+                  </p>
+                  <p className="mb-2">
+                    <strong>Курс:</strong> {order.course_id?.title || "нет данных"}
+                  </p>
+                  <p className="mb-2">
+                    <strong>Сумма:</strong>{" "}
+                    {order.amount ? `${order.amount} so'm` : "нет данных"}
+                  </p>
+                  <p className="mb-2">
+                    <strong>Статус:</strong> {order.status || "нет данных"}
+                  </p>
+                  <p className="mb-2">
+                    <strong>Дата создания:</strong>{" "}
+                    {order.createdAt
+                      ? new Date(order.createdAt).toLocaleDateString()
+                      : "нет данных"}
+                  </p>
+                </div>
+              ))
+            ) : (
+              <div className="text-center py-4">Заказы не найдены</div>
+            )}
+          </div>
+
+          {/* Pagination */}
           <div className="flex justify-between items-center mt-4">
             <button
               onClick={() => handlePageChange(currentPage - 1)}
