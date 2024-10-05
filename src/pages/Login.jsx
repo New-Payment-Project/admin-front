@@ -8,65 +8,58 @@ import { useDispatch } from 'react-redux';
 import { login } from '../slices/authSlice';
 import { useNavigate } from 'react-router-dom';
 import CryptoJS from 'crypto-js';
+import { useTranslation } from 'react-i18next';
 
 const Login = () => {
-  const { 
-    register, 
-    handleSubmit, 
-    formState: { errors } 
-  } = useForm();
-  
+  const { register, handleSubmit, formState: { errors } } = useForm();
   const dispatch = useDispatch(); 
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const { t } = useTranslation();
 
   const onSubmit = async (data) => {
     setLoading(true);  
     try {
-      // Send user data (without hashing password) to the backend
       const response = await axios.post('https://payment-server-vo2y.onrender.com/api/auth/login', data);
-  
       const token = response.data.token;
-  
-      // Hash the token using CryptoJS
-      const hashedToken = CryptoJS.SHA256(token).toString();  // Example with SHA256
-  
-      // Store the hashed token in localStorage
-      localStorage.setItem('login', hashedToken);
-      localStorage.setItem('token', JSON.stringify(response.data.token))
-      // Dispatch the login action to update Redux state
+      const userLogin = data.login;
+
+      const secretKey = process.env.REACT_APP_SECRET_KEY || 'your-secret-key';
+      const encryptedToken = CryptoJS.AES.encrypt(token, secretKey).toString();
+      const encryptedLogin = CryptoJS.AES.encrypt(userLogin, secretKey).toString();
+
+      localStorage.setItem('token', encryptedToken);
+      localStorage.setItem('login', encryptedLogin);
+      localStorage.setItem('name', response.data.user.name);
+      localStorage.setItem('surname', response.data.user.surname);
+
       dispatch(login(response.data));
-  
-      // Show success notification
-      toast.success("Login successful!", {
+
+      toast.success(t('login-success'), {
         position: "bottom-right",
         autoClose: 3000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
-        progress: undefined,
       });
-  
-      // Navigate to the home page
-      navigate('/home');
+
+      navigate('/');
     } catch (error) {
-      // Show error notification
-      toast.error("Login failed. Please check your credentials.", {
+      toast.error(t('login-failed'), {
         position: "bottom-right",
         autoClose: 3000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
-        progress: undefined,
       });
-      
+
       console.error("Login failed:", error.response?.data || error.message);
     } finally {
       setLoading(false);  
     }
-  };  
+  };    
 
   return (
     <div className='flex h-screen bg-white'>
@@ -85,47 +78,36 @@ const Login = () => {
       />
       
       <div className='flex flex-col justify-center lg:w-1/2 p-10 bg-white'>
-        <form 
-          onSubmit={handleSubmit(onSubmit)} 
-          className='container mx-auto max-w-md'
-        >
-          <h1 className='text-3xl text-black font-semibold mb-4'>Log in</h1>
-          <p className='text-gray-600 mb-8'>Welcome back! Please enter your details.</p>
+        <form onSubmit={handleSubmit(onSubmit)} className='container mx-auto max-w-md'>
+          <h1 className='text-3xl text-black font-semibold mb-4'>{t('login')}</h1>
+          <p className='text-gray-600 mb-8'>{t('login-details')}</p>
           
           <div className="mb-6">
-            <label 
-              htmlFor="login" 
-              className="block mb-2 text-sm font-medium text-gray-700"
-            >
-              Your login
+            <label htmlFor="login" className="block mb-2 text-sm font-medium text-gray-700">
+              {t('your-login')}
             </label>
             <input 
               type="text" 
               id="login" 
-              {...register("login", { 
-                required: "Login is required", 
-              })} 
+              {...register("login", { required: t('login-required') })} 
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" 
-              placeholder="name@domain.com"
+              placeholder={t('your-login-placeholder')}
             />
             {errors.login && <p className="text-red-500 text-sm mt-1">{errors.login.message}</p>}
           </div>
 
           <div className="mb-6">
-            <label 
-              htmlFor="password" 
-              className="block mb-2 text-sm font-medium text-gray-700"
-            >
-              Your password
+            <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-700">
+              {t('your-password')}
             </label>
             <input 
               type="password" 
               id="password" 
               {...register("password", { 
-                required: "Password is required", 
+                required: t('password-required'), 
                 minLength: {
                   value: 6,
-                  message: "Password must be at least 6 characters"
+                  message: t("password-min")
                 }
               })} 
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" 
@@ -142,18 +124,14 @@ const Login = () => {
             {loading ? (
               <span className="loading loading-spinner loading-xs"></span>
             ) : (
-              "Log in"
+              t('login')
             )}
           </button>
         </form>
       </div>
 
       <div className='w-1/2 h-full flex justify-center items-center rounded-r-lg relative'>
-        <img 
-          src={loginImg} 
-          alt="Login visual" 
-          className='object-contain h-3/4 w-3/4' 
-        />
+        <img src={loginImg} alt="Login visual" className='object-contain h-3/4 w-3/4' />
       </div>
     </div>
   );

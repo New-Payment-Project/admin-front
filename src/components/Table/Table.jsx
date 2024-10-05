@@ -1,12 +1,18 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { useTranslation } from 'react-i18next';
 
 const Table = () => {
   const [transactions, setTransactions] = useState([]);
+  const [filteredTransactions, setFilteredTransactions] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [filter, setFilter] = useState(null); // To store the current filter
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false); // To track dropdown visibility
+  const itemsPerPage = 5;
+  const { t } = useTranslation();
 
-  // Fetch transactions from the API
   useEffect(() => {
     const fetchTransactions = async () => {
       try {
@@ -14,6 +20,7 @@ const Table = () => {
           "https://payment-server-vo2y.onrender.com/api/transactions"
         );
         setTransactions(response.data);
+        setFilteredTransactions(response.data); // Initialize filteredTransactions with all transactions
         setLoading(false);
       } catch (err) {
         setError("Failed to fetch transactions");
@@ -24,18 +31,44 @@ const Table = () => {
     fetchTransactions();
   }, []);
 
-  // Function to set row color based on status
   const getRowClass = (status) => {
     if (status === "completed") {
-      return "bg-[#F6FEF9]"; // Light green background for completed
+      return "bg-[#F6FEF9]";
     } else if (status === "failed") {
-      return "bg-[#FFFBFA]"; // Light red background for failed
+      return "bg-[#FFFBFA]";
     }
-    return ""; // No specific color for other statuses
+    return "bg-white";
+  };
+
+  const totalPages = Math.ceil(filteredTransactions.length / itemsPerPage);
+
+  const currentTransactions = filteredTransactions.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
+  const handlePageChange = (pageNumber) => {
+    if (pageNumber >= 1 && pageNumber <= totalPages) {
+      setCurrentPage(pageNumber);
+    }
+  };
+
+  const handleFilterChange = (status) => {
+    setFilter(status); // Set the selected filter status
+    const filtered = status
+      ? transactions.filter((transaction) => transaction.status === status)
+      : transactions; // If no filter, return all transactions
+    setFilteredTransactions(filtered);
+    setCurrentPage(1); // Reset to page 1 after filtering
+    setIsDropdownOpen(false); // Close the dropdown after a filter is applied
+  };
+
+  const toggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen); // Toggle dropdown visibility
   };
 
   return (
-    <div className="px-4 md:px-8 py-6">
+    <div className="px-4 md:px-8 py-2">
       {loading ? (
         <div className="text-center py-4 mx-auto">
           <span className="loading loading-spinner loading-lg"></span>
@@ -44,39 +77,87 @@ const Table = () => {
         <div className="text-center py-4 text-red-500">{error}</div>
       ) : (
         <div className="overflow-x-auto">
-          {/* Table view for larger screens */}
+          <div className="w-full flex justify-end py-2">
+            <div className="relative">
+              <button
+                className="btn btn-outline btn-primary"
+                onClick={toggleDropdown} // Toggle dropdown on click
+              >
+                <img src="/icons/filter-lines.svg" className="text-red-600" alt="" />
+                {t("filter")}
+              </button>
+              {/* Dropdown menu for status filtering */}
+              {isDropdownOpen && ( // Conditionally render the dropdown
+                <div className="absolute right-0 mt-2 py-2 w-48 bg-white border rounded-lg shadow-xl z-10">
+                  <button
+                    className="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-100"
+                    onClick={() => handleFilterChange(null)}
+                  >
+                    {t("all")}
+                  </button>
+                  <button
+                    className="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-100"
+                    onClick={() => handleFilterChange("pending")}
+                  >
+                    Выставлен
+                  </button>
+                  <button
+                    className="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-100"
+                    onClick={() => handleFilterChange("processing")}
+                  >
+                    В процессе
+                  </button>
+                  <button
+                    className="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-100"
+                    onClick={() => handleFilterChange("completed")}
+                  >
+                    {t("success")}
+                  </button>
+                  <button
+                    className="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-100"
+                    onClick={() => handleFilterChange("failed")}
+                  >
+                    {t("failed")}
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
+
           <div className="hidden md:block">
-            <div className="max-w-full overflow-x-auto">
-              <table className="min-w-full table-auto text-xs md:text-sm text-left">
-                <thead className="bg-gray-100 text-gray-600">
+            <div className="max-w-full overflow-x-auto shadow-md rounded-lg">
+              <table className="min-w-full table-auto text-xs md:text-sm text-left border border-gray-200">
+                <thead className="bg-gray-50 text-gray-600">
                   <tr>
-                    <th className="px-2 py-1 text-[10px] md:text-xs font-medium uppercase tracking-wider">
-                      Transaction
+                    <th className="px-4 py-2 text-xs font-medium uppercase tracking-wider">
+                      {t('transactions')}
                     </th>
-                    <th className="px-2 py-1 text-[10px] md:text-xs font-medium uppercase tracking-wider">
-                      Amount
+                    <th className="px-4 py-2 text-xs font-medium uppercase tracking-wider">
+                      {t('transaction-amount')}
                     </th>
-                    <th className="px-2 py-1 text-[10px] md:text-xs font-medium uppercase tracking-wider">
-                      Status
+                    <th className="px-4 py-2 text-xs font-medium uppercase tracking-wider">
+                      {t('transaction-status')}
                     </th>
-                    <th className="px-2 py-1 text-[10px] md:text-xs font-medium uppercase tracking-wider">
-                      Date
+                    <th className="px-4 py-2 text-xs font-medium uppercase tracking-wider">
+                    {t('transaction-date')}
                     </th>
-                    <th className="px-2 py-1 text-[10px] md:text-xs font-medium uppercase tracking-wider">
-                      Category
+                    <th className="px-4 py-2 text-xs font-medium uppercase tracking-wider">
+                    {t('transaction-category')}
                     </th>
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
-                  {transactions.length > 0 ? (
-                    transactions.map((transaction, index) => (
+                  {currentTransactions.length > 0 ? (
+                    currentTransactions.map((transaction, index) => (
                       <tr
                         key={index}
-                        className={`${getRowClass(transaction.status)} hover:bg-gray-50 transition-colors duration-200`}
+                        className={`${getRowClass(
+                          transaction.status
+                        )} hover:bg-gray-50 transition-colors duration-200`}
                       >
-                        <td className="px-2 py-1 text-[10px] md:text-sm">{transaction.username}</td>
-                        <td className="px-2 py-1 text-[10px] md:text-sm">{transaction.amount} so'm</td>
-                        <td className="px-2 py-1 text-[10px] md:text-sm">
+                        <td className="px-4 py-2">{transaction.username}</td>
+                        <td className="px-4 py-2">{transaction.amount} so'm</td>
+                        <td className="px-4 py-2">
                           <span
                             className={`inline-block w-2 h-2 rounded-full mr-1 ${
                               transaction.status === "completed"
@@ -88,16 +169,16 @@ const Table = () => {
                           ></span>
                           {transaction.status}
                         </td>
-                        <td className="px-2 py-1 text-[10px] md:text-sm">
+                        <td className="px-4 py-2">
                           {new Date(transaction.createdAt).toLocaleDateString()}
                         </td>
-                        <td className="px-2 py-1 text-[10px] md:text-sm">{transaction.category}</td>
+                        <td className="px-4 py-2">{transaction.category}</td>
                       </tr>
                     ))
                   ) : (
                     <tr>
                       <td colSpan="5" className="text-center py-4">
-                        No transactions found
+                      {t('transaction-not-found')}
                       </td>
                     </tr>
                   )}
@@ -106,32 +187,63 @@ const Table = () => {
             </div>
           </div>
 
-          {/* Card view for smaller screens */}
+          <div className="flex justify-between items-center md:mb-0 mb-2 lg:mb-0 mt-4">
+            <button
+              onClick={() => handlePageChange(currentPage - 1)}
+              disabled={currentPage === 1}
+              className="px-3 py-1 bg-white text-gray-600 border rounded disabled:opacity-50 flex items-center gap-2"
+            >
+              <img src="icons/arrow-left.svg" />
+              {t('pagination-previous')}
+            </button>
+
+            <div className="flex space-x-2">
+              {[...Array(totalPages)].map((_, index) => (
+                <button
+                  key={index + 1}
+                  onClick={() => handlePageChange(index + 1)}
+                  className={`px-3 py-1 border rounded ${
+                    currentPage === index + 1
+                      ? "bg-blue-500 text-white"
+                      : "bg-white text-gray-600"
+                  }`}
+                >
+                  {index + 1}
+                </button>
+              ))}
+            </div>
+
+            <button
+              onClick={() => handlePageChange(currentPage + 1)}
+              disabled={currentPage === totalPages}
+              className="px-3 py-1 bg-white text-gray-600 border rounded disabled:opacity-50 flex items-center gap-2"
+            >
+              {t('pagination-next')}
+              <img src="icons/arrow-right.svg" />
+            </button>
+          </div>
+
           <div className="md:hidden space-y-4">
-            {transactions.length > 0 ? (
-              transactions.map((transaction, index) => (
+            {currentTransactions.length > 0 ? (
+              currentTransactions.map((transaction, index) => (
                 <div
                   key={index}
-                  className={`p-4 border rounded-lg shadow-sm ${getRowClass(
+                  className={`p-4 border rounded-lg shadow-md ${getRowClass(
                     transaction.status
                   )}`}
                 >
                   <div className="flex justify-between">
-                    <span className="font-medium text-[12px] md:text-base text-gray-800">
+                    <span className="font-medium text-sm text-gray-800">
                       {transaction.username}
                     </span>
-                    <span className="text-[10px] md:text-sm text-gray-600">
+                    <span className="text-xs text-gray-600">
                       {new Date(transaction.createdAt).toLocaleDateString()}
                     </span>
                   </div>
-                  <div className="mt-2 text-[10px] md:text-sm">
-                    <div className="text-gray-700">
-                      <strong>Amount:</strong> {transaction.amount} so'm
-                    </div>
-                    <div className="text-gray-700">
-                      <strong>Status:</strong>{" "}
+                  <div className="text-gray-500 text-xs mt-2">
+                    <div className="flex items-center gap-1">
                       <span
-                        className={`inline-block w-2 h-2 rounded-full mr-1 ${
+                        className={`inline-block w-2 h-2 rounded-full ${
                           transaction.status === "completed"
                             ? "bg-green-500"
                             : transaction.status === "failed"
@@ -141,14 +253,13 @@ const Table = () => {
                       ></span>
                       {transaction.status}
                     </div>
-                    <div className="text-gray-700">
-                      <strong>Category:</strong> {transaction.category}
-                    </div>
+                    <p>{t('transaction-amount')}: {transaction.amount} so'm</p>
+                    <p>{t('transaction-category')}: {transaction.category}</p>
                   </div>
                 </div>
               ))
             ) : (
-              <div className="text-center text-gray-500">No transactions found</div>
+              <p className="text-center py-4">Транзакции не найдены</p>
             )}
           </div>
         </div>

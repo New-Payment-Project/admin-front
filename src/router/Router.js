@@ -3,6 +3,9 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Loadable from "../components/Loadable/Loadable";
 import Login from "../pages/Login";
 import PrivateRoute from "../components/PrivateRoute";  // Import private route
+import CreateCourse from "../pages/CreateCourse/CreateCourse";
+import CreateLink from "../pages/CreateLink/CreateLink";
+import Banks from "../pages/My-banks/Mybanks"
 
 const App = Loadable(lazy(() => import("../App")));
 const Home = Loadable(lazy(() => import("../pages/Home/Home")));
@@ -14,7 +17,7 @@ const RouterConfig = () => {
         {
             path: "/",
             element: (
-                <PrivateRoute> 
+                <PrivateRoute>
                     <App />
                 </PrivateRoute>
             ),
@@ -22,7 +25,7 @@ const RouterConfig = () => {
                 {
                     path: "/",
                     element: (
-                        <PrivateRoute> 
+                        <PrivateRoute>
                             <Home />
                         </PrivateRoute>
                     ),
@@ -30,15 +33,15 @@ const RouterConfig = () => {
                 {
                     path: "/my-banks",
                     element: (
-                        <PrivateRoute> 
-                           
+                        <PrivateRoute>
+                            <Banks />
                         </PrivateRoute>
                     ),
                 },
                 {
                     path: "/transaction-history",
                     element: (
-                        <PrivateRoute> 
+                        <PrivateRoute>
                             <Transaction />
                         </PrivateRoute>
                     ),
@@ -46,8 +49,24 @@ const RouterConfig = () => {
                 {
                     path: "/connect-bank",
                     element: (
-                        <PrivateRoute> 
+                        <PrivateRoute>
                             <Home />
+                        </PrivateRoute>
+                    ),
+                },
+                {
+                    path: "/create-course",
+                    element: (
+                        <PrivateRoute>
+                            <CreateCourse />
+                        </PrivateRoute>
+                    ),
+                },
+                {
+                    path: "/create-link",
+                    element: (
+                        <PrivateRoute>
+                            <CreateLink />
                         </PrivateRoute>
                     ),
                 },
