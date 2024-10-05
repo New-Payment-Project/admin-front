@@ -42,6 +42,7 @@ const Home = () => {
   };
 
   const getStatusBadge = (status) => {
+    console.log(status)
     switch (status) {
       case "НЕ ОПЛАЧЕНО":
         return (
@@ -108,7 +109,10 @@ const Home = () => {
                     currentOrders.map((order, index) => {
                       console.log(order); // Log the order object to inspect the structure
                       return (
-                        <tr key={index} className="hover:bg-gray-50 transition-colors duration-200">
+                        <tr
+                          key={index}
+                          className="hover:bg-gray-50 transition-colors duration-200"
+                        >
                           <td className="px-4 py-2">
                             {order.invoiceNumber || "нет данных"}
                           </td>
@@ -119,22 +123,29 @@ const Home = () => {
                             {order.course_id?.title || "нет данных"}
                           </td>
                           <td className="px-4 py-2">
-                            {order.amount ? `${order.amount} so'm` : "нет данных"}
+                            {order.amount
+                              ? `${order.amount} so'm`
+                              : "нет данных"}
                           </td>
-                          <td className="px-4 py-2">{getStatusBadge(order.status)}</td>
                           <td className="px-4 py-2">
-                            {order.createdAt ? new Date(order.createdAt).toLocaleDateString() : "нет данных"}
+                            {getStatusBadge(order.status)}
+                          </td>
+                          <td className="px-4 py-2">
+                            {order.createdAt
+                              ? new Date(order.createdAt).toLocaleDateString()
+                              : "нет данных"}
                           </td>
                         </tr>
                       );
                     })
                   ) : (
                     <tr>
-                      <td colSpan="6" className="text-center py-4">Заказы не найдены</td>
+                      <td colSpan="6" className="text-center py-4">
+                        Заказы не найдены
+                      </td>
                     </tr>
                   )}
                 </tbody>
-
               </table>
             </div>
           </div>
@@ -156,7 +167,8 @@ const Home = () => {
                     {order.user_id?.clientName || "нет данных"}
                   </p>
                   <p className="mb-2">
-                    <strong>Курс:</strong> {order.course_id?.title || "нет данных"}
+                    <strong>Курс:</strong>{" "}
+                    {order.course_id?.title || "нет данных"}
                   </p>
                   <p className="mb-2">
                     <strong>Сумма:</strong>{" "}
@@ -193,10 +205,11 @@ const Home = () => {
                 <button
                   key={index + 1}
                   onClick={() => handlePageChange(index + 1)}
-                  className={`px-3 py-1 border rounded ${currentPage === index + 1
+                  className={`px-3 py-1 border rounded ${
+                    currentPage === index + 1
                       ? "bg-blue-500 text-white"
                       : "bg-white text-gray-600"
-                    }`}
+                  }`}
                 >
                   {index + 1}
                 </button>
