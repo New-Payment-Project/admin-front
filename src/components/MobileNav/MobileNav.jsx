@@ -2,11 +2,14 @@ import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { sidebarLinks } from '../../constants';
 import UserInfo from '../UserInfo/UserInfo';
+import { useTranslation } from 'react-i18next';
+import LanguageSwitcher from '../LanguageSwitcher/LanguageSwitcher';
 
 const MobileNav = ({ user }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const location = useLocation();
   const pathName = location.pathname;
+  const { t } = useTranslation()
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -15,6 +18,8 @@ const MobileNav = ({ user }) => {
   return (
     <div className='min-w-screen min-h-full'>
       {/* Hamburger Menu Icon */}
+      <div className='flex items-center gap-2'>
+      <LanguageSwitcher/>
       <img
         src='/icons/hamburger.svg'
         width={30}
@@ -23,6 +28,8 @@ const MobileNav = ({ user }) => {
         className="cursor-pointer brightness-[3] invert-0"
         alt="Open Menu"
       />
+      </div>
+
 
       <div
         className={`fixed top-0 left-0 z-50 h-full w-64 bg-white shadow-lg transition-transform transform ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}
@@ -50,17 +57,17 @@ const MobileNav = ({ user }) => {
             return (
               <Link
                 to={item.route}
-                key={item.label}
+                key={t(item.label)}
                 className={`rounded-lg py-3 flex items-center gap-2 px-4 transition-colors duration-300 ${isActive ? 'bg-bank-gradient text-white bg-white' : 'text-gray-700 hover:bg-gray-200'
                   }`}
                 onClick={toggleSidebar}
               >
                 <img
                   src={item.imgURL}
-                  alt={item.label}
+                  alt={t(item.label)}
                   className={`size-6 ${isActive && 'brightness-[3] invert-0'}`}
                 />
-                <p>{item.label}</p>
+                <p>{t(item.label)}</p>
               </Link>
             );
           })}

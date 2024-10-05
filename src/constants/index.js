@@ -11,11 +11,6 @@ export const sidebarLinks  =  [
     label: 'my-banks',
   },
   {
-    imgURL: "/icons/transaction.svg",
-    route: "/transaction-history",
-    label: 'transaction-history',
-  },
-  {
     imgURL: "/icons/plus.svg",
     route: "/create-course",
     label: 'create-course',

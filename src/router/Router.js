@@ -40,14 +40,6 @@ const RouterConfig = () => {
                     ),
                 },
                 {
-                    path: "/transaction-history",
-                    element: (
-                        <PrivateRoute>
-                            <Transaction />
-                        </PrivateRoute>
-                    ),
-                },
-                {
                     path: "/connect-bank",
                     element: (
                         <PrivateRoute>

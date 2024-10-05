@@ -17,6 +17,7 @@ const CoursesTable = () => {
       try {
         const response = await axios.get("https://course-server-327v.onrender.com/api/v1/courses/");
         setCourses(response.data);
+        console.log(response.data);
         setFilteredCourses(response.data);
         setLoading(false);
       } catch (err) {

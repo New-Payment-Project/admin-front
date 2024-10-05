@@ -8,8 +8,9 @@ const Table = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [filter, setFilter] = useState(null); // To store the current filter
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false); // To track dropdown visibility
+  const [filterStatus, setFilterStatus] = useState(null);
+  const [filterDate, setFilterDate] = useState(""); // Date filter state
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const itemsPerPage = 5;
   const { t } = useTranslation();
 
@@ -20,7 +21,7 @@ const Table = () => {
           "https://payment-server-vo2y.onrender.com/api/transactions"
         );
         setTransactions(response.data);
-        setFilteredTransactions(response.data); // Initialize filteredTransactions with all transactions
+        setFilteredTransactions(response.data);
         setLoading(false);
       } catch (err) {
         setError("Failed to fetch transactions");
@@ -33,9 +34,9 @@ const Table = () => {
 
   const getRowClass = (status) => {
     if (status === "completed") {
-      return "bg-[#F6FEF9]";
+      return "bg-green-50";
     } else if (status === "failed") {
-      return "bg-[#FFFBFA]";
+      return "bg-red-50";
     }
     return "bg-white";
   };
@@ -54,17 +55,34 @@ const Table = () => {
   };
 
   const handleFilterChange = (status) => {
-    setFilter(status); // Set the selected filter status
-    const filtered = status
-      ? transactions.filter((transaction) => transaction.status === status)
-      : transactions; // If no filter, return all transactions
+    setFilterStatus(status);
+    applyFilters(status, filterDate);
+    setIsDropdownOpen(false);
+  };
+
+  const handleDateChange = (event) => {
+    const date = event.target.value;
+    setFilterDate(date);
+    applyFilters(filterStatus, date);
+  };
+
+  const applyFilters = (status, date) => {
+    let filtered = transactions;
+    if (status) {
+      filtered = filtered.filter((transaction) => transaction.status === status);
+    }
+    if (date) {
+      filtered = filtered.filter(
+        (transaction) =>
+          new Date(transaction.createdAt).toISOString().slice(0, 10) === date
+      );
+    }
     setFilteredTransactions(filtered);
-    setCurrentPage(1); // Reset to page 1 after filtering
-    setIsDropdownOpen(false); // Close the dropdown after a filter is applied
+    setCurrentPage(1);
   };
 
   const toggleDropdown = () => {
-    setIsDropdownOpen(!isDropdownOpen); // Toggle dropdown visibility
+    setIsDropdownOpen(!isDropdownOpen);
   };
 
   return (
@@ -77,17 +95,29 @@ const Table = () => {
         <div className="text-center py-4 text-red-500">{error}</div>
       ) : (
         <div className="overflow-x-auto">
-          <div className="w-full flex justify-end py-2">
+          {/* Filter Section */}
+          <div className="w-full flex justify-end py-4 space-x-4">
+            <div className="relative">
+              {/* Date Filter */}
+              <input
+                type="date"
+                value={filterDate}
+                onChange={handleDateChange}
+                className="w-48 h-12 px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+              />
+            </div>
+
             <div className="relative">
               <button
-                className="btn btn-outline btn-primary"
-                onClick={toggleDropdown} // Toggle dropdown on click
+                className="btn btn-outline btn-primary h-12"
+                onClick={toggleDropdown}
               >
                 <img src="/icons/filter-lines.svg" className="text-red-600" alt="" />
                 {t("filter")}
               </button>
+
               {/* Dropdown menu for status filtering */}
-              {isDropdownOpen && ( // Conditionally render the dropdown
+              {isDropdownOpen && (
                 <div className="absolute right-0 mt-2 py-2 w-48 bg-white border rounded-lg shadow-xl z-10">
                   <button
                     className="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-100"
@@ -124,6 +154,7 @@ const Table = () => {
             </div>
           </div>
 
+          {/* Table */}
           <div className="hidden md:block">
             <div className="max-w-full overflow-x-auto shadow-md rounded-lg">
               <table className="min-w-full table-auto text-xs md:text-sm text-left border border-gray-200">
@@ -187,7 +218,8 @@ const Table = () => {
             </div>
           </div>
 
-          <div className="flex justify-between items-center md:mb-0 mb-2 lg:mb-0 mt-4">
+          {/* Pagination */}
+          <div className="flex justify-between items-center mt-4">
             <button
               onClick={() => handlePageChange(currentPage - 1)}
               disabled={currentPage === 1}
@@ -223,6 +255,7 @@ const Table = () => {
             </button>
           </div>
 
+          {/* Mobile View */}
           <div className="md:hidden space-y-4">
             {currentTransactions.length > 0 ? (
               currentTransactions.map((transaction, index) => (
