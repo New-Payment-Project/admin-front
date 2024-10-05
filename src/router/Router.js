@@ -6,6 +6,7 @@ import PrivateRoute from "../components/PrivateRoute";  // Import private route
 
 const App = Loadable(lazy(() => import("../App")));
 const Home = Loadable(lazy(() => import("../pages/Home/Home")));
+const MyBanks = Loadable(lazy(() => import("../pages/MyBanks/MyBanks")));
 const Transaction = Loadable(lazy(() => import("../pages/Transaction-history/Transaction")));
 
 const RouterConfig = () => {
@@ -30,7 +31,7 @@ const RouterConfig = () => {
                     path: "/my-banks",
                     element: (
                         <PrivateRoute> 
-                            <Home />
+                           
                         </PrivateRoute>
                     ),
                 },

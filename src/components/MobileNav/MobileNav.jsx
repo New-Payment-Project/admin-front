@@ -13,17 +13,15 @@ const MobileNav = ({ user }) => {
 
   return (
     <div className='min-w-screen'>
-      {/* Hamburger Menu Icon */}
       <img
         src='/icons/hamburger.svg'
         width={30}
         height={30}
         onClick={toggleSidebar}
-        className="cursor-pointer"
+        className="cursor-pointer brightness-[3] invert-0"
         alt="Open Menu"
       />
 
-      {/* Sidebar */}
       <div
         className={`fixed top-0 left-0 h-full w-64 bg-white shadow-lg transition-transform transform ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}
       >
