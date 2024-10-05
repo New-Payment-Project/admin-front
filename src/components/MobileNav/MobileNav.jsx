@@ -25,13 +25,12 @@ const MobileNav = ({ user }) => {
         width={30}
         height={30}
         onClick={toggleSidebar}
-        className="cursor-pointer"
+        className="cursor-pointer brightness-[3] invert-0"
         alt="Open Menu"
       />
       </div>
 
 
-      {/* Sidebar */}
       <div
         className={`fixed top-0 left-0 z-50 h-full w-64 bg-white shadow-lg transition-transform transform ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}
       >

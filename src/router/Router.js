@@ -10,6 +10,7 @@ import NotFound from "../pages/NotFound/NotFound";
 
 const App = Loadable(lazy(() => import("../App")));
 const Home = Loadable(lazy(() => import("../pages/Home/Home")));
+const MyBanks = Loadable(lazy(() => import("../pages/MyBanks/MyBanks")));
 const Transaction = Loadable(lazy(() => import("../pages/Transaction-history/Transaction")));
 
 const RouterConfig = () => {
@@ -17,7 +18,7 @@ const RouterConfig = () => {
         {
             path: "/",
             element: (
-                <PrivateRoute> 
+                <PrivateRoute>
                     <App />
                 </PrivateRoute>
             ),
@@ -25,7 +26,7 @@ const RouterConfig = () => {
                 {
                     path: "/",
                     element: (
-                        <PrivateRoute> 
+                        <PrivateRoute>
                             <Home />
                         </PrivateRoute>
                     ),
@@ -33,15 +34,15 @@ const RouterConfig = () => {
                 {
                     path: "/my-banks",
                     element: (
-                        <PrivateRoute> 
-                            <Banks/>
+                        <PrivateRoute>
+                            <Banks />
                         </PrivateRoute>
                     ),
                 },
                 {
                     path: "/connect-bank",
                     element: (
-                        <PrivateRoute> 
+                        <PrivateRoute>
                             <Home />
                         </PrivateRoute>
                     ),
@@ -49,7 +50,7 @@ const RouterConfig = () => {
                 {
                     path: "/create-course",
                     element: (
-                        <PrivateRoute> 
+                        <PrivateRoute>
                             <CreateCourse />
                         </PrivateRoute>
                     ),
@@ -57,7 +58,7 @@ const RouterConfig = () => {
                 {
                     path: "/create-link",
                     element: (
-                        <PrivateRoute> 
+                        <PrivateRoute>
                             <CreateLink />
                         </PrivateRoute>
                     ),
