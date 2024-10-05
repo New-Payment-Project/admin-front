@@ -53,5 +53,19 @@
     "password-reqiured": "Parol talab qilinadi",
     "password-min": "Parol kamida 6 ta belgidan iborat bo'lishi kerak",
     "login-success": "Tizimga kirish muvaffaqiyatli bajarildi",
-    "login-failed": "Kirish xatosi. Hisob maʼlumotlaringizni tekshiring."
+    "login-failed": "Kirish xatosi. Hisob maʼlumotlaringizni tekshiring.",
+    "all-statuses": "XAMMASI",
+    "success": "TO'LANGAN",
+    "failed": "TO'LANMAGAN",
+    "process": "JARAYONDA",
+    "fetch-failed": "Buyurtmalarni yuklashda xatolik",
+    "no-data": "Ma'lumotlar yo'q",
+    "orders": "Buyurtmalar",
+    "invoice-number": "Hisob raqami",
+    "client": "Mijoz",
+    "course": "Kurs",
+    "amount": "Miqdor",
+    "status": "Holat",
+    "created-date": "Yaratilgan sana",
+    "orders-not-found": "Buyurtmalar topilmadi"
   }

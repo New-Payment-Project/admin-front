@@ -82,7 +82,7 @@ export default function Component() {
 
   return (
     <div className="p-4 space-y-6">
-      <h1 className="text-2xl font-bold">{t('my-bank-cards')}</h1>
+      <h1 className="text-2xl font-semibold">{t('my-bank-cards')}</h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
         {cards.map((card, index) => (
           <BankCard key={index} card={card} />
