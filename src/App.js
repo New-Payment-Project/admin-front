@@ -13,7 +13,7 @@ const App = () => {
 
   
   const loggedIn = { firstname: "Asilbek", lastName: "Karimov" };
-  const name = localStorage.getItem('name') || 'Azam Boq';
+  const name = localStorage.getItem('name') || 'Guest';
 
   // Анимация для имени
   const nameAnimation = {
