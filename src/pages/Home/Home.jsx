@@ -19,6 +19,7 @@ const Home = () => {
         const response = await axios.get(
           "https://course-server-327v.onrender.com/api/v1/orders"
         );
+        console.log(response.data.data);
         setOrders(response.data.data);
         setFilteredOrders(response.data.data);
         setLoading(false);
@@ -41,7 +42,7 @@ const Home = () => {
     if (dateFilter) {
       const selectedDate = new Date(dateFilter);
       filtered = filtered.filter((order) => {
-        const orderDate = new Date(order.createdAt);
+        const orderDate = new Date(order.create_time);
         return (
           orderDate.getFullYear() === selectedDate.getFullYear() &&
           orderDate.getMonth() === selectedDate.getMonth() &&
@@ -87,6 +88,12 @@ const Home = () => {
             {t("success")}
           </span>
         );
+      case "ОТМЕНЕНО":
+        return (
+          <span className="px-2 py-1 rounded bg-red-500 text-red-100 text-xs font-semibold">
+            {t("cancelled")}
+          </span>
+        );
       default:
         return <span>{t("no-data")}</span>;
     }
@@ -105,6 +112,7 @@ const Home = () => {
             <option value="НЕ ОПЛАЧЕНО">{t("failed")}</option>
             <option value="ВЫСТАВЛЕНО">{t("process")}</option>
             <option value="ОПЛАЧЕНО">{t("success")}</option>
+            <option value="ОТМЕНЕНО">{t("cancelled")}</option>
           </select>
         </div>
 
@@ -161,10 +169,10 @@ const Home = () => {
                         className="hover:bg-gray-50 transition-colors duration-200"
                       >
                         <td className="px-4 py-2">
-                          {order.user_id?.invoiceNumber || t("no-data")}
+                          {order.invoiceNumber || t("no-data")}
                         </td>
                         <td className="px-4 py-2">
-                          {order.user_id?.clientName || t("no-data")}
+                          {order.clientName || t("no-data")}
                         </td>
                         <td className="px-4 py-2">
                           {order.course_id?.title || t("no-data")}
@@ -178,10 +186,11 @@ const Home = () => {
                           {getStatusBadge(order.status)}
                         </td>
                         <td className="px-4 py-2">
-                          {order.createdAt
-                            ? new Date(order.createdAt).toLocaleDateString()
+                          {order.create_time
+                            ? new Date(order.create_time).toLocaleDateString()
                             : t("no-data")}
                         </td>
+
                       </tr>
                     ))
                   ) : (
@@ -227,8 +236,8 @@ const Home = () => {
                   </p>
                   <p className="mb-2">
                     <strong>{t("created-date")}:</strong>{" "}
-                    {order.createdAt
-                      ? new Date(order.createdAt).toLocaleDateString()
+                    {order.create_time
+                      ? new Date(order.create_time).toLocaleDateString()
                       : t("no-data")}
                   </p>
                 </div>
@@ -240,43 +249,42 @@ const Home = () => {
         </div>
       )}
 
-{totalPages > 1 && (
-  <div className="flex justify-center mt-4">
-    <nav className="flex items-center w-full justify-between space-x-2">
-      <button
-        onClick={() => handlePageChange(currentPage - 1)}
-        className="px-3 py-1 border rounded-md text-sm md:text-base"
-        disabled={currentPage === 1}
-      >
-        {t("pagination-previous")}
-      </button>
+      {totalPages > 1 && (
+        <div className="flex justify-center mt-4">
+          <nav className="flex items-center w-full justify-between space-x-2">
+            <button
+              onClick={() => handlePageChange(currentPage - 1)}
+              className="px-3 py-1 border rounded-md text-sm md:text-base"
+              disabled={currentPage === 1}
+            >
+              {t("pagination-previous")}
+            </button>
 
-      <div className="flex gap-1 md:gap-2">
-        {Array.from({ length: totalPages }, (_, index) => (
-          <button
-            key={index}
-            onClick={() => handlePageChange(index + 1)}
-            className={`px-2 py-1 border rounded-md text-sm md:px-3 md:py-1 md:text-base ${
-              currentPage === index + 1
-                ? "bg-blue-500 text-white"
-                : "bg-white text-gray-700"
-            }`}
-          >
-            {index + 1}
-          </button>
-        ))}
-      </div>
+            <div className="flex gap-1 md:gap-2">
+              {Array.from({ length: totalPages }, (_, index) => (
+                <button
+                  key={index}
+                  onClick={() => handlePageChange(index + 1)}
+                  className={`px-2 py-1 border rounded-md text-sm md:px-3 md:py-1 md:text-base ${currentPage === index + 1
+                    ? "bg-blue-500 text-white"
+                    : "bg-white text-gray-700"
+                    }`}
+                >
+                  {index + 1}
+                </button>
+              ))}
+            </div>
 
-      <button
-        onClick={() => handlePageChange(currentPage + 1)}
-        className="px-3 py-1 border rounded-md text-sm md:text-base"
-        disabled={currentPage === totalPages}
-      >
-        {t("pagination-next")}
-      </button>
-    </nav>
-  </div>
-)}
+            <button
+              onClick={() => handlePageChange(currentPage + 1)}
+              className="px-3 py-1 border rounded-md text-sm md:text-base"
+              disabled={currentPage === totalPages}
+            >
+              {t("pagination-next")}
+            </button>
+          </nav>
+        </div>
+      )}
 
     </div>
   );
