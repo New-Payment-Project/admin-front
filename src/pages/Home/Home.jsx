@@ -10,6 +10,7 @@ const Home = () => {
   const [error, setError] = useState(null);
   const [statusFilter, setStatusFilter] = useState("");
   const [dateFilter, setDateFilter] = useState("");
+  const [paymentTypeFilter, setPaymentTypeFilter] = useState(""); // New state for paymentType filter
   const itemsPerPage = 5;
   const { t } = useTranslation();
 
@@ -19,7 +20,7 @@ const Home = () => {
         const response = await axios.get(
           "https://course-server-327v.onrender.com/api/v1/orders"
         );
-        console.log(response.data.data);
+        console.log(response.data.data, 'orders');
         setOrders(response.data.data);
         setFilteredOrders(response.data.data);
         setLoading(false);
@@ -39,6 +40,10 @@ const Home = () => {
       filtered = filtered.filter((order) => order.status === statusFilter);
     }
 
+    if (paymentTypeFilter) {
+      filtered = filtered.filter((order) => order.paymentType === paymentTypeFilter);
+    }
+
     if (dateFilter) {
       const selectedDate = new Date(dateFilter);
       filtered = filtered.filter((order) => {
@@ -53,7 +58,7 @@ const Home = () => {
 
     setFilteredOrders(filtered);
     setCurrentPage(1);
-  }, [statusFilter, dateFilter, orders]);
+  }, [statusFilter, paymentTypeFilter, dateFilter, orders]);
 
   const totalPages = Math.ceil(filteredOrders.length / itemsPerPage);
 
@@ -117,6 +122,19 @@ const Home = () => {
         </div>
 
         <div className="mt-4 md:mt-0">
+          <select
+            value={paymentTypeFilter}
+            onChange={(e) => setPaymentTypeFilter(e.target.value)}
+            className="pl-3 pr-7 py-2 border-2 border-slate-200 rounded select"
+          >
+            <option value="">{t("All services")}</option>
+            <option value="Payme">{t("Payme")}</option>
+            <option value="Click">{t("Click")}</option>
+            <option value="Uzum">{t("Uzum")}</option>
+          </select>
+        </div>
+
+        <div className="mt-4 md:mt-0">
           <input
             type="date"
             value={dateFilter}
@@ -159,6 +177,9 @@ const Home = () => {
                     <th className="px-4 py-2 text-xs font-medium uppercase tracking-wider">
                       {t("created-date")}
                     </th>
+                    <th className="px-4 py-2 text-xs font-medium uppercase tracking-wider">
+                      {t("service")}
+                    </th>
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
@@ -190,12 +211,14 @@ const Home = () => {
                             ? new Date(order.create_time).toLocaleDateString()
                             : t("no-data")}
                         </td>
-
+                        <td className="px-4 py-2">
+                          {order.paymentType ? order.paymentType : t("No service")}
+                        </td>
                       </tr>
                     ))
                   ) : (
                     <tr>
-                      <td colSpan="6" className="text-center py-4">
+                      <td colSpan="7" className="text-center py-4">
                         {t("orders-not-found")}
                       </td>
                     </tr>
@@ -214,11 +237,11 @@ const Home = () => {
                 >
                   <p className="mb-2">
                     <strong>{t("invoice-number")}:</strong>{" "}
-                    {order.user_id?.invoiceNumber || t("no-data")}
+                    {order.invoiceNumber || t("no-data")}
                   </p>
                   <p className="mb-2">
                     <strong>{t("client")}:</strong>{" "}
-                    {order.user_id?.clientName || t("no-data")}
+                    {order.clientName || t("no-data")}
                   </p>
                   <p className="mb-2">
                     <strong>{t("course")}:</strong>{" "}
@@ -239,6 +262,10 @@ const Home = () => {
                     {order.create_time
                       ? new Date(order.create_time).toLocaleDateString()
                       : t("no-data")}
+                  </p>
+                  <p className="mb-2">
+                    <strong>{t("service")}:</strong>{" "}
+                    {order.paymentType || t("service is not defined")}
                   </p>
                 </div>
               ))
