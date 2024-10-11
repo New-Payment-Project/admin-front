@@ -19,6 +19,7 @@ const Home = () => {
         const response = await axios.get(
           "https://course-server-327v.onrender.com/api/v1/orders"
         );
+        console.log(response.data.data);
         setOrders(response.data.data);
         console.log(response.data.data);
         setFilteredOrders(response.data.data);
@@ -42,7 +43,7 @@ const Home = () => {
     if (dateFilter) {
       const selectedDate = new Date(dateFilter);
       filtered = filtered.filter((order) => {
-        const orderDate = new Date(order.createdAt);
+        const orderDate = new Date(order.create_time);
         return (
           orderDate.getFullYear() === selectedDate.getFullYear() &&
           orderDate.getMonth() === selectedDate.getMonth() &&
@@ -88,6 +89,12 @@ const Home = () => {
             {t("success")}
           </span>
         );
+      case "ОТМЕНЕНО":
+        return (
+          <span className="px-2 py-1 rounded bg-red-500 text-red-100 text-xs font-semibold">
+            {t("cancelled")}
+          </span>
+        );
       default:
         return <span>{t("no-data")}</span>;
     }
@@ -106,6 +113,7 @@ const Home = () => {
             <option value="НЕ ОПЛАЧЕНО">{t("failed")}</option>
             <option value="ВЫСТАВЛЕНО">{t("process")}</option>
             <option value="ОПЛАЧЕНО">{t("success")}</option>
+            <option value="ОТМЕНЕНО">{t("cancelled")}</option>
           </select>
         </div>
 
@@ -162,10 +170,10 @@ const Home = () => {
                         className="hover:bg-gray-50 transition-colors duration-200"
                       >
                         <td className="px-4 py-2">
-                          {order?.invoiceNumber || t("no-data")}
+                          {order.invoiceNumber || t("no-data")}
                         </td>
                         <td className="px-4 py-2">
-                          {order?.clientName || t("no-data")}
+                          {order.clientName || t("no-data")}
                         </td>
                         <td className="px-4 py-2">
                           {order?.course_id?.title || t("no-data")}
@@ -183,6 +191,7 @@ const Home = () => {
                             ? new Date(order.create_time).toLocaleDateString()
                             : t("no-data")}
                         </td>
+
                       </tr>
                     ))
                   ) : (
@@ -289,16 +298,16 @@ const Home = () => {
         })}
       </div>
 
-      <button
-        onClick={() => handlePageChange(currentPage + 1)}
-        className="px-3 py-1 border rounded-md text-sm md:text-base"
-        disabled={currentPage === totalPages}
-      >
-        {t("pagination-next")}
-      </button>
-    </nav>
-  </div>
-)}
+            <button
+              onClick={() => handlePageChange(currentPage + 1)}
+              className="px-3 py-1 border rounded-md text-sm md:text-base"
+              disabled={currentPage === totalPages}
+            >
+              {t("pagination-next")}
+            </button>
+          </nav>
+        </div>
+      )}
 
     </div>
   );
