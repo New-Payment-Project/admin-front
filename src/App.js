@@ -23,7 +23,7 @@ const App = () => {
 
   return (
     <div className='flex flex-col h-screen w-full'>
-      <div className='root-layout flex items-center justify-between p-4 w-full min-h-[7%] overflow-x-hidden'>
+      <div className='root-layout flex items-center justify-between h-full md:p-7 w-full overflow-x-hidden'>
         <img src='/norbekov-logo.png' width={60} height={60} alt='menu icon' />
         <MobileNav user={loggedIn} />
       </div>

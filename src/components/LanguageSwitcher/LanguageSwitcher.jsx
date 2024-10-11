@@ -10,13 +10,13 @@ const LanguageSwitcher = () => {
   };
 
   return (
-    <div className="dropdown dropdown-start text-[#000]">
+    <div className="dropdown dropdown-start text-[#000] z-50">
       <label tabIndex={0} className="btn m-1 rounded-full">
         <img src={t("language")} className="h-[15px]" alt="" />
       </label>
       <ul
         tabIndex={0}
-        className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52"
+        className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-20 md:w-52 z-50"
       >
         <li>
           <button onClick={() => changeLanguage("ru")} className="text-black">
