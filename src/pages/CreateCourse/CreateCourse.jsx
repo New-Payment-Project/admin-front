@@ -33,7 +33,7 @@ const CreateCourse = () => {
   
     const finalCourseData = {
       ...courseData,
-      prefix: prefix || ""  // Assign prefix if it exists, else an empty string
+      prefix: prefix || ""
     };
   
     try {
@@ -58,8 +58,8 @@ const CreateCourse = () => {
           route: "",
           prefix: ""
         });
-        setPrefix(""); // Reset the prefix input
-        setShowPrefixInput(false); // Hide prefix input after submission
+        setPrefix("");  
+        setShowPrefixInput(false);
       } else {
         toast.error(t("course-error"));
       }
