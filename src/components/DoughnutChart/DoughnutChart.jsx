@@ -9,7 +9,7 @@ const DoughnutChart = ({ paymentData }) => {
             {
                 label: 'Payment Methods',
                 data: paymentData, 
-                backgroundColor: ['#0747b6', '#2265d8', '#2f91fa']
+                backgroundColor: ['#1437AD', '#35C0CD', '#7F44D6']
             }
         ],
         labels: ['Click', 'Payme', 'Uzum']
