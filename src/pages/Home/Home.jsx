@@ -257,48 +257,102 @@ const Home = () => {
         </div>
       )}
 
-      {/* Progress bar with previous and next buttons for mobile pagination */}
-      {/* Pagination for smaller screens (Mobile) */}
-{totalPages > 1 && (
-  <div className="md:hidden flex flex-col items-center justify-between my-4">
-    {/* Page Indicator */}
-    <span className="text-sm font-medium mb-2">
-      {t("page")} {currentPage} / {totalPages}
-    </span>
+      {/* Mobile Pagination (Progress bar with next/previous buttons) */}
+      {totalPages > 1 && (
+        <div className="md:hidden flex flex-col items-center justify-between my-4">
+          {/* Page Indicator */}
+          <span className="text-sm font-medium mb-2">
+            {t("page")} {currentPage} / {totalPages}
+          </span>
 
-    <div className="flex items-center w-full justify-between">
-      <button
-        className="px-3 py-1 border rounded-md"
-        onClick={handlePreviousPage}
-        disabled={currentPage === 1}
-      >
-        {t("pagination-previous")}
-      </button>
+          <div className="flex items-center w-full justify-between">
+            <button
+              className="px-3 py-1 border rounded-md"
+              onClick={handlePreviousPage}
+              disabled={currentPage === 1}
+            >
+              {t("pagination-previous")}
+            </button>
 
-      <div className="flex-1 mx-4">
-        <input
-          id="pagination-progress"
-          type="range"
-          min="1"
-          max={totalPages}
-          value={currentPage}
-          onChange={handleProgressBarChange}
-          className="w-full"
-        />
-      </div>
+            <div className="flex-1 mx-4">
+              <input
+                id="pagination-progress"
+                type="range"
+                min="1"
+                max={totalPages}
+                value={currentPage}
+                onChange={handleProgressBarChange}
+                className="w-full"
+              />
+            </div>
 
-      <button
-        className="px-3 py-1 border rounded-md"
-        onClick={handleNextPage}
-        disabled={currentPage === totalPages}
-      >
-        {t("pagination-next")}
-      </button>
-    </div>
-  </div>
-)}
+            <button
+              className="px-3 py-1 border rounded-md"
+              onClick={handleNextPage}
+              disabled={currentPage === totalPages}
+            >
+              {t("pagination-next")}
+            </button>
+          </div>
+        </div>
+      )}
 
+      {/* Traditional Pagination for Tablet and Larger Screens */}
+      {totalPages > 1 && (
+        <div className="hidden md:flex justify-center mt-4">
+          <nav className="flex items-center flex-wrap justify-between space-x-2 w-full">
+            <button
+              onClick={() => handlePageChange(currentPage - 1)}
+              className="px-3 py-1 border rounded-md text-sm md:text-base"
+              disabled={currentPage === 1}
+            >
+              {t("pagination-previous")}
+            </button>
+
+            <div className="flex flex-wrap gap-1 md:gap-2">
+              {Array.from({ length: totalPages }, (_, index) => {
+                const page = index + 1;
+                const isNearStart = page <= 5;
+                const isNearEnd = page > totalPages - 5;
+                const isAroundCurrent =
+                  page >= currentPage - 1 && page <= currentPage + 1;
+
+                if (isNearStart || isNearEnd || isAroundCurrent) {
+                  return (
+                    <button
+                      key={page}
+                      onClick={() => handlePageChange(page)}
+                      className={`px-2 py-1 border rounded-md text-sm md:px-3 md:py-1 md:text-base ${
+                        currentPage === page
+                          ? "bg-blue-500 text-white"
+                          : "bg-white text-gray-700"
+                      }`}
+                    >
+                      {page}
+                    </button>
+                  );
+                } else if (
+                  (page === 6 && currentPage > 6) ||
+                  (page === totalPages - 5 && currentPage < totalPages - 5)
+                ) {
+                  return <span key={page} className="px-2 py-1">...</span>;
+                }
+                return null;
+              })}
+            </div>
+
+            <button
+              onClick={() => handlePageChange(currentPage + 1)}
+              className="px-3 py-1 border rounded-md text-sm md:text-base"
+              disabled={currentPage === totalPages}
+            >
+              {t("pagination-next")}
+            </button>
+          </nav>
+        </div>
+      )}
     </div>
   );
 };
+
 export default Home;

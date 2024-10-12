@@ -17,7 +17,7 @@ const TotalBalanceBox = ({ accoounts = [], totalBanks, totalCurrentBalance, load
           )}
         </div>
         <div className='flex flex-col gap-6 w-full md:w-1/2'>
-          <h2 className='header-2 xl:flex w-full'>
+          <h2 className='header-2 xl:flex max-w-full'>
             {t('bank-accounts')}: {totalBanks}
           </h2>
           <div className='flex flex-col gap-2'>
