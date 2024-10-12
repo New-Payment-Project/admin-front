@@ -99,7 +99,6 @@ const Home = () => {
   return (
     <div className="px-4 md:px-8 py-2">
       <div className="mb-4 flex flex-col md:flex-row md:justify-between">
-        {/* Filters */}
         <div>
           <select
             value={statusFilter}
