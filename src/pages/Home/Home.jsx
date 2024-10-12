@@ -111,12 +111,14 @@ const Home = () => {
 
   return (
     <div className="px-4 md:px-8 py-2">
-      <div className="mb-4 flex flex-col md:flex-row md:justify-between">
-        <div>
+      <h1 className="text-2xl mb-2 font-semibold">{t("orders")}</h1>
+      <div className="mb-4 flex flex-col md:flex-row md:justify-between md:my-5">
+        <div className="">
+          <p className="text-sm">Фильтрация по статусу</p>
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="px-3 py-2 border-2 border-slate-200 rounded select"
+            className="px-3 border-2 border-slate-200 rounded"
           >
             <option value="">{t("all-statuses")}</option>
             <option value="НЕ ОПЛАЧЕНО">{t("failed")}</option>
@@ -127,10 +129,11 @@ const Home = () => {
         </div>
 
         <div className="mt-4 md:mt-0">
+          <p className="text-sm">Фильтрация по сервису</p>
           <select
             value={paymentTypeFilter}
             onChange={(e) => setPaymentTypeFilter(e.target.value)}
-            className="pl-3 pr-7 py-2 border-2 border-slate-200 rounded select"
+            className="pl-3 pr-12 border-2 border-slate-200 rounded"
           >
             <option value="">{t("All services")}</option>
             <option value="Payme">{t("Payme")}</option>
@@ -140,11 +143,12 @@ const Home = () => {
         </div>
 
         <div className="mt-4 md:mt-0">
+          <p className="text-sm">Фильтрация по дате</p>
           <input
             type="date"
             value={dateFilter}
             onChange={(e) => setDateFilter(e.target.value)}
-            className="px-3 py-2 border-2 border-slate-200 rounded outline-none"
+            className="px-3 border-2 border-slate-200 rounded outline-none"
           />
         </div>
       </div>
@@ -157,7 +161,6 @@ const Home = () => {
         <div className="text-center py-4 text-red-500">{error}</div>
       ) : (
         <div className="overflow-x-auto mb-10">
-          <h1 className="text-2xl mb-2 font-semibold">{t("orders")}</h1>
           <div className="max-w-full overflow-x-auto shadow-md rounded-lg">
             <table className="min-w-full table-auto text-xs md:text-sm text-left border border-gray-200">
               <thead className="bg-gray-50 text-gray-600">
