@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";// Import logos
 
 const Home = () => {
   const [orders, setOrders] = useState([]);
@@ -96,6 +96,19 @@ const Home = () => {
     }
   };
 
+  const renderLogo = (paymentType) => {
+    switch (paymentType) {
+      case "Payme":
+        return <img src="/payme.png" alt="Payme Logo" className="w-12 h-4" />;
+      case "Click":
+        return <img src="/click.png" alt="Click Logo" className="w-12 h-4" />;
+      case "Uzum":
+        return <img src="/uzum-bank.png" alt="Uzum Bank Logo" className="w-12 h-4" />;
+      default:
+        return <span>{t("No service")}</span>;
+    }
+  };
+
   return (
     <div className="px-4 md:px-8 py-2">
       <div className="mb-4 flex flex-col md:flex-row md:justify-between">
@@ -168,7 +181,7 @@ const Home = () => {
                       <td className="px-4 py-2 truncate">{order.amount ? `${order.amount} ${t("currency")}` : t("no-data")}</td>
                       <td className="px-4 py-2 text-xs truncate">{getStatusBadge(order.status)}</td>
                       <td className="px-4 py-2 truncate">{order.create_time ? new Date(order.create_time).toLocaleDateString() : t("no-data")}</td>
-                      <td className="px-4 py-2 text-xs truncate">{order.paymentType || t("No service")}</td>
+                      <td className="px-4 py-2 text-xs truncate">{renderLogo(order.paymentType)}</td>
                     </tr>
                   ))
                 ) : (
@@ -193,7 +206,7 @@ const Home = () => {
             <p><strong>{t("amount")}:</strong> {selectedOrder.amount ? `${selectedOrder.amount} ${t("currency")}` : t("no-data")}</p>
             <p><strong>{t("status")}:</strong> {getStatusBadge(selectedOrder.status)}</p>
             <p><strong>{t("created-date")}:</strong> {selectedOrder.create_time ? new Date(selectedOrder.create_time).toLocaleDateString() : t("no-data")}</p>
-            <p><strong>{t("service")}:</strong> {selectedOrder.paymentType || t("service is not defined")}</p>
+            <p><strong>{t("service")}:</strong> {renderLogo(selectedOrder.paymentType)}</p>
             <div className="modal-action">
               <button className="btn" onClick={closeModal}>{t("close")}</button>
             </div>
