@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useTranslation } from "react-i18next";// Import logos
+import { useTranslation } from "react-i18next";
 
 const Home = () => {
   const [orders, setOrders] = useState([]);
@@ -11,7 +11,7 @@ const Home = () => {
   const [statusFilter, setStatusFilter] = useState("");
   const [dateFilter, setDateFilter] = useState("");
   const [paymentTypeFilter, setPaymentTypeFilter] = useState("");
-  const [selectedOrder, setSelectedOrder] = useState(null); // State for selected order
+  const [selectedOrder, setSelectedOrder] = useState(null);
   const itemsPerPage = 5;
   const { t } = useTranslation();
 
@@ -41,7 +41,9 @@ const Home = () => {
     }
 
     if (paymentTypeFilter) {
-      filtered = filtered.filter((order) => order.paymentType === paymentTypeFilter);
+      filtered = filtered.filter(
+        (order) => order.paymentType === paymentTypeFilter
+      );
     }
 
     if (dateFilter) {
@@ -73,6 +75,23 @@ const Home = () => {
     }
   };
 
+  const handleProgressBarChange = (e) => {
+    const page = parseInt(e.target.value, 10);
+    handlePageChange(page);
+  };
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages) {
+      handlePageChange(currentPage + 1);
+    }
+  };
+
+  const handlePreviousPage = () => {
+    if (currentPage > 1) {
+      handlePageChange(currentPage - 1);
+    }
+  };
+
   const handleOrderClick = (order) => {
     setSelectedOrder(order);
   };
@@ -101,7 +120,7 @@ const Home = () => {
       case "Payme":
         return <img src="/payme.png" alt="Payme Logo" className="w-12 h-4" />;
       case "Click":
-        return <img src="/click.png" alt="Click Logo" className="w-12 h-4" />;
+        return <img src="/click.png" alt="Click Logo" className="w-12 h-[14px]" />;
       case "Uzum":
         return <img src="/uzum-bank.png" alt="Uzum Bank Logo" className="w-12 h-4" />;
       default:
@@ -112,13 +131,13 @@ const Home = () => {
   return (
     <div className="px-4 md:px-8 py-2">
       <h1 className="text-2xl mb-2 font-semibold">{t("orders")}</h1>
-      <div className="mb-4 flex flex-col md:flex-row md:justify-between md:my-5">
-        <div className="">
-          <p className="text-sm">Фильтрация по статусу</p>
+      <div className="mb-4 flex flex-col md:flex-row md:justify-between md:space-y-0 space-y-4">
+        <div>
+          <p className="text-sm">{t("filter-status")}</p>
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="px-3 border-2 border-slate-200 rounded"
+            className="px-3 border-2 border-slate-200 rounded w-full md:w-auto"
           >
             <option value="">{t("all-statuses")}</option>
             <option value="НЕ ОПЛАЧЕНО">{t("failed")}</option>
@@ -128,12 +147,12 @@ const Home = () => {
           </select>
         </div>
 
-        <div className="mt-4 md:mt-0">
-          <p className="text-sm">Фильтрация по сервису</p>
+        <div>
+          <p className="text-sm">{t("filter-service")}</p>
           <select
             value={paymentTypeFilter}
             onChange={(e) => setPaymentTypeFilter(e.target.value)}
-            className="pl-3 pr-12 border-2 border-slate-200 rounded"
+            className="pl-3 pr-12 border-2 border-slate-200 rounded w-full md:w-auto"
           >
             <option value="">{t("All services")}</option>
             <option value="Payme">{t("Payme")}</option>
@@ -142,13 +161,13 @@ const Home = () => {
           </select>
         </div>
 
-        <div className="mt-4 md:mt-0">
-          <p className="text-sm">Фильтрация по дате</p>
+        <div>
+          <p className="text-sm">{t("filter-date")}</p>
           <input
             type="date"
             value={dateFilter}
             onChange={(e) => setDateFilter(e.target.value)}
-            className="px-3 border-2 border-slate-200 rounded outline-none"
+            className="px-3 border-2 border-slate-200 rounded outline-none w-full md:w-auto"
           />
         </div>
       </div>
@@ -161,7 +180,8 @@ const Home = () => {
         <div className="text-center py-4 text-red-500">{error}</div>
       ) : (
         <div className="overflow-x-auto mb-10">
-          <div className="max-w-full overflow-x-auto shadow-md rounded-lg">
+          {/* Table for larger screens */}
+          <div className="hidden md:block max-w-full overflow-x-auto shadow-md rounded-lg">
             <table className="min-w-full table-auto text-xs md:text-sm text-left border border-gray-200">
               <thead className="bg-gray-50 text-gray-600">
                 <tr>
@@ -195,10 +215,30 @@ const Home = () => {
               </tbody>
             </table>
           </div>
+
+          {/* Cards for smaller screens */}
+          <div className="md:hidden grid grid-cols-1 gap-4">
+            {currentOrders.length > 0 ? (
+              currentOrders.map((order, index) => (
+                <div key={index} className="bg-white p-4 rounded shadow-md" onClick={() => handleOrderClick(order)}>
+                  <div className="flex justify-end">
+                    <p className="text-xs">{getStatusBadge(order.status)}</p>
+                  </div>
+                  <h2 className="font-bold">{t("invoice-number")}: {order.invoiceNumber || t("no-data")}</h2>
+                  <p><strong>{t("client")}:</strong> {order.clientName || t("no-data")}</p>
+                  <p><strong>{t("course")}:</strong> {order?.course_id?.title || t("no-data")}</p>
+                  <p><strong>{t("amount")}:</strong> {order.amount ? `${order.amount} ${t("currency")}` : t("no-data")}</p>
+                  <p><strong>{t("created-date")}:</strong> {order.create_time ? new Date(order.create_time).toLocaleDateString() : t("no-data")}</p>
+                  <div><strong>{t("service")}:</strong> {renderLogo(order.paymentType)}</div>
+                </div>
+              ))
+            ) : (
+              <div className="text-center py-4">{t("orders-not-found")}</div>
+            )}
+          </div>
         </div>
       )}
 
-      {/* DaisyUI Modal */}
       {selectedOrder && (
         <div className="modal modal-open">
           <div className="modal-box">
@@ -217,61 +257,48 @@ const Home = () => {
         </div>
       )}
 
-      {/* Pagination */}
-      {totalPages > 1 && (
-        <div className="flex justify-center mt-4">
-          <nav className="flex items-center flex-wrap justify-between space-x-2 w-full">
-            <button
-              onClick={() => handlePageChange(currentPage - 1)}
-              className="px-3 py-1 border rounded-md text-sm md:text-base"
-              disabled={currentPage === 1}
-            >
-              {t("pagination-previous")}
-            </button>
-            <div className="flex flex-wrap gap-1 md:gap-2">
-              {Array.from({ length: totalPages }, (_, index) => {
-                const page = index + 1;
-                const isNearStart = page <= 5;
-                const isNearEnd = page > totalPages - 5;
-                const isAroundCurrent =
-                  page >= currentPage - 1 && page <= currentPage + 1;
-                if (isNearStart || isNearEnd || isAroundCurrent) {
-                  return (
-                    <button
-                      key={page}
-                      onClick={() => handlePageChange(page)}
-                      className={`px-2 py-1 border rounded-md text-sm md:px-3 md:py-1 md:text-base ${
-                        currentPage === page
-                          ? "bg-blue-500 text-white"
-                          : "bg-white text-gray-700"
-                      }`}
-                    >
-                      {page}
-                    </button>
-                  );
-                } else if (
-                  (page === 6 && currentPage > 6) ||
-                  (page === totalPages - 5 && currentPage < totalPages - 5)
-                ) {
-                  return (
-                    <span key={page} className="px-2 py-1">...</span>
-                  );
-                }
-                return null;
-              })}
-            </div>
-            <button
-              onClick={() => handlePageChange(currentPage + 1)}
-              className="px-3 py-1 border rounded-md text-sm md:text-base"
-              disabled={currentPage === totalPages}
-            >
-              {t("pagination-next")}
-            </button>
-          </nav>
-        </div>
-      )}
+      {/* Progress bar with previous and next buttons for mobile pagination */}
+      {/* Pagination for smaller screens (Mobile) */}
+{totalPages > 1 && (
+  <div className="md:hidden flex flex-col items-center justify-between my-4">
+    {/* Page Indicator */}
+    <span className="text-sm font-medium mb-2">
+      {t("page")} {currentPage} / {totalPages}
+    </span>
+
+    <div className="flex items-center w-full justify-between">
+      <button
+        className="px-3 py-1 border rounded-md"
+        onClick={handlePreviousPage}
+        disabled={currentPage === 1}
+      >
+        {t("pagination-previous")}
+      </button>
+
+      <div className="flex-1 mx-4">
+        <input
+          id="pagination-progress"
+          type="range"
+          min="1"
+          max={totalPages}
+          value={currentPage}
+          onChange={handleProgressBarChange}
+          className="w-full"
+        />
+      </div>
+
+      <button
+        className="px-3 py-1 border rounded-md"
+        onClick={handleNextPage}
+        disabled={currentPage === totalPages}
+      >
+        {t("pagination-next")}
+      </button>
+    </div>
+  </div>
+)}
+
     </div>
   );
 };
-
 export default Home;

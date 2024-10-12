@@ -7,6 +7,7 @@ import TotalBalanceBox from './components/TotalBalanceBox/TotalBalanceBox';
 import MobileNav from './components/MobileNav/MobileNav';
 import { useTranslation } from 'react-i18next';
 import axios from 'axios';
+import LanguageSwitcher from './components/LanguageSwitcher/LanguageSwitcher';
 
 const App = () => {
   const { t } = useTranslation();
@@ -64,6 +65,7 @@ const App = () => {
       <div className='root-layout flex items-center justify-between h-full md:p-7 w-full overflow-x-hidden'>
         <img src='/norbekov-logo.png' width={60} height={60} alt='menu icon' />
         <MobileNav user={loggedIn} />
+
       </div>
     
       <div className="flex flex-1">

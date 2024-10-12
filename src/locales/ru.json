@@ -68,6 +68,18 @@
     "amount": "Сумма",
     "status": "Статус",
     "created-date": "Дата создания",
-    "orders-not-found": "Заказы не найдены"
-  }
+    "orders-not-found": "Заказы не найдены",
+    "add-prefix": "Добавить префикс к курсу",
+    "course-prefix": "Префикс курса",
+    "enter-prefix": "Введите префикс курса",
+    "course-success": "Курс успешно создан!",
+    "course-error": "Ошибка при создании курса!",
+    "course-fail": "Что-то пошло не так!",
+    "filter-status": "Фильтр по статусу",
+    "filter-service": "Фильтр по сервису",
+    "filter-date": "Фильтр по дате",
+    "all-services": "Все сервисы",
+    "service": "Сервис",
+    "hide-prefix": "Скрыть поле для префикса"
+    }
   

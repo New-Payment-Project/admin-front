@@ -10,14 +10,15 @@ const CoursesTable = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [itemsPerPage] = useState(5);
-  const { t } = useTranslation()
+  const { t } = useTranslation();
 
   useEffect(() => {
     const fetchCourses = async () => {
       try {
-        const response = await axios.get("https://course-server-327v.onrender.com/api/v1/courses/");
+        const response = await axios.get(
+          "https://course-server-327v.onrender.com/api/v1/courses/"
+        );
         setCourses(response.data);
-        console.log(response.data);
         setFilteredCourses(response.data);
         setLoading(false);
       } catch (err) {
@@ -41,9 +42,12 @@ const CoursesTable = () => {
     }
   };
 
+  // Progress calculation for mobile pagination
+  const progress = (currentPage / totalPages) * 100;
+
   return (
     <div className="px-4 md:px-8 py-2">
-          <CreateIndividualLink/>
+      <CreateIndividualLink />
       {loading ? (
         <div className="text-center py-4 mx-auto">
           <span className="loading loading-spinner loading-lg"></span>
@@ -51,20 +55,21 @@ const CoursesTable = () => {
       ) : error ? (
         <div className="text-center py-4 text-red-500">{error}</div>
       ) : (
-        <div className="overflow-x-auto">
+        <div>
+          {/* Table for larger screens */}
           <div className="hidden md:block">
             <div className="max-w-full overflow-x-auto shadow-md rounded-lg">
               <table className="min-w-full table-auto text-xs md:text-sm text-left border border-gray-200">
                 <thead className="bg-gray-50 text-gray-600">
                   <tr>
                     <th className="px-4 py-2 text-xs font-medium uppercase tracking-wider">
-                      {t('table-course-title')}
+                      {t("table-course-title")}
                     </th>
                     <th className="px-4 py-2 text-xs font-medium uppercase tracking-wider">
-                    {t('table-course-price')}
+                      {t("table-course-price")}
                     </th>
                     <th className="px-4 py-2 text-xs font-medium uppercase tracking-wider">
-                    {t('table-course-route')}
+                      {t("table-course-route")}
                     </th>
                   </tr>
                 </thead>
@@ -73,14 +78,16 @@ const CoursesTable = () => {
                     currentCourses.map((course, index) => (
                       <tr key={index} className="hover:bg-gray-50">
                         <td className="px-4 py-2">{course.title}</td>
-                        <td className="px-4 py-2">{course.price} {t('currency')}</td>
+                        <td className="px-4 py-2">
+                          {course.price} {t("currency")}
+                        </td>
                         <td className="px-4 py-2">{course.route}</td>
                       </tr>
                     ))
                   ) : (
                     <tr>
                       <td colSpan="4" className="text-center py-4">
-                      {t('course-not-found')}
+                        {t("course-not-found")}
                       </td>
                     </tr>
                   )}
@@ -89,13 +96,46 @@ const CoursesTable = () => {
             </div>
           </div>
 
+          {/* Card layout for mobile screens */}
+          <div className="block md:hidden">
+            {currentCourses.length > 0 ? (
+              currentCourses.map((course, index) => (
+                <div
+                  key={index}
+                  className="bg-white shadow-md rounded-lg mb-4 p-4"
+                >
+                  <h3 className="text-lg font-semibold mb-2">{course.title}</h3>
+                  <p className="text-sm text-gray-600 mb-2">
+                    {t("table-course-price")}: {course.price} {t("currency")}
+                  </p>
+                  <p className="text-sm text-gray-600">
+                    {t("table-course-route")}: {course.route}
+                  </p>
+                </div>
+              ))
+            ) : (
+              <div className="text-center py-4">{t("course-not-found")}</div>
+            )}
+          </div>
+
+          {/* Progress Bar for Mobile */}
+          <div className="block md:hidden my-4">
+            <div className="w-full bg-gray-200 rounded-full h-2">
+              <div
+                className="bg-blue-500 h-2 rounded-full"
+                style={{ width: `${progress}%` }}
+              ></div>
+            </div>
+          </div>
+
+          {/* Pagination */}
           <div className="flex justify-between items-center mt-4">
             <button
               onClick={() => handlePageChange(currentPage - 1)}
               disabled={currentPage === 1}
               className="px-3 py-1 bg-white text-gray-600 border rounded disabled:opacity-50 flex items-center gap-2"
             >
-              {t('pagination-previous')}
+              {t("pagination-previous")}
             </button>
 
             <div className="flex space-x-2">
@@ -119,7 +159,7 @@ const CoursesTable = () => {
               disabled={currentPage === totalPages}
               className="px-3 py-1 bg-white text-gray-600 border rounded disabled:opacity-50 flex items-center gap-2"
             >
-              {t('pagination-next')}
+              {t("pagination-next")}
             </button>
           </div>
         </div>
