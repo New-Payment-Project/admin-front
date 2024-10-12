@@ -11,8 +11,7 @@ const BankCard = ({ card }) => {
       case "Click":
         return "bg-gradient-to-r from-green-500 to-green-800";
       case "Uzum Bank":
-        return "bg-gradient-to-r from-purple-400 to-purple-800";
-      case "MasterCard":
+   
         return "bg-gradient-to-r from-red-400 to-orange-800";
       default:
         return "bg-gradient-to-r from-gray-500 to-gray-700";
@@ -68,14 +67,7 @@ export default function Component() {
       icon: "https://depozit.uz/image_uploads/banks/55/original/1f135319fd6cc7502052a2a5b74831b5_webp.webp",
       price: "1500000009999",
     },
-    {
-      issuer: "MasterCard",
-
-      name: "Norbekov Abduvaliy",
-
-      icon: "https://upload.wikimedia.org/wikipedia/commons/b/b7/MasterCard_Logo.svg",
-      price: "150004064753",
-    },
+  
   ];
 
   const [cards] = useState(initialCards);

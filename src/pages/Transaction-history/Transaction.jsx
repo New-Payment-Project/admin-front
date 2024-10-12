@@ -15,7 +15,6 @@ const MyBanks = () => {
 
     window.location.href = paymentUrl;
   };
-
   return (
     <div>
       <section>
@@ -43,20 +42,10 @@ const MyBanks = () => {
 
       <section>
         <form method="GET" action="https://www.uzumbank.uz/open-service?serviceId=498614016">
-          {/* Use sandbox URL if available */}
-
-          {/* Test cashier number */}
           <input type="hidden" name="cash" value="5000" />
-
-          {/* Redirect URL after successful payment */}
           <input type="hidden" name="redirectUrl" value="http://localhost:3000/" />
-
-          {/* Description shown to the user */}
           <input type="hidden" name="description" value="Test Payment for Product XYZ" />
-
-          {/* Additional data for testing */}
           <input type="hidden" name="extraData" value="TestData123" />
-
           <button type="submit" style={{
             cursor: 'pointer',
             border: '1px solid #ebebeb',
