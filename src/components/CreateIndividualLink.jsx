@@ -11,7 +11,7 @@ const CreateIndividualLink = () => {
   useEffect(() => {
     const fetchCourses = async () => {
       try {
-        const response = await fetch('https://course-server-327v.onrender.com/api/v1/courses/');
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/courses`);
         const data = await response.json();
         setCourses(data);
       } catch (error) {

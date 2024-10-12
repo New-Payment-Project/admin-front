@@ -16,7 +16,7 @@ const CoursesTable = () => {
     const fetchCourses = async () => {
       try {
         const response = await axios.get(
-          "https://course-server-327v.onrender.com/api/v1/courses/"
+          `${process.env.REACT_APP_API_URL}/courses`
         );
         setCourses(response.data);
         setFilteredCourses(response.data);
@@ -42,7 +42,6 @@ const CoursesTable = () => {
     }
   };
 
-  // Progress calculation for mobile pagination
   const progress = (currentPage / totalPages) * 100;
 
   return (

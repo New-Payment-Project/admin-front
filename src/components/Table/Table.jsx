@@ -18,7 +18,7 @@ const Table = () => {
     const fetchTransactions = async () => {
       try {
         const response = await axios.get(
-          "https://course-server-327v.onrender.com/api/v1/orders"
+          `${process.env.REACT_APP_API_URL}/orders`
         );
         setTransactions(response.data);
         setFilteredTransactions(response.data);

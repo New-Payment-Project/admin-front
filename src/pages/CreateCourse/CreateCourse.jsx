@@ -15,6 +15,7 @@ const CreateCourse = () => {
     category: "",
     price: "",
     route: "",
+    prefix: ""
   });
 
   const handleInputChange = (e) => {
@@ -29,15 +30,15 @@ const CreateCourse = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-
+  
     const finalCourseData = {
       ...courseData,
-      title: prefix ? `${prefix} ${courseData.title}` : courseData.title, // Add prefix if exists
+      prefix: prefix || ""  // Assign prefix if it exists, else an empty string
     };
-
+  
     try {
       const response = await fetch(
-        "https://course-server-327v.onrender.com/api/v1/courses",
+        `${process.env.REACT_APP_API_URL}/courses`,
         {
           method: "POST",
           headers: {
@@ -46,7 +47,7 @@ const CreateCourse = () => {
           body: JSON.stringify(finalCourseData),
         }
       );
-
+  
       if (response.ok) {
         toast.success(t("course-success"));
         setCourseData({
@@ -55,6 +56,7 @@ const CreateCourse = () => {
           category: "",
           price: "",
           route: "",
+          prefix: ""
         });
         setPrefix(""); // Reset the prefix input
         setShowPrefixInput(false); // Hide prefix input after submission
@@ -67,6 +69,7 @@ const CreateCourse = () => {
       setLoading(false);
     }
   };
+  
 
   return (
     <div className="px-8 pb-12 bg-white rounded-lg shadow-lg max-w-full mx-auto">
