@@ -14,6 +14,7 @@ const App = () => {
   const [totalAmount, setTotalAmount] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [paymentData, setPaymentData] = useState([0, 0, 0]);
 
   useEffect(() => {
     const fetchOrders = async () => {
@@ -21,18 +22,24 @@ const App = () => {
         const response = await axios.get(
           "https://course-server-327v.onrender.com/api/v1/orders"
         );
-        setOrders(response.data.data);
-        console.log(response.data.data);
+        const fetchedOrders = response.data.data;
+        setOrders(fetchedOrders);
+        console.log(fetchedOrders);
   
-        const paidOrders = response.data.data.filter(
+        const paidOrders = fetchedOrders.filter(
           (order) => order.status === "ОПЛАЧЕНО"
         );
   
         const total = paidOrders.reduce((acc, order) => {
           return acc + order.amount;
         }, 0);
-  
         setTotalAmount(total);
+
+        const clickCount = fetchedOrders.filter(order => order.paymentType === "Click").length;
+        const paymeCount = fetchedOrders.filter(order => order.paymentType === "Payme").length;
+        const uzumCount = fetchedOrders.filter(order => order.paymentType === "Uzum").length;
+        
+        setPaymentData([clickCount, paymeCount, uzumCount]);
 
         setLoading(false);
       } catch (err) {
@@ -87,6 +94,7 @@ const App = () => {
                 totalBanks={1}
                 totalCurrentBalance={totalAmount}
                 loading={loading}
+                paymentData={paymentData}
               />
             </div>
           </header>

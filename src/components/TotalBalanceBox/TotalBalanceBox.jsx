@@ -3,7 +3,7 @@ import AnimatedCounter from '../AnimatedCounter/AnimatedCounter';
 import DoughnutChart from '../DoughnutChart/DoughnutChart';
 import { useTranslation } from 'react-i18next';
 
-const TotalBalanceBox = ({ accoounts = [], totalBanks, totalCurrentBalance, loading }) => {
+const TotalBalanceBox = ({ accoounts = [], totalBanks, totalCurrentBalance, loading, paymentData }) => {
   const { t } = useTranslation();
 
   return (
@@ -11,13 +11,13 @@ const TotalBalanceBox = ({ accoounts = [], totalBanks, totalCurrentBalance, load
       <div className='flex flex-col md:flex-row justify-between items-start gap-6'>
         <div className='total-balance-chart w-full md:w-1/2'>
           {loading ? (
-            <div className="skeleton h-32 w-full bg-gray-300 animate-pulse"></div>
+            <div className="skeleton h-32 w-32 rounded-full bg-gray-300 animate-pulse"></div>
           ) : (
-            <DoughnutChart accoounts={accoounts} />
+            <DoughnutChart paymentData={paymentData} /> 
           )}
         </div>
         <div className='flex flex-col gap-6 w-full md:w-1/2'>
-          <h2 className='header-2'>
+          <h2 className='header-2 xl:flex w-full'>
             {t('bank-accounts')}: {totalBanks}
           </h2>
           <div className='flex flex-col gap-2'>
