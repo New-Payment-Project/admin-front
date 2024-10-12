@@ -10,7 +10,8 @@ const Home = () => {
   const [error, setError] = useState(null);
   const [statusFilter, setStatusFilter] = useState("");
   const [dateFilter, setDateFilter] = useState("");
-  const [paymentTypeFilter, setPaymentTypeFilter] = useState(""); // New state for paymentType filter
+  const [paymentTypeFilter, setPaymentTypeFilter] = useState("");
+  const [selectedOrder, setSelectedOrder] = useState(null); // State for selected order
   const itemsPerPage = 5;
   const { t } = useTranslation();
 
@@ -20,7 +21,6 @@ const Home = () => {
         const response = await axios.get(
           "https://course-server-327v.onrender.com/api/v1/orders"
         );
-        console.log(response.data.data, 'orders');
         setOrders(response.data.data);
         setFilteredOrders(response.data.data);
         setLoading(false);
@@ -73,32 +73,24 @@ const Home = () => {
     }
   };
 
+  const handleOrderClick = (order) => {
+    setSelectedOrder(order);
+  };
+
+  const closeModal = () => {
+    setSelectedOrder(null);
+  };
+
   const getStatusBadge = (status) => {
     switch (status) {
       case "НЕ ОПЛАЧЕНО":
-        return (
-          <span className="px-2 py-1 rounded bg-red-100 text-red-700 text-xs font-semibold">
-            {t("failed")}
-          </span>
-        );
+        return <span className="px-2 py-1 rounded bg-red-100 text-red-700 text-[10px] font-semibold">{t("failed")}</span>;
       case "ВЫСТАВЛЕНО":
-        return (
-          <span className="px-2 py-1 rounded bg-yellow-100 text-yellow-700 text-xs font-semibold">
-            {t("process")}
-          </span>
-        );
+        return <span className="px-2 py-1 rounded bg-yellow-100 text-yellow-700 text-[10px] font-semibold">{t("process")}</span>;
       case "ОПЛАЧЕНО":
-        return (
-          <span className="px-2 py-1 rounded bg-green-100 text-green-700 text-xs font-semibold">
-            {t("success")}
-          </span>
-        );
+        return <span className="px-2 py-1 rounded bg-green-100 text-green-700 text-[10px] font-semibold">{t("success")}</span>;
       case "ОТМЕНЕНО":
-        return (
-          <span className="px-2 py-1 rounded bg-red-500 text-red-100 text-xs font-semibold">
-            {t("cancelled")}
-          </span>
-        );
+        return <span className="px-2 py-1 rounded bg-red-500 text-red-100 text-[10px] font-semibold">{t("cancelled")}</span>;
       default:
         return <span>{t("no-data")}</span>;
     }
@@ -107,6 +99,7 @@ const Home = () => {
   return (
     <div className="px-4 md:px-8 py-2">
       <div className="mb-4 flex flex-col md:flex-row md:justify-between">
+        {/* Filters */}
         <div>
           <select
             value={statusFilter}
@@ -153,132 +146,66 @@ const Home = () => {
       ) : (
         <div className="overflow-x-auto mb-10">
           <h1 className="text-2xl mb-2 font-semibold">{t("orders")}</h1>
-
-          <div className="hidden md:block">
-            <div className="max-w-full overflow-x-auto shadow-md rounded-lg">
-              <table className="min-w-full table-auto text-xs md:text-sm text-left border border-gray-200">
-                <thead className="bg-gray-50 text-gray-600">
-                  <tr>
-                    <th className="px-4 py-2 text-xs font-medium uppercase tracking-wider">
-                      {t("invoice-number")}
-                    </th>
-                    <th className="px-4 py-2 text-xs font-medium uppercase tracking-wider">
-                      {t("client")}
-                    </th>
-                    <th className="px-4 py-2 text-xs font-medium uppercase tracking-wider">
-                      {t("course")}
-                    </th>
-                    <th className="px-4 py-2 text-xs font-medium uppercase tracking-wider">
-                      {t("amount")}
-                    </th>
-                    <th className="px-4 py-2 text-xs font-medium uppercase tracking-wider">
-                      {t("status")}
-                    </th>
-                    <th className="px-4 py-2 text-xs font-medium uppercase tracking-wider">
-                      {t("created-date")}
-                    </th>
-                    <th className="px-4 py-2 text-xs font-medium uppercase tracking-wider">
-                      {t("service")}
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="bg-white divide-y divide-gray-200">
-                  {currentOrders.length > 0 ? (
-                    currentOrders.map((order, index) => (
-                      <tr
-                        key={index}
-                        className="hover:bg-gray-50 transition-colors duration-200"
-                      >
-                        <td className="px-4 py-2">
-                          {order.invoiceNumber || t("no-data")}
-                        </td>
-                        <td className="px-4 py-2">
-                          {order.clientName || t("no-data")}
-                        </td>
-                        <td className="px-4 py-2">
-                          {order.course_id?.title || t("no-data")}
-                        </td>
-                        <td className="px-4 py-2">
-                          {order.amount
-                            ? `${order.amount} ${t("currency")}`
-                            : t("no-data")}
-                        </td>
-                        <td className="px-4 py-2">
-                          {getStatusBadge(order.status)}
-                        </td>
-                        <td className="px-4 py-2">
-                          {order.create_time
-                            ? new Date(order.create_time).toLocaleDateString()
-                            : t("no-data")}
-                        </td>
-                        <td className="px-4 py-2">
-                          {order.paymentType ? order.paymentType : t("No service")}
-                        </td>
-                      </tr>
-                    ))
-                  ) : (
-                    <tr>
-                      <td colSpan="7" className="text-center py-4">
-                        {t("orders-not-found")}
-                      </td>
+          <div className="max-w-full overflow-x-auto shadow-md rounded-lg">
+            <table className="min-w-full table-auto text-xs md:text-sm text-left border border-gray-200">
+              <thead className="bg-gray-50 text-gray-600">
+                <tr>
+                  <th className="px-4 py-2 text-xs font-medium uppercase tracking-wider">{t("invoice-number")}</th>
+                  <th className="px-4 py-2 text-xs font-medium uppercase tracking-wider">{t("client")}</th>
+                  <th className="px-4 py-2 text-xs font-medium uppercase tracking-wider">{t("course")}</th>
+                  <th className="px-4 py-2 text-xs font-medium uppercase tracking-wider">{t("amount")}</th>
+                  <th className="px-4 py-2 text-xs font-medium uppercase tracking-wider">{t("status")}</th>
+                  <th className="px-4 py-2 text-xs font-medium uppercase tracking-wider">{t("created-date")}</th>
+                  <th className="px-4 py-2 text-xs font-medium uppercase tracking-wider">{t("service")}</th>
+                </tr>
+              </thead>
+              <tbody className="bg-white divide-y divide-gray-200">
+                {currentOrders.length > 0 ? (
+                  currentOrders.map((order, index) => (
+                    <tr key={index} className="hover:bg-gray-50 transition-colors duration-200 cursor-pointer" onClick={() => handleOrderClick(order)}>
+                      <td className="px-4 py-2 truncate">{order.invoiceNumber || t("no-data")}</td>
+                      <td className="px-4 py-2 truncate">{order.clientName || t("no-data")}</td>
+                      <td className="px-4 py-2 truncate">{order?.course_id?.title || t("no-data")}</td>
+                      <td className="px-4 py-2 truncate">{order.amount ? `${order.amount} ${t("currency")}` : t("no-data")}</td>
+                      <td className="px-4 py-2 text-xs truncate">{getStatusBadge(order.status)}</td>
+                      <td className="px-4 py-2 truncate">{order.create_time ? new Date(order.create_time).toLocaleDateString() : t("no-data")}</td>
+                      <td className="px-4 py-2 text-xs truncate">{order.paymentType || t("No service")}</td>
                     </tr>
-                  )}
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-          <div className="md:hidden">
-            {currentOrders.length > 0 ? (
-              currentOrders.map((order, index) => (
-                <div
-                  key={index}
-                  className="mb-4 p-4 border rounded-lg shadow-md bg-white"
-                >
-                  <p className="mb-2">
-                    <strong>{t("invoice-number")}:</strong>{" "}
-                    {order.invoiceNumber || t("no-data")}
-                  </p>
-                  <p className="mb-2">
-                    <strong>{t("client")}:</strong>{" "}
-                    {order.clientName || t("no-data")}
-                  </p>
-                  <p className="mb-2">
-                    <strong>{t("course")}:</strong>{" "}
-                    {order.course_id?.title || t("no-data")}
-                  </p>
-                  <p className="mb-2">
-                    <strong>{t("amount")}:</strong>{" "}
-                    {order.amount
-                      ? `${order.amount} ${t("currency")}`
-                      : t("no-data")}
-                  </p>
-                  <p className="mb-2">
-                    <strong>{t("status")}:</strong>{" "}
-                    {getStatusBadge(order.status)}
-                  </p>
-                  <p className="mb-2">
-                    <strong>{t("created-date")}:</strong>{" "}
-                    {order.create_time
-                      ? new Date(order.create_time).toLocaleDateString()
-                      : t("no-data")}
-                  </p>
-                  <p className="mb-2">
-                    <strong>{t("service")}:</strong>{" "}
-                    {order.paymentType || t("service is not defined")}
-                  </p>
-                </div>
-              ))
-            ) : (
-              <div className="text-center py-4">{t("orders-not-found")}</div>
-            )}
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="7" className="text-center py-4">{t("orders-not-found")}</td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
           </div>
         </div>
       )}
 
+      {/* DaisyUI Modal */}
+      {selectedOrder && (
+        <div className="modal modal-open">
+          <div className="modal-box">
+            <h3 className="font-bold text-lg">{t("order-details")}</h3>
+            <p><strong>{t("invoice-number")}:</strong> {selectedOrder.invoiceNumber || t("no-data")}</p>
+            <p><strong>{t("client")}:</strong> {selectedOrder.clientName || t("no-data")}</p>
+            <p><strong>{t("course")}:</strong> {selectedOrder?.course_id?.title || t("no-data")}</p>
+            <p><strong>{t("amount")}:</strong> {selectedOrder.amount ? `${selectedOrder.amount} ${t("currency")}` : t("no-data")}</p>
+            <p><strong>{t("status")}:</strong> {getStatusBadge(selectedOrder.status)}</p>
+            <p><strong>{t("created-date")}:</strong> {selectedOrder.create_time ? new Date(selectedOrder.create_time).toLocaleDateString() : t("no-data")}</p>
+            <p><strong>{t("service")}:</strong> {selectedOrder.paymentType || t("service is not defined")}</p>
+            <div className="modal-action">
+              <button className="btn" onClick={closeModal}>{t("close")}</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Pagination */}
       {totalPages > 1 && (
         <div className="flex justify-center mt-4">
-          <nav className="flex items-center w-full justify-between space-x-2">
+          <nav className="flex items-center flex-wrap justify-between space-x-2 w-full">
             <button
               onClick={() => handlePageChange(currentPage - 1)}
               className="px-3 py-1 border rounded-md text-sm md:text-base"
@@ -286,22 +213,38 @@ const Home = () => {
             >
               {t("pagination-previous")}
             </button>
-
-            <div className="flex gap-1 md:gap-2">
-              {Array.from({ length: totalPages }, (_, index) => (
-                <button
-                  key={index}
-                  onClick={() => handlePageChange(index + 1)}
-                  className={`px-2 py-1 border rounded-md text-sm md:px-3 md:py-1 md:text-base ${currentPage === index + 1
-                    ? "bg-blue-500 text-white"
-                    : "bg-white text-gray-700"
-                    }`}
-                >
-                  {index + 1}
-                </button>
-              ))}
+            <div className="flex flex-wrap gap-1 md:gap-2">
+              {Array.from({ length: totalPages }, (_, index) => {
+                const page = index + 1;
+                const isNearStart = page <= 5;
+                const isNearEnd = page > totalPages - 5;
+                const isAroundCurrent =
+                  page >= currentPage - 1 && page <= currentPage + 1;
+                if (isNearStart || isNearEnd || isAroundCurrent) {
+                  return (
+                    <button
+                      key={page}
+                      onClick={() => handlePageChange(page)}
+                      className={`px-2 py-1 border rounded-md text-sm md:px-3 md:py-1 md:text-base ${
+                        currentPage === page
+                          ? "bg-blue-500 text-white"
+                          : "bg-white text-gray-700"
+                      }`}
+                    >
+                      {page}
+                    </button>
+                  );
+                } else if (
+                  (page === 6 && currentPage > 6) ||
+                  (page === totalPages - 5 && currentPage < totalPages - 5)
+                ) {
+                  return (
+                    <span key={page} className="px-2 py-1">...</span>
+                  );
+                }
+                return null;
+              })}
             </div>
-
             <button
               onClick={() => handlePageChange(currentPage + 1)}
               className="px-3 py-1 border rounded-md text-sm md:text-base"
@@ -312,7 +255,6 @@ const Home = () => {
           </nav>
         </div>
       )}
-
     </div>
   );
 };

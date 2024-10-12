@@ -13,8 +13,8 @@ const Sidebar = ({ user }) => {
   return (
     <section className="sidebar min-w-[100%] z-50">
       <nav className="flex flex-col gap-4 z-50">
-        <div className='flex'  >
-        <Link to="/" className="mb-12 flex items-center gap-2" >
+        <div className='flex flex-col lg:flex-row'>
+        <Link to="/" className="lg:mb-12 flex items-center gap-2" >
           <img
             src="/norbekov-logo.png"
             width={64}
