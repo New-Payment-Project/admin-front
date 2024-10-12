@@ -4,7 +4,9 @@ import { useTranslation } from 'react-i18next';
 const CreateIndividualLink = () => {
   const [courses, setCourses] = useState([]);
   const [selectedCourse, setSelectedCourse] = useState(null);
-  const { t } = useTranslation()
+  const [showLinkInput, setShowLinkInput] = useState(false); // State to show/hide the link input
+  const [copied, setCopied] = useState(false); // State to track if the link is copied
+  const { t } = useTranslation();
 
   useEffect(() => {
     const fetchCourses = async () => {
@@ -22,16 +24,27 @@ const CreateIndividualLink = () => {
 
   const handleCourseChange = (event) => {
     const courseId = event.target.value;
-    const course = courses.find(c => c._id === courseId);
+    const course = courses.find((c) => c._id === courseId);
     setSelectedCourse(course);
+    setShowLinkInput(false); // Reset link input when changing courses
   };
 
   const handleCreateLink = () => {
     if (selectedCourse) {
-      alert(`Individual link created for ${selectedCourse.title}`);
-    } else {
-      alert('Please select a course first');
+      setShowLinkInput(true); // Show the link input when button is clicked
     }
+  };
+
+  const handleCopyLink = () => {
+    const linkInput = document.getElementById('courseLinkInput');
+    linkInput.select();
+    document.execCommand('copy');
+    setCopied(true); // Show the green checkmark
+
+    // Hide the checkmark after 3 seconds
+    setTimeout(() => {
+      setCopied(false);
+    }, 3000);
   };
 
   return (
@@ -58,7 +71,9 @@ const CreateIndividualLink = () => {
                 onChange={handleCourseChange}
                 defaultValue=""
               >
-                <option value="" disabled>{t('choose-course')}</option>
+                <option value="" disabled>
+                  {t('choose-course')}
+                </option>
                 {courses.map((course) => (
                   <option key={course._id} value={course._id}>
                     {course.title}
@@ -91,12 +106,67 @@ const CreateIndividualLink = () => {
               </div>
             )}
 
-            <button
-              onClick={handleCreateLink}
-              className="w-full px-4 py-3 text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-300"
-            >
-              {t('create-individual-link')}
-            </button>
+            {!showLinkInput && (
+              <button
+                onClick={handleCreateLink}
+                className="w-full px-4 py-3 text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-300"
+              >
+                {t('create-individual-link')}
+              </button>
+            )}
+
+            {showLinkInput && selectedCourse && (
+              <div className="mt-4 space-y-2">
+                <label htmlFor="courseLinkInput" className="block text-sm font-medium text-gray-700">
+                  {t('generated-link')}:
+                </label>
+                <div className="relative">
+                  <input
+                    type="text"
+                    id="courseLinkInput"
+                    className="block w-full px-4 py-3 text-gray-700 bg-gray-100 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    value={`http://174.138.43.233:3000/${selectedCourse.route}`}
+                    readOnly
+                  />
+                  <button
+                    onClick={handleCopyLink}
+                    className="absolute inset-y-0 right-0 px-4 py-2 text-gray-700 bg-gray-200 hover:bg-gray-300 rounded-r-lg focus:outline-none"
+                  >
+                    {copied ? (
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth={2}
+                        stroke="green"
+                        className="w-6 h-6"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M5 13l4 4L19 7"
+                        />
+                      </svg>
+                    ) : (
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth={1.5}
+                        stroke="currentColor"
+                        className="w-6 h-6"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M16.5 7.5V6.75A2.25 2.25 0 0014.25 4.5h-7.5A2.25 2.25 0 004.5 6.75v10.5a2.25 2.25 0 002.25 2.25h7.5a2.25 2.25 0 002.25-2.25V16.5m-6-7.5h7.5M9 12h7.5M6 16.5h7.5"
+                        />
+                      </svg>
+                    )}
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
 
           <div className="modal-action">
