@@ -48,7 +48,9 @@ const CreateCourse = () => {
         }
       );
   
-      if (response.ok) {
+      if (response.status === 409) {
+        toast.error(t("course-route-exists"));
+      } else if (response.ok) {
         toast.success(t("course-success"));
         setCourseData({
           title: "",
@@ -58,7 +60,7 @@ const CreateCourse = () => {
           route: "",
           prefix: ""
         });
-        setPrefix("");  
+        setPrefix("");
         setShowPrefixInput(false);
       } else {
         toast.error(t("course-error"));
@@ -69,6 +71,7 @@ const CreateCourse = () => {
       setLoading(false);
     }
   };
+  
   
 
   return (
@@ -121,7 +124,7 @@ const CreateCourse = () => {
         <div
           className={`${
             showPrefixInput ? "max-h-28 opacity-100" : "max-h-0 opacity-0"
-          } transition-all duration-500 ease-in-out overflow-hidden mt-4`}
+          } transition-all duration-500 ease-in-out overflow-hidden mt-4 py-1 px-[3px]`}
         >
           <label className="label">
             <span className="label-text font-semibold text-gray-700">{t("course-prefix")}</span>
@@ -135,11 +138,11 @@ const CreateCourse = () => {
           />
         </div>
 
-        <div className="flex gap-4 justify-end">
+        <div className="flex gap-4 justify-end flex-col md:flex-row">
           <button
             type="button"
             onClick={() => setShowPrefixInput(!showPrefixInput)}
-            className={`w-1/4 text-white font-semibold py-3 rounded-lg flex justify-center items-center ${
+            className={`md:w-1/4 w-full text-white font-semibold py-3 rounded-lg flex justify-center items-center ${
               showPrefixInput
                 ? "bg-red-600 hover:bg-red-700 focus:ring-red-400"
                 : "bg-blue-600 hover:bg-blue-700 focus:ring-blue-400"
@@ -150,7 +153,7 @@ const CreateCourse = () => {
 
           <button
             type="submit"
-            className="w-1/4  text-white font-semibold py-3 rounded-lg  focus:outline-none focus:ring-4  bg-green-600 hover:bg-green-700 focus:ring-green-400 flex justify-center items-center"
+            className="md:w-1/4 w-full  text-white font-semibold py-3 rounded-lg  focus:outline-none focus:ring-4  bg-green-600 hover:bg-green-700 focus:ring-green-400 flex justify-center items-center"
             disabled={loading}
           >
             {loading ? (

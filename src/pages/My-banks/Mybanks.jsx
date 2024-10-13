@@ -3,16 +3,15 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 
 const BankCard = ({ card }) => {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
   const getCardStyle = (issuer) => {
     switch (issuer) {
       case "Payme":
         return "bg-gradient-to-r from-blue-400 to-accent";
       case "Click":
-        return "bg-gradient-to-r from-green-500 to-green-800";
+        return "bg-gradient-to-r from-blue-500 to-blue-800";
       case "Uzum Bank":
-   
-        return "bg-gradient-to-r from-red-400 to-orange-800";
+        return "bg-gradient-to-r from-purple-400 to-purple-800";
       default:
         return "bg-gradient-to-r from-gray-500 to-gray-700";
     }
@@ -20,7 +19,7 @@ const BankCard = ({ card }) => {
 
   return (
     <div
-      className={`w-full max-w-[280px] h-44 rounded-xl overflow-hidden ${getCardStyle(
+      className={`w-full h-44 rounded-xl overflow-hidden ${getCardStyle(
         card.issuer
       )} text-white shadow-xl`}
     >
@@ -29,12 +28,12 @@ const BankCard = ({ card }) => {
           <img
             src={card.icon}
             alt={card.issuer}
-            className="w-10 h-10 object-contain" 
+            className="w-20 h-20 object-contain" 
           />
           <span className="text-lg font-bold">{card.issuer}</span>
         </div>
        
-        <div className="flex justify-end items-center  gap-2 font-bold font-mono">
+        <div className="flex justify-end items-center gap-2 font-bold font-mono">
           <span>
             {Math.floor(card.price)
               .toString() 
@@ -53,21 +52,20 @@ export default function Component() {
       issuer: "Payme",
       name: "Norbekov Abduvaliy",
       icon: "https://api.logobank.uz/media/logos_png/payme-01.png",
-      price: "10000000000000",
+      price: "0",
     },
     {
       issuer: "Click",
       name: "Norbekov Abduvaliy",
       icon: "https://pr.uz/wp-content/uploads/2023/04/click-01.png",
-      price: "1500000000000",
+      price: "0",
     },
     {
       issuer: "Uzum Bank",
       name: "Norbekov Abduvaliy",
       icon: "https://depozit.uz/image_uploads/banks/55/original/1f135319fd6cc7502052a2a5b74831b5_webp.webp",
-      price: "1500000009999",
+      price: "9",
     },
-  
   ];
 
   const [cards] = useState(initialCards);

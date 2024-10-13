@@ -2,14 +2,16 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import CreateIndividualLink from "../../components/CreateIndividualLink";
 import { useTranslation } from "react-i18next";
+import Pagination from "../../components/Pagination/Pagination"; // Import your Pagination component
 
 const CoursesTable = () => {
   const [courses, setCourses] = useState([]);
   const [filteredCourses, setFilteredCourses] = useState([]);
+  const [successfulPurchases, setSuccessfulPurchases] = useState({});
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [itemsPerPage] = useState(5);
+  const [itemsPerPage] = useState(5); // Can make this dynamic if needed
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -30,6 +32,39 @@ const CoursesTable = () => {
     fetchCourses();
   }, []);
 
+  useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        const response = await axios.get(
+          `${process.env.REACT_APP_API_URL}/orders`
+        );
+        const orders = response.data.data;
+
+        // Filter for successful orders (based on the status being "ОПЛАЧЕНО")
+        const successfulOrders = orders.filter(
+          (order) => order.status === "ОПЛАЧЕНО"
+        );
+
+        // Calculate the number of successful orders for each course
+        const successfulOrdersCount = {};
+        courses.forEach((course) => {
+          const courseOrders = successfulOrders.filter(
+            (order) => order.course_id.title === course.title // Matching based on course title
+          );
+          successfulOrdersCount[course.title] = courseOrders.length;
+        });
+
+        setSuccessfulPurchases(successfulOrdersCount);
+      } catch (err) {
+        console.error("Failed to fetch orders:", err);
+      }
+    };
+
+    if (courses.length > 0) {
+      fetchOrders();
+    }
+  }, [courses]);
+
   const totalPages = Math.ceil(filteredCourses.length / itemsPerPage);
   const currentCourses = filteredCourses.slice(
     (currentPage - 1) * itemsPerPage,
@@ -41,8 +76,6 @@ const CoursesTable = () => {
       setCurrentPage(pageNumber);
     }
   };
-
-  const progress = (currentPage / totalPages) * 100;
 
   return (
     <div className="px-4 md:px-8 py-2">
@@ -70,6 +103,9 @@ const CoursesTable = () => {
                     <th className="px-4 py-2 text-xs font-medium uppercase tracking-wider">
                       {t("table-course-route")}
                     </th>
+                    <th className="px-4 py-2 text-xs font-medium uppercase tracking-wider">
+                      {t("table-successful-purchases")}
+                    </th>
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
@@ -81,6 +117,9 @@ const CoursesTable = () => {
                           {course.price} {t("currency")}
                         </td>
                         <td className="px-4 py-2">{course.route}</td>
+                        <td className="px-4 py-2">
+                          {successfulPurchases[course.title] || 0}
+                        </td>
                       </tr>
                     ))
                   ) : (
@@ -110,6 +149,10 @@ const CoursesTable = () => {
                   <p className="text-sm text-gray-600">
                     {t("table-course-route")}: {course.route}
                   </p>
+                  <p className="text-sm text-gray-600 flex">
+                    {t("table-successful-purchases")}:{" "}
+                    {successfulPurchases[course.title] || 0}
+                  </p>
                 </div>
               ))
             ) : (
@@ -117,50 +160,13 @@ const CoursesTable = () => {
             )}
           </div>
 
-          {/* Progress Bar for Mobile */}
-          <div className="block md:hidden my-4">
-            <div className="w-full bg-gray-200 rounded-full h-2">
-              <div
-                className="bg-blue-500 h-2 rounded-full"
-                style={{ width: `${progress}%` }}
-              ></div>
-            </div>
-          </div>
-
           {/* Pagination */}
-          <div className="flex justify-between items-center mt-4">
-            <button
-              onClick={() => handlePageChange(currentPage - 1)}
-              disabled={currentPage === 1}
-              className="px-3 py-1 bg-white text-gray-600 border rounded disabled:opacity-50 flex items-center gap-2"
-            >
-              {t("pagination-previous")}
-            </button>
-
-            <div className="flex space-x-2">
-              {[...Array(totalPages)].map((_, index) => (
-                <button
-                  key={index + 1}
-                  onClick={() => handlePageChange(index + 1)}
-                  className={`px-3 py-1 border rounded ${
-                    currentPage === index + 1
-                      ? "bg-blue-500 text-white"
-                      : "bg-white text-gray-600"
-                  }`}
-                >
-                  {index + 1}
-                </button>
-              ))}
-            </div>
-
-            <button
-              onClick={() => handlePageChange(currentPage + 1)}
-              disabled={currentPage === totalPages}
-              className="px-3 py-1 bg-white text-gray-600 border rounded disabled:opacity-50 flex items-center gap-2"
-            >
-              {t("pagination-next")}
-            </button>
-          </div>
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            handlePageChange={handlePageChange}
+            t={t}
+          />
         </div>
       )}
     </div>

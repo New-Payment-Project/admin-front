@@ -26,7 +26,7 @@ const OrderTable = ({ currentOrders, t, getStatusBadge, renderLogo, handleItemsP
               </tr>
             ))}
             <tr>
-              <td colSpan="7" className="text-right p-2">
+              <td colSpan="7" className="text-right p-3">
                 <select value={itemsPerPage} onChange={handleItemsPerPageChange} className="select select-bordered w-full max-w-20">
                   <option value={10}>10</option>
                   <option value={50}>50</option>

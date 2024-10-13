@@ -72,7 +72,7 @@
     "filter-service": "Xizmat bo'yicha filtr",
     "filter-date": "Sana bo'yicha filtr",
     "all-services": "Barcha xizmatlar",
-    "cancelled": "Bekor qilingan",
+    "cancelled": "BEKOR QLILINGAN",
     "service": "Xizmat",
     "hide-prefix": "Prefiks kiritish maydonini yashirish",
     "add-prefix": "Prefiks kiritish maydonini ochish",
@@ -82,5 +82,9 @@
     "Click": "Click",
     "Uzum": "Uzum",
     "filter-course-name": "Kurs nomi bo'yicha filtrlash",
-    "all-courses": "Barcha kurslar"
+    "all-courses": "Barcha kurslar",
+    "course-route-exists": "Bunday marshrut bilan kurs mavjud!",
+    "table-successful-purchases": "Sotilish miqdori",
+    "no-service": "Xizmat yo'q",
+    "pagination-page": "Sahifa"
   }

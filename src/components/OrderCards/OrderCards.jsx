@@ -1,6 +1,7 @@
-const OrderCards = ({ currentOrders, getStatusBadge, renderLogo, t }) => {
-    return (
-      <div className="md:hidden grid grid-cols-1 gap-4">
+const OrderCards = ({ currentOrders, getStatusBadge, renderLogo, t, handleItemsPerPageChange, itemsPerPage }) => {
+  return (
+    <div className="md:hidden">
+      <div className="grid grid-cols-1 gap-4">
         {currentOrders.length > 0 ? (
           currentOrders.map((order, index) => (
             <div key={index} className="bg-white p-4 rounded shadow-md">
@@ -19,8 +20,22 @@ const OrderCards = ({ currentOrders, getStatusBadge, renderLogo, t }) => {
           <div className="text-center py-4">{t("orders-not-found")}</div>
         )}
       </div>
-    );
-  };
-  
-  export default OrderCards;
-  
+
+      {/* Items per page dropdown */}
+      <div className="flex justify-end mt-4">
+        <select
+          value={itemsPerPage}
+          onChange={handleItemsPerPageChange}
+          className="select select-bordered w-full"
+        >
+          <option value={10}>10</option>
+          <option value={50}>50</option>
+          <option value={100}>100</option>
+          <option value={200}>200</option>
+        </select>
+      </div>
+    </div>
+  );
+};
+
+export default OrderCards;

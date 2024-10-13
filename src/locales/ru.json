@@ -87,6 +87,10 @@
     "Click": "Click",
     "Uzum": "Uzum",
     "filter-course-name": "Фильтр по названию курса",
-    "all-courses": "Все курсы"
+    "all-courses": "Все курсы",
+    "course-route-exists": "Курс с таким маршрутом уже существует!",
+    "table-successful-purchases": "Количество покупок",
+    "no-service": "Нет сервиса",
+    "pagination-page": "Страница"
     }
   

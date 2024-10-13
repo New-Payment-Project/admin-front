@@ -27,7 +27,9 @@ const Home = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await axios.get(`${process.env.REACT_APP_API_URL}/orders`);
+        const response = await axios.get(
+          `${process.env.REACT_APP_API_URL}/orders`
+        );
         setOrders(response.data.data);
         setFilteredOrders(response.data.data);
         setLoading(false);
@@ -39,7 +41,9 @@ const Home = () => {
 
     const fetchCourses = async () => {
       try {
-        const response = await axios.get(`${process.env.REACT_APP_API_URL}/courses`);
+        const response = await axios.get(
+          `${process.env.REACT_APP_API_URL}/courses`
+        );
         setCourses(response.data);
       } catch (error) {
         console.error("Error fetching courses:", error);
@@ -59,7 +63,9 @@ const Home = () => {
     }
 
     if (paymentTypeFilter) {
-      filtered = filtered.filter((order) => order.paymentType === paymentTypeFilter);
+      filtered = filtered.filter(
+        (order) => order.paymentType === paymentTypeFilter
+      );
     }
 
     if (startDate && endDate) {
@@ -73,14 +79,21 @@ const Home = () => {
     }
 
     if (courseNameFilter) {
-      filtered = filtered.filter((order) =>
-        order.course_id?.title === courseNameFilter
+      filtered = filtered.filter(
+        (order) => order.course_id?.title === courseNameFilter
       );
     }
 
     setFilteredOrders(filtered);
     setCurrentPage(1);
-  }, [statusFilter, paymentTypeFilter, startDate, endDate, courseNameFilter, orders]);
+  }, [
+    statusFilter,
+    paymentTypeFilter,
+    startDate,
+    endDate,
+    courseNameFilter,
+    orders,
+  ]);
 
   const totalPages = Math.ceil(filteredOrders.length / itemsPerPage);
 
@@ -105,13 +118,29 @@ const Home = () => {
   const getStatusBadge = (status) => {
     switch (status) {
       case "НЕ ОПЛАЧЕНО":
-        return <span className="px-2 py-1 rounded bg-red-100 text-red-700 text-[10px] font-semibold">{t("failed")}</span>;
+        return (
+          <span className="px-2 py-1 rounded bg-red-100 text-red-700 text-[10px] font-semibold">
+            {t("failed")}
+          </span>
+        );
       case "ВЫСТАВЛЕНО":
-        return <span className="px-2 py-1 rounded bg-yellow-100 text-yellow-700 text-[10px] font-semibold">{t("process")}</span>;
+        return (
+          <span className="px-2 py-1 rounded bg-yellow-100 text-yellow-700 text-[10px] font-semibold">
+            {t("process")}
+          </span>
+        );
       case "ОПЛАЧЕНО":
-        return <span className="px-2 py-1 rounded bg-green-100 text-green-700 text-[10px] font-semibold">{t("success")}</span>;
+        return (
+          <span className="px-2 py-1 rounded bg-green-100 text-green-700 text-[10px] font-semibold">
+            {t("success")}
+          </span>
+        );
       case "ОТМЕНЕНО":
-        return <span className="px-2 py-1 rounded bg-red-500 text-red-100 text-[10px] font-semibold">{t("cancelled")}</span>;
+        return (
+          <span className="px-2 py-1 rounded bg-red-500 text-red-100 text-[10px] font-semibold">
+            {t("cancelled")}
+          </span>
+        );
       default:
         return <span>{t("no-data")}</span>;
     }
@@ -122,11 +151,15 @@ const Home = () => {
       case "Payme":
         return <img src="/payme.png" alt="Payme Logo" className="w-12 h-4" />;
       case "Click":
-        return <img src="/click.png" alt="Click Logo" className="w-12 h-[14px]" />;
+        return (
+          <img src="/click.png" alt="Click Logo" className="w-12 h-[14px]" />
+        );
       case "Uzum":
-        return <img src="/uzum-bank.png" alt="Uzum Bank Logo" className="w-12 h-4" />;
+        return (
+          <img src="/uzum-bank.png" alt="Uzum Bank Logo" className="w-12 h-4" />
+        );
       default:
-        return <span>{t("No service")}</span>;
+        return <span>{t("no-service")}</span>;
     }
   };
 
@@ -163,11 +196,30 @@ const Home = () => {
             handleItemsPerPageChange={handleItemsPerPageChange}
             itemsPerPage={itemsPerPage}
           />
-          <OrderCards currentOrders={currentOrders} getStatusBadge={getStatusBadge} renderLogo={renderLogo} t={t} />
-          <Pagination currentPage={currentPage} totalPages={totalPages} handlePageChange={handlePageChange} t={t} />
+          <OrderCards
+            currentOrders={currentOrders}
+            getStatusBadge={getStatusBadge}
+            renderLogo={renderLogo}
+            t={t}
+            handleItemsPerPageChange={handleItemsPerPageChange}
+            itemsPerPage={itemsPerPage}
+          />
+
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            handlePageChange={handlePageChange}
+            t={t}
+          />
         </>
       )}
-      <OrderDetailsModal selectedOrder={selectedOrder} t={t} getStatusBadge={getStatusBadge} renderLogo={renderLogo} closeModal={closeModal} />
+      <OrderDetailsModal
+        selectedOrder={selectedOrder}
+        t={t}
+        getStatusBadge={getStatusBadge}
+        renderLogo={renderLogo}
+        closeModal={closeModal}
+      />
     </div>
   );
 };
