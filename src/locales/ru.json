@@ -91,6 +91,8 @@
     "course-route-exists": "Курс с таким маршрутом уже существует!",
     "table-successful-purchases": "Количество покупок",
     "no-service": "Нет сервиса",
-    "pagination-page": "Страница"
+    "pagination-page": "Страница",
+    "course-list": "Список курсов",
+    "generated-link": "Созданная ссылка"
     }
   

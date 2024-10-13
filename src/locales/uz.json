@@ -86,5 +86,8 @@
     "course-route-exists": "Bunday marshrut bilan kurs mavjud!",
     "table-successful-purchases": "Sotilish miqdori",
     "no-service": "Xizmat yo'q",
-    "pagination-page": "Sahifa"
+    "pagination-page": "Sahifa",
+    "course-list": "Kurslar ro'yhati",
+    "generated-link": "Yaratilgan havola"
+
   }

@@ -15,23 +15,26 @@ const Home = () => {
   const [error, setError] = useState(null);
   const [statusFilter, setStatusFilter] = useState("");
   const [paymentTypeFilter, setPaymentTypeFilter] = useState("");
-  const [startDate, setStartDate] = useState(""); // Start date for period filtering
-  const [endDate, setEndDate] = useState(""); // End date for period filtering
-  const [courseNameFilter, setCourseNameFilter] = useState(""); // Course filter
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+  const [courseNameFilter, setCourseNameFilter] = useState("");
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [itemsPerPage, setItemsPerPage] = useState(10);
-  const [courses, setCourses] = useState([]); // All available courses
+  const [courses, setCourses] = useState([]);
   const { t } = useTranslation();
 
-  // Fetch orders and courses
   useEffect(() => {
     const fetchOrders = async () => {
       try {
         const response = await axios.get(
           `${process.env.REACT_APP_API_URL}/orders`
         );
-        setOrders(response.data.data);
-        setFilteredOrders(response.data.data);
+
+        const reversedOrders = response.data.data.reverse();
+
+        setOrders(reversedOrders);
+        console.log(reversedOrders);
+        setFilteredOrders(reversedOrders);
         setLoading(false);
       } catch (err) {
         setError(t("fetch-failed"));
@@ -54,7 +57,14 @@ const Home = () => {
     fetchCourses();
   }, [t]);
 
-  // Apply filters
+  const handleNewOrder = (newOrder) => {
+    setOrders((prevOrders) => [newOrder, ...prevOrders]);
+
+    setFilteredOrders((prevFilteredOrders) => [newOrder, ...prevFilteredOrders]);
+
+    setCurrentPage(1);
+  };
+
   useEffect(() => {
     let filtered = orders;
 
@@ -166,6 +176,7 @@ const Home = () => {
   return (
     <div className="px-4 md:px-8 py-2">
       <h1 className="text-2xl mb-2 font-semibold">{t("orders")}</h1>
+
       <Filter
         statusFilter={statusFilter}
         setStatusFilter={setStatusFilter}
@@ -175,9 +186,9 @@ const Home = () => {
         setStartDate={setStartDate}
         endDate={endDate}
         setEndDate={setEndDate}
-        courseNameFilter={courseNameFilter} // Pass course filter to Filter component
-        setCourseNameFilter={setCourseNameFilter} // Pass setter for course filter
-        courses={courses} // Pass available courses to Filter component
+        courseNameFilter={courseNameFilter}
+        setCourseNameFilter={setCourseNameFilter}
+        courses={courses}
         t={t}
       />
       {loading ? (
