@@ -118,7 +118,6 @@ const CreateCourse = () => {
           required
         />
 
-        {/* Animated Prefix Input */}
         <div
           className={`${
             showPrefixInput ? "max-h-28 opacity-100" : "max-h-0 opacity-0"
@@ -137,7 +136,6 @@ const CreateCourse = () => {
         </div>
 
         <div className="flex gap-4 justify-end">
-          {/* Conditionally render the buttons and input */}
           <button
             type="button"
             onClick={() => setShowPrefixInput(!showPrefixInput)}

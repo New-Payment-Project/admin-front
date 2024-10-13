@@ -80,6 +80,13 @@
     "filter-date": "Фильтр по дате",
     "all-services": "Все сервисы",
     "service": "Сервис",
-    "hide-prefix": "Скрыть поле для префикса"
+    "hide-prefix": "Скрыть поле для префикса",
+    "filter-start-date": "Дата начала",
+    "filter-end-date": "Дата окончания",
+    "Payme": "Payme",
+    "Click": "Click",
+    "Uzum": "Uzum",
+    "filter-course-name": "Фильтр по названию курса",
+    "all-courses": "Все курсы"
     }
   
