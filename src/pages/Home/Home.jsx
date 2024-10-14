@@ -19,9 +19,13 @@ const Home = () => {
   const [courses, setCourses] = useState([]);
   const { t } = useTranslation();
 
-  const { statusFilter, paymentTypeFilter, startDate, endDate, courseNameFilter } = useSelector(
-    (state) => state.filter
-  );
+  const {
+    statusFilter,
+    paymentTypeFilter,
+    startDate,
+    endDate,
+    courseNameFilter,
+  } = useSelector((state) => state.filter);
 
   useEffect(() => {
     const fetchOrders = async () => {
@@ -43,7 +47,9 @@ const Home = () => {
 
     const fetchCourses = async () => {
       try {
-        const response = await axios.get(`${process.env.REACT_APP_API_URL}/courses`);
+        const response = await axios.get(
+          `${process.env.REACT_APP_API_URL}/courses`
+        );
         setCourses(response.data);
       } catch (error) {
         console.error("Error fetching courses:", error);
@@ -56,7 +62,10 @@ const Home = () => {
 
   const handleNewOrder = (newOrder) => {
     setOrders((prevOrders) => [newOrder, ...prevOrders]);
-    setFilteredOrders((prevFilteredOrders) => [newOrder, ...prevFilteredOrders]);
+    setFilteredOrders((prevFilteredOrders) => [
+      newOrder,
+      ...prevFilteredOrders,
+    ]);
     setCurrentPage(1);
   };
 
@@ -68,7 +77,9 @@ const Home = () => {
     }
 
     if (paymentTypeFilter) {
-      filtered = filtered.filter((order) => order.paymentType === paymentTypeFilter);
+      filtered = filtered.filter(
+        (order) => order.paymentType === paymentTypeFilter
+      );
     }
 
     if (startDate && endDate) {
@@ -82,16 +93,28 @@ const Home = () => {
     }
 
     if (courseNameFilter) {
-      filtered = filtered.filter((order) => order.course_id?.title === courseNameFilter);
+      filtered = filtered.filter(
+        (order) => order.course_id?.title === courseNameFilter
+      );
     }
 
     setFilteredOrders(filtered);
     setCurrentPage(1);
-  }, [statusFilter, paymentTypeFilter, startDate, endDate, courseNameFilter, orders]);
+  }, [
+    statusFilter,
+    paymentTypeFilter,
+    startDate,
+    endDate,
+    courseNameFilter,
+    orders,
+  ]);
 
   const totalPages = Math.ceil(filteredOrders.length / itemsPerPage);
 
-  const currentOrders = filteredOrders.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+  const currentOrders = filteredOrders.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
 
   const handlePageChange = (pageNumber) => {
     if (pageNumber >= 1 && pageNumber <= totalPages) {
@@ -142,9 +165,13 @@ const Home = () => {
       case "Payme":
         return <img src="/payme.png" alt="Payme Logo" className="w-12 h-4" />;
       case "Click":
-        return <img src="/click.png" alt="Click Logo" className="w-12 h-[14px]" />;
+        return (
+          <img src="/click.png" alt="Click Logo" className="w-12 h-[14px]" />
+        );
       case "Uzum":
-        return <img src="/uzum-bank.png" alt="Uzum Bank Logo" className="w-12 h-5" />;
+        return (
+          <img src="/uzum-bank.png" alt="Uzum Bank Logo" className="w-12 h-5" />
+        );
       default:
         return <span>{t("no-service")}</span>;
     }
@@ -170,7 +197,9 @@ const Home = () => {
             renderLogo={renderLogo}
             handleItemsPerPageChange={handleItemsPerPageChange}
             itemsPerPage={itemsPerPage}
+            setSelectedOrder={setSelectedOrder} // Pass the setSelectedOrder function
           />
+
           <OrderCards
             currentOrders={currentOrders}
             getStatusBadge={getStatusBadge}
