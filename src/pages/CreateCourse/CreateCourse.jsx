@@ -103,6 +103,9 @@ const CreateCourse = () => {
           name="price"
           value={courseData.price}
           onChange={handleInputChange}
+          style={{
+            MozAppearance: 'textfield',
+          }}
           placeholder={t("course-price-placeholder")}
           className="input input-bordered w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
           required

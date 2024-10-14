@@ -16,7 +16,7 @@ const TotalBalanceBox = ({ accoounts = [], totalBanks, totalCurrentBalance, load
             <DoughnutChart paymentData={paymentData} /> 
           )}
         </div>
-        <div className='flex flex-col gap-6 w-full md:w-1/2'>
+        <div className='flex flex-col gap-6 w-full'>
           <h2 className='header-2 xl:flex max-w-full'>
             {t('bank-accounts')}: {totalBanks}
           </h2>
@@ -24,11 +24,11 @@ const TotalBalanceBox = ({ accoounts = [], totalBanks, totalCurrentBalance, load
             <p className='total-balance-label'>
               {t('total-balance')}
             </p>
-            <div className='total-balance-amount flex-center gap-2'>
+            <div className='total-balance-amount w-full min-w-[100%] flex-center gap-2'>
               {loading ? (
                 <div className="skeleton h-8 w-full bg-gray-300 animate-pulse"></div>
               ) : (
-                <AnimatedCounter amount={totalCurrentBalance} />
+                <AnimatedCounter amount={totalCurrentBalance} /> // Display the total amount for the selected period
               )}
             </div>
           </div>

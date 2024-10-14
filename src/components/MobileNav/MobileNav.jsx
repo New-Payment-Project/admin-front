@@ -17,7 +17,6 @@ const MobileNav = ({ user }) => {
 
   return (
     <div className='min-w-screen min-h-full'>
-      {/* Hamburger Menu Icon */}
       <div className='flex items-center gap-2'>
         <img
           src='/icons/hamburger.svg'
@@ -30,9 +29,8 @@ const MobileNav = ({ user }) => {
       </div>
 
       <div
-        className={`fixed top-0 left-0 z-50 h-full w-64 bg-white shadow-lg flex flex-col justify-between transition-transform transform ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}
+        className={`fixed top-0 left-0 z-50 h-full w-64 bg-white shadow-lg flex flex-col justify-between  transition-transform transform ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}
       >
-        {/* Sidebar Content */}
         <div>
           <Link to="/" className="mb-12 flex items-center gap-1 px-4">
             <img
