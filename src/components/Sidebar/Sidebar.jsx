@@ -25,14 +25,14 @@ const Sidebar = ({ user }) => {
           </Link>
         </div>
 
-        <div className="flex flex-col">
+        <div className="flex flex-col gap-4">
           {sidebarLinks.map((item) => {
             const isActive = pathName === item.route || pathName.startsWith(`${item.route}/`);
             return (
               <Link
                 to={item.route}
                 key={item.label}
-                className={`sidebar-link ${isActive ? 'bg-bank-gradient' : ''}`}
+                className={`sidebar-link hover:bg-blue-100 hover:shadow hover:shadow-blue-300 duration-300 ${isActive ? 'bg-bank-gradient' : ''}`}
                 style={{ userSelect: 'none' }}
               >
                 <div className="flex relative w-6 h-6">
@@ -51,7 +51,6 @@ const Sidebar = ({ user }) => {
         </div>
       </nav>
 
-      {/* Move UserInfo and LanguageSwitcher to the bottom */}
       <div className="flex items-center gap-2">
         <UserInfo />
         <LanguageSwitcher />

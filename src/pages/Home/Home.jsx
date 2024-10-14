@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import Filter from "../../components/Filter/Filter";
 import OrderTable from "../../components/OrderTable/OrderTable";
@@ -13,15 +14,14 @@ const Home = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [statusFilter, setStatusFilter] = useState("");
-  const [paymentTypeFilter, setPaymentTypeFilter] = useState("");
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
-  const [courseNameFilter, setCourseNameFilter] = useState("");
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [courses, setCourses] = useState([]);
   const { t } = useTranslation();
+
+  const { statusFilter, paymentTypeFilter, startDate, endDate, courseNameFilter } = useSelector(
+    (state) => state.filter
+  );
 
   useEffect(() => {
     const fetchOrders = async () => {
@@ -31,9 +31,7 @@ const Home = () => {
         );
 
         const reversedOrders = response.data.data.reverse();
-
         setOrders(reversedOrders);
-        console.log(reversedOrders);
         setFilteredOrders(reversedOrders);
         setLoading(false);
       } catch (err) {
@@ -44,9 +42,7 @@ const Home = () => {
 
     const fetchCourses = async () => {
       try {
-        const response = await axios.get(
-          `${process.env.REACT_APP_API_URL}/courses`
-        );
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/courses`);
         setCourses(response.data);
       } catch (error) {
         console.error("Error fetching courses:", error);
@@ -59,12 +55,11 @@ const Home = () => {
 
   const handleNewOrder = (newOrder) => {
     setOrders((prevOrders) => [newOrder, ...prevOrders]);
-
     setFilteredOrders((prevFilteredOrders) => [newOrder, ...prevFilteredOrders]);
-
     setCurrentPage(1);
   };
 
+  // Применение фильтров к заказам
   useEffect(() => {
     let filtered = orders;
 
@@ -73,9 +68,7 @@ const Home = () => {
     }
 
     if (paymentTypeFilter) {
-      filtered = filtered.filter(
-        (order) => order.paymentType === paymentTypeFilter
-      );
+      filtered = filtered.filter((order) => order.paymentType === paymentTypeFilter);
     }
 
     if (startDate && endDate) {
@@ -89,28 +82,16 @@ const Home = () => {
     }
 
     if (courseNameFilter) {
-      filtered = filtered.filter(
-        (order) => order.course_id?.title === courseNameFilter
-      );
+      filtered = filtered.filter((order) => order.course_id?.title === courseNameFilter);
     }
 
     setFilteredOrders(filtered);
-    setCurrentPage(1);
-  }, [
-    statusFilter,
-    paymentTypeFilter,
-    startDate,
-    endDate,
-    courseNameFilter,
-    orders,
-  ]);
+    setCurrentPage(1); // Сброс страницы при изменении фильтров
+  }, [statusFilter, paymentTypeFilter, startDate, endDate, courseNameFilter, orders]);
 
   const totalPages = Math.ceil(filteredOrders.length / itemsPerPage);
 
-  const currentOrders = filteredOrders.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  );
+  const currentOrders = filteredOrders.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
   const handlePageChange = (pageNumber) => {
     if (pageNumber >= 1 && pageNumber <= totalPages) {
@@ -161,13 +142,9 @@ const Home = () => {
       case "Payme":
         return <img src="/payme.png" alt="Payme Logo" className="w-12 h-4" />;
       case "Click":
-        return (
-          <img src="/click.png" alt="Click Logo" className="w-12 h-[14px]" />
-        );
+        return <img src="/click.png" alt="Click Logo" className="w-12 h-[14px]" />;
       case "Uzum":
-        return (
-          <img src="/uzum-bank.png" alt="Uzum Bank Logo" className="w-12 h-4" />
-        );
+        return <img src="/uzum-bank.png" alt="Uzum Bank Logo" className="w-12 h-4" />;
       default:
         return <span>{t("no-service")}</span>;
     }
@@ -177,20 +154,7 @@ const Home = () => {
     <div className="px-4 md:px-8 py-2">
       <h1 className="text-2xl mb-2 font-semibold">{t("orders")}</h1>
 
-      <Filter
-        statusFilter={statusFilter}
-        setStatusFilter={setStatusFilter}
-        paymentTypeFilter={paymentTypeFilter}
-        setPaymentTypeFilter={setPaymentTypeFilter}
-        startDate={startDate}
-        setStartDate={setStartDate}
-        endDate={endDate}
-        setEndDate={setEndDate}
-        courseNameFilter={courseNameFilter}
-        setCourseNameFilter={setCourseNameFilter}
-        courses={courses}
-        t={t}
-      />
+      <Filter courses={courses} t={t} />
       {loading ? (
         <div className="text-center py-4 mx-auto">
           <span className="loading loading-spinner loading-lg"></span>
@@ -215,7 +179,6 @@ const Home = () => {
             handleItemsPerPageChange={handleItemsPerPageChange}
             itemsPerPage={itemsPerPage}
           />
-
           <Pagination
             currentPage={currentPage}
             totalPages={totalPages}
