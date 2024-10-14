@@ -64,7 +64,7 @@ export default function Component() {
       issuer: "Uzum Bank",
       name: "Norbekov Abduvaliy",
       icon: "https://depozit.uz/image_uploads/banks/55/original/1f135319fd6cc7502052a2a5b74831b5_webp.webp",
-      price: "9",
+      price: "0",
     },
   ];
 

@@ -19,7 +19,6 @@ const Home = () => {
   const [courses, setCourses] = useState([]);
   const { t } = useTranslation();
 
-  // Получаем фильтры из Redux
   const { statusFilter, paymentTypeFilter, startDate, endDate, courseNameFilter } = useSelector(
     (state) => state.filter
   );
@@ -27,9 +26,13 @@ const Home = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await axios.get(`${process.env.REACT_APP_API_URL}/orders`);
-        setOrders(response.data.data);
-        setFilteredOrders(response.data.data);
+        const response = await axios.get(
+          `${process.env.REACT_APP_API_URL}/orders`
+        );
+
+        const reversedOrders = response.data.data.reverse();
+        setOrders(reversedOrders);
+        setFilteredOrders(reversedOrders);
         setLoading(false);
       } catch (err) {
         setError(t("fetch-failed"));
@@ -50,7 +53,13 @@ const Home = () => {
     fetchCourses();
   }, [t]);
 
-  // Применение фильтров и вычисление отфильтрованных данных
+  const handleNewOrder = (newOrder) => {
+    setOrders((prevOrders) => [newOrder, ...prevOrders]);
+    setFilteredOrders((prevFilteredOrders) => [newOrder, ...prevFilteredOrders]);
+    setCurrentPage(1);
+  };
+
+  // Применение фильтров к заказам
   useEffect(() => {
     let filtered = orders;
 
@@ -144,6 +153,7 @@ const Home = () => {
   return (
     <div className="px-4 md:px-8 py-2">
       <h1 className="text-2xl mb-2 font-semibold">{t("orders")}</h1>
+
       <Filter courses={courses} t={t} />
       {loading ? (
         <div className="text-center py-4 mx-auto">

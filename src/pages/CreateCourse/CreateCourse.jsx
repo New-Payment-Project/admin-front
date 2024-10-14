@@ -20,6 +20,12 @@ const CreateCourse = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+
+    // Prevent negative numbers for the price input
+    if (name === "price" && value < 0) {
+      return; // Do nothing if the value is negative
+    }
+
     setCourseData({ ...courseData, [name]: value });
   };
 
@@ -30,12 +36,12 @@ const CreateCourse = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-  
+
     const finalCourseData = {
       ...courseData,
       prefix: prefix || ""
     };
-  
+
     try {
       const response = await fetch(
         `${process.env.REACT_APP_API_URL}/courses`,
@@ -47,7 +53,7 @@ const CreateCourse = () => {
           body: JSON.stringify(finalCourseData),
         }
       );
-  
+
       if (response.status === 409) {
         toast.error(t("course-route-exists"));
       } else if (response.ok) {
@@ -71,14 +77,12 @@ const CreateCourse = () => {
       setLoading(false);
     }
   };
-  
-  
 
   return (
     <div className="px-8 pb-12 bg-white rounded-lg shadow-lg max-w-full mx-auto">
       <ToastContainer />
 
-      <h1 className="text-4xl font-bold text-gray-800 mb-2">{t("create-course")}</h1>
+      <h1 className="text-2xl font-semibold text-gray-800 mb-2">{t("create-course")}</h1>
       <p className="text-gray-600 mb-4">{t("course-desc")}</p>
 
       <form onSubmit={handleSubmit} className="space-y-2">
