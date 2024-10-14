@@ -104,6 +104,9 @@ const CoursesTable = () => {
                       {t("table-course-title")}
                     </th>
                     <th className="px-4 py-2 text-xs font-medium uppercase tracking-wider">
+                      {t("table-course-prefix")}
+                    </th>
+                    <th className="px-4 py-2 text-xs font-medium uppercase tracking-wider">
                       {t("table-course-price")}
                     </th>
                     <th className="px-4 py-2 text-xs font-medium uppercase tracking-wider">
@@ -119,6 +122,7 @@ const CoursesTable = () => {
                     currentCourses.map((course, index) => (
                       <tr key={index} className="hover:bg-gray-50">
                         <td className="px-4 py-2">{course.title}</td>
+                        <td className="px-4 py-2">{course.prefix}</td>
                         <td className="px-4 py-2">
                           {course.price} {t("currency")}
                         </td>
@@ -140,7 +144,6 @@ const CoursesTable = () => {
             </div>
           </div>
 
-          {/* Card layout for mobile screens */}
           <div className="block md:hidden">
             {currentCourses.length > 0 ? (
               currentCourses.map((course, index) => (

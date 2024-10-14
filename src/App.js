@@ -70,7 +70,7 @@ const App = () => {
   }, [startDate, endDate, orders, dispatch]);
 
   const loggedIn = { firstname: 'Asilbek', lastName: 'Karimov' };
-  const name = localStorage.getItem('name') || 'Guest';
+  const name = 'Norbekov';
 
   const nameAnimation = {
     hidden: { opacity: 0, x: -50 },

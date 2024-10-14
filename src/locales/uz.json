@@ -91,5 +91,11 @@
     "generated-link": "Yaratilgan havola",
     "order-details": "Buyurtma detallari",
     "login-required": "Login kiriting",
-    "password-required": "Parol kiriting"
+    "password-required": "Parol kiriting",
+    "language-change": "O'zbek",
+    "client-phone": "Mijoz telefoni",
+    "client-address": "Mijoz manzili",
+    "tg-username": "Telegram foydalanuvchi nomi",
+    "passport": "Pasport",
+    "table-course-prefix": "Prefix"
   }

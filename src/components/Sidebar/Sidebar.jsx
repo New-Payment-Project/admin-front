@@ -19,7 +19,7 @@ const Sidebar = ({ user }) => {
               width={64}
               height={64}
               alt="Logo"
-              className="w-16 h-16 max-xl:w-14 max-xl:h-14"
+              className="w-16 xl:h-16 max-xl:w-14 max-xl:h-14 md:h-12"
             />
             <h1 className="sidebar-logo">Norbekov</h1>
           </Link>
@@ -51,9 +51,11 @@ const Sidebar = ({ user }) => {
         </div>
       </nav>
 
-      <div className="flex items-center gap-2">
-        <UserInfo />
+      <div className="flex flex-col items-start gap-2">
         <LanguageSwitcher />
+        <div className='hidden lg:block'>
+        <UserInfo />
+        </div>
       </div>
     </section>
   );

@@ -71,9 +71,9 @@ const MobileNav = ({ user }) => {
         </div>
 
         {/* Bottom Section: LanguageSwitcher and UserInfo */}
-        <div className="py-4 flex items-center">
-          <UserInfo user={user} />
+        <div className="py-4 flex flex-col items-start">
           <LanguageSwitcher />
+          <UserInfo user={user} />
         </div>
       </div>
     </div>

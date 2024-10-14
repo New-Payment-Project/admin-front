@@ -97,6 +97,12 @@
     "order-details": "Детали заказа",
     "login-required": "Введите логин",
     "password-required": "Введите пароль",
-    "login-failed-invalid": "Неверный логин или пароль"
+    "login-failed-invalid": "Неверный логин или пароль",
+    "language-change": "Русский",
+    "client-phone": "Телефон клиента",
+    "client-address": "Адрес клиента",
+    "tg-username": "Телеграм имя пользователя",
+    "passport": "Паспорт",
+    "table-course-prefix": "Префикс"
     }
   
