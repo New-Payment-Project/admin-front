@@ -4,8 +4,9 @@ import { useTranslation } from 'react-i18next';
 const CreateIndividualLink = () => {
   const [courses, setCourses] = useState([]);
   const [selectedCourse, setSelectedCourse] = useState(null);
-  const [showLinkInput, setShowLinkInput] = useState(false); // State to show/hide the link input
-  const [copied, setCopied] = useState(false); // State to track if the link is copied
+  const [showLinkInput, setShowLinkInput] = useState(false);
+  const [copied, setCopied] = useState(false);
+  const [generatedLink, setGeneratedLink] = useState(''); // Store the generated link in state
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -27,21 +28,31 @@ const CreateIndividualLink = () => {
     const course = courses.find((c) => c._id === courseId);
     setSelectedCourse(course);
     setShowLinkInput(false); // Reset link input when changing courses
+    setGeneratedLink(''); // Reset the generated link
   };
 
   const handleCreateLink = () => {
     if (selectedCourse) {
-      setShowLinkInput(true); // Show the link input when button is clicked
+      const prefix = selectedCourse.prefix;
+      console.log(prefix)
+      let baseUrl = 'https://markaz.norbekovgroup.uz/';
+
+      if (prefix === 'U') {
+        baseUrl = 'https://markaz.norbekovgroup.uz/';
+      } else if (prefix === 'F') {
+        baseUrl = 'https://forum.norbekovgroup.uz/';
+      }
+
+      // Set the generated link in state
+      setGeneratedLink(`${baseUrl}${selectedCourse.route}`);
+      setShowLinkInput(true); // Show the link input
     }
   };
 
   const handleCopyLink = () => {
-    const linkInput = document.getElementById('courseLinkInput');
-    linkInput.select();
-    document.execCommand('copy');
-    setCopied(true); // Show the green checkmark
+    navigator.clipboard.writeText(generatedLink); // Use the Clipboard API to copy the link
+    setCopied(true);
 
-    // Hide the checkmark after 3 seconds
     setTimeout(() => {
       setCopied(false);
     }, 3000);
@@ -125,7 +136,7 @@ const CreateIndividualLink = () => {
                     type="text"
                     id="courseLinkInput"
                     className="block w-full px-4 py-3 text-gray-700 bg-gray-100 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                    value={`http://174.138.43.233:3000/${selectedCourse.route}`}
+                    value={generatedLink}
                     readOnly
                   />
                   <button

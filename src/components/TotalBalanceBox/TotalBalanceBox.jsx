@@ -26,7 +26,7 @@ const TotalBalanceBox = ({ accoounts = [], totalBanks, totalCurrentBalance, load
             </p>
             <div className='total-balance-amount w-full min-w-[100%] flex-center gap-2'>
               {loading ? (
-                <div className="skeleton h-8 w-full bg-gray-300 animate-pulse"></div>
+                <div className="skeleton h-8 w-full  bg-gray-300 animate-pulse"></div>
               ) : (
                 <AnimatedCounter amount={totalCurrentBalance / 100}/>
               )}
