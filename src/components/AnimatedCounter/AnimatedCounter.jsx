@@ -7,7 +7,7 @@ const AnimatedCounter = ({ amount, loading }) => {
             {loading ? (
                 <span className="w-full min-w-[80%] skeleton h-6 bg-gray-300 animate-pulse"></span>
             ) : (
-                <span className='w-full min-w-[80%]'>
+                <span className='pr-2'>
                     <CountUp
                         end={amount}
                         duration={0.675}

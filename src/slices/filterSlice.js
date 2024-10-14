@@ -6,8 +6,8 @@ const initialState = {
   startDate: '',
   endDate: '',
   courseNameFilter: '',
-  totalAmount: 0, // Добавляем totalAmount в состояние
-  paymentData: [0, 0, 0], // Добавляем paymentData в состояние
+  totalAmount: 0,
+  paymentData: [0, 0, 0],
 };
 
 const filterSlice = createSlice({

@@ -32,6 +32,7 @@ const Home = () => {
 
         const reversedOrders = response.data.data.reverse();
         setOrders(reversedOrders);
+        console.log("aassssssss", reversedOrders);
         setFilteredOrders(reversedOrders);
         setLoading(false);
       } catch (err) {
@@ -59,7 +60,6 @@ const Home = () => {
     setCurrentPage(1);
   };
 
-  // Применение фильтров к заказам
   useEffect(() => {
     let filtered = orders;
 
@@ -86,7 +86,7 @@ const Home = () => {
     }
 
     setFilteredOrders(filtered);
-    setCurrentPage(1); // Сброс страницы при изменении фильтров
+    setCurrentPage(1);
   }, [statusFilter, paymentTypeFilter, startDate, endDate, courseNameFilter, orders]);
 
   const totalPages = Math.ceil(filteredOrders.length / itemsPerPage);
@@ -144,7 +144,7 @@ const Home = () => {
       case "Click":
         return <img src="/click.png" alt="Click Logo" className="w-12 h-[14px]" />;
       case "Uzum":
-        return <img src="/uzum-bank.png" alt="Uzum Bank Logo" className="w-12 h-4" />;
+        return <img src="/uzum-bank.png" alt="Uzum Bank Logo" className="w-12 h-5" />;
       default:
         return <span>{t("no-service")}</span>;
     }

@@ -41,7 +41,7 @@ const OrderTable = ({
               className="hover:bg-gray-50 transition-colors duration-200 cursor-pointer"
             >
               <td className="px-2 py-2 truncate">
-                {order.invoiceNumber || t("no-data")}
+                {order?.course_id?.prefix ? order?.course_id?.prefix : "U"}{order.invoiceNumber || t("no-data")}
               </td>
               <td className="px-2 py-2 truncate">
                 {order.clientName || t("no-data")}
