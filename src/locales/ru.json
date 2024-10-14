@@ -94,6 +94,9 @@
     "pagination-page": "Страница",
     "course-list": "Список курсов",
     "generated-link": "Созданная ссылка",
-    "order-details": "Детали заказа"
+    "order-details": "Детали заказа",
+    "login-required": "Введите логин",
+    "password-required": "Введите пароль",
+    "login-failed-invalid": "Неверный логин или пароль"
     }
   

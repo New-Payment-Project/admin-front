@@ -89,7 +89,7 @@
     "pagination-page": "Sahifa",
     "course-list": "Kurslar ro'yhati",
     "generated-link": "Yaratilgan havola",
-    "order-details": "Buyurtma detallari"
-
-
+    "order-details": "Buyurtma detallari",
+    "login-required": "Login kiriting",
+    "password-required": "Parol kiriting"
   }
