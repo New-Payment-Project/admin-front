@@ -20,7 +20,7 @@ const Login = () => {
   const onSubmit = async (data) => {
     setLoading(true);  
     try {
-      const response = await axios.post('https://payment-server-vo2y.onrender.com/api/auth/login', data);
+      const response = await axios.post('https://api.norbekovgroup.uz/api/auth/login', data);
       const token = response.data.token;
       const userLogin = data.login;
 
