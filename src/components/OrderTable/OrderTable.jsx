@@ -58,7 +58,11 @@ const OrderTable = ({
                   : t("no-data")}
               </td>
               <td className="px-2 py-2 truncate">
-                {order.amount ? `${order.amount / 100} ${t("currency")}` : t("no-data")}
+                {order.amount
+                  ? order.status === "ОПЛАЧЕНО"
+                    ? `${order.amount / 100} ${t("currency")}` // Divide by 100 if status is "ОПЛАЧЕНО"
+                    : `${order.amount} ${t("currency")}`
+                  : t("no-data")}
               </td>
               <td className="px-2 py-2 text-xs truncate">
                 {getStatusBadge(order.status)}

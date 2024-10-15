@@ -30,7 +30,7 @@
     "course-route": "Kurs yo'nalishi",
     "course-route-placeholder": "Kurs yo'nalishini kiriting",
     "create-course-btn": "Kurs yaratish",
-    "table-course-title": "Ism",
+    "table-course-title": "Nomi",
     "table-course-price": "Narxi",
     "table-course-route": "Marshrut",
     "currency": "so'm",
@@ -54,7 +54,7 @@
     "password-min": "Parol kamida 6 ta belgidan iborat bo'lishi kerak",
     "login-success": "Tizimga kirish muvaffaqiyatli bajarildi",
     "login-failed": "Kirish xatosi. Hisob maʼlumotlaringizni tekshiring.",
-    "all-statuses": "XAMMASI",
+    "all-statuses": "BARCHASI",
     "success": "TO'LANGAN",
     "failed": "TO'LANMAGAN",
     "process": "JARAYONDA",
@@ -97,5 +97,11 @@
     "client-address": "Mijoz manzili",
     "tg-username": "Telegram foydalanuvchi nomi",
     "passport": "Pasport",
-    "table-course-prefix": "Prefix"
+    "table-course-prefix": "Prefix",
+    "course-not-found": "Kurslar topilmadi",
+    "edit": "Tahrirlash",
+  "delete": "O'chirish",
+  "confirm-delete-course": "Haqiqatan ham bu kursni o'chirib tashlamoqchimisiz?",
+  "confirm": "Tasdiqlash",
+  "cancel": "Bekor qilish"
   }
