@@ -14,7 +14,7 @@ const CoursesTable = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [itemsPerPage] = useState(5);
+  const [itemsPerPage, setItemsPerPage] = useState(10); // State for items per page
   const [selectedCourse, setSelectedCourse] = useState(null); // State for the course to edit
   const [courseToDelete, setCourseToDelete] = useState(null); // State for the course to delete
 
@@ -75,6 +75,11 @@ const CoursesTable = () => {
     if (pageNumber >= 1 && pageNumber <= totalPages) {
       setCurrentPage(pageNumber);
     }
+  };
+
+  const handleItemsPerPageChange = (e) => {
+    setItemsPerPage(Number(e.target.value));
+    setCurrentPage(1); // Reset to page 1 when items per page changes
   };
 
   const handleEditClick = (course) => {
@@ -148,40 +153,6 @@ const CoursesTable = () => {
         <div className="text-center py-4 text-red-500">{error}</div>
       ) : (
         <div>
-          {/* Cards for mobile view */}
-          <div className="block md:hidden space-y-4">
-            {currentCourses.length > 0 ? (
-              currentCourses.map((course, index) => (
-                <div
-                  key={index}
-                  className="bg-white shadow-md rounded-lg p-4 border border-gray-200"
-                >
-                  <h3 className="text-lg font-semibold mb-2">{course.title}</h3>
-                  <p><strong>{t("course-prefix")}:</strong> {course.prefix}</p>
-                  <p><strong>{t("course-price")}:</strong> {course.price} {t("currency")}</p>
-                  <p><strong>{t("course-route")}:</strong> {course.route}</p>
-                  <p><strong>{t("table-successful-purchases")}:</strong> {successfulPurchases[course.title] || 0}</p>
-                  <div className="mt-4 flex space-x-2">
-                    <button
-                      className="btn text-blue-500 hover:text-blue-700"
-                      onClick={() => handleEditClick(course)}
-                    >
-                      {t("edit")}
-                    </button>
-                    <button
-                      className="btn text-red-500 hover:text-red-700"
-                      onClick={() => handleDeleteClick(course)}
-                    >
-                      {t("delete")}
-                    </button>
-                  </div>
-                </div>
-              ))
-            ) : (
-              <div className="text-center py-4">{t("course-not-found")}</div>
-            )}
-          </div>
-
           {/* Table for larger screens */}
           <div className="hidden md:block">
             <div className="max-w-full overflow-x-auto shadow-md rounded-lg">
@@ -249,6 +220,20 @@ const CoursesTable = () => {
                   )}
                 </tbody>
               </table>
+
+              {/* Items Per Page Select */}
+              <div className="flex justify-end p-2">
+                <select
+                  value={itemsPerPage}
+                  onChange={handleItemsPerPageChange}
+                  className="select select-bordered w-full max-w-20"
+                >
+                  <option value={10}>10</option>
+                  <option value={25}>25</option>
+                  <option value={50}>50</option>
+                  <option value={100}>100</option>
+                </select>
+              </div>
             </div>
           </div>
 
