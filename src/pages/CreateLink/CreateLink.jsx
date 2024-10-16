@@ -98,10 +98,14 @@ const CoursesTable = () => {
       );
 
       const updatedCourses = courses.map((course) =>
-        course._id === selectedCourse._id ? { ...course, ...updatedData } : course
+        course._id === selectedCourse._id
+          ? { ...course, ...updatedData }
+          : course
       );
       const updatedFilteredCourses = filteredCourses.map((course) =>
-        course._id === selectedCourse._id ? { ...course, ...updatedData } : course
+        course._id === selectedCourse._id
+          ? { ...course, ...updatedData }
+          : course
       );
 
       setCourses(updatedCourses);
