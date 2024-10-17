@@ -1,14 +1,15 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  darkMode: ["class"], // Adding dark mode option from the other project
+  darkMode: ["class"],
   content: [
-    "./src/**/*.{js,jsx,ts,tsx}", // Current project paths
-    "./pages/**/*.{ts,tsx}", // Additional paths from the other project
+    "./src/**/*.{js,jsx,ts,tsx}",
+    "./pages/**/*.{ts,tsx}",
     "./components/**/*.{ts,tsx}",
     "./app/**/*.{ts,tsx}",
     "./constants/**/*.{ts,tsx}",
   ],
   theme: {
+    color: { mode: 'hex' },
     container: {
       center: true,
       padding: "2rem",
@@ -99,13 +100,11 @@ module.exports = {
     },
   },
   plugins: [
-    require("daisyui"), 
-    require("tailwindcss-animate"), 
+    require("daisyui"),
+    require("tailwindcss-animate"),
   ],
-
   daisyui: {
     themes: ["light", "night"], // Keep your DaisyUI themes
-    // darkTheme: "night", // Setting dark theme as "night"
     base: true,
     styled: true,
     utils: true,

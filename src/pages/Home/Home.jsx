@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
@@ -7,6 +7,8 @@ import OrderTable from "../../components/OrderTable/OrderTable";
 import Pagination from "../../components/Pagination/Pagination";
 import OrderCards from "../../components/OrderCards/OrderCards";
 import OrderDetailsModal from "../../components/OrderFetailsModal/OrderDetailsModal";
+import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
 
 const Home = () => {
   const [orders, setOrders] = useState([]);
@@ -18,6 +20,32 @@ const Home = () => {
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [courses, setCourses] = useState([]);
   const { t } = useTranslation();
+  const printRef = useRef();
+
+  const handleDownloadPdf = async () => {
+    const element = printRef.current;
+    const pdf = new jsPDF('p', 'mm', 'a4');
+    const pageHeight = pdf.internal.pageSize.getHeight();
+    const canvas = await html2canvas(element, { scale: 2 });
+    const imgData = canvas.toDataURL('image/png');
+    const imgProps = pdf.getImageProperties(imgData);
+    const imgHeight = (imgProps.height * pdf.internal.pageSize.getWidth()) / imgProps.width;
+    let heightLeft = imgHeight;
+    let position = 0;
+
+    pdf.addImage(imgData, 'PNG', 0, position, pdf.internal.pageSize.getWidth(), imgHeight);
+    heightLeft -= pageHeight;
+
+    while (heightLeft >= 0) {
+      position = heightLeft - imgHeight;
+      pdf.addPage();
+      pdf.addImage(imgData, 'PNG', 0, position, pdf.internal.pageSize.getWidth(), imgHeight);
+      heightLeft -= pageHeight;
+    }
+
+    pdf.save('transactions.pdf');
+  };
+
 
   const {
     statusFilter,
@@ -180,6 +208,12 @@ const Home = () => {
   return (
     <div className="px-4 md:px-8 py-2">
       <h1 className="text-2xl mb-2 font-semibold">{t("orders")}</h1>
+      <button
+        onClick={handleDownloadPdf}
+        className="btn btn-primary mb-4"
+      >
+        {t("download-pdf")}
+      </button>
 
       <Filter courses={courses} t={t} />
       {loading ? (
@@ -190,15 +224,17 @@ const Home = () => {
         <div className="text-center py-4 text-red-500">{error}</div>
       ) : (
         <>
-          <OrderTable
-            currentOrders={currentOrders}
-            t={t}
-            getStatusBadge={getStatusBadge}
-            renderLogo={renderLogo}
-            handleItemsPerPageChange={handleItemsPerPageChange}
-            itemsPerPage={itemsPerPage}
-            setSelectedOrder={setSelectedOrder} // Pass the setSelectedOrder function
-          />
+          <div ref={printRef}>
+            <OrderTable
+              currentOrders={currentOrders}
+              t={t}
+              getStatusBadge={getStatusBadge}
+              renderLogo={renderLogo}
+              handleItemsPerPageChange={handleItemsPerPageChange}
+              itemsPerPage={itemsPerPage}
+              setSelectedOrder={setSelectedOrder}
+            />
+          </div>
 
           <OrderCards
             currentOrders={currentOrders}
