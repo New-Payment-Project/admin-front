@@ -209,12 +209,6 @@ const Home = () => {
   return (
     <div className="px-4 md:px-8 py-2">
       <h1 className="text-2xl mb-2 font-semibold">{t("orders")}</h1>
-      <button
-        onClick={handleDownloadPdf}
-        className="btn btn-primary mb-4"
-      >
-        {t("download-pdf")}
-      </button>
 
       <Filter courses={courses} t={t} />
       {loading ? (

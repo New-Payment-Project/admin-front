@@ -14,7 +14,7 @@ const OrderCards = ({
   const generatePDF = async (order) => {
     try {
       const response = await axios.post(
-        `${process.env.REACT_APP_API_URL_TEST}/generate-pdf`,
+        `${process.env.REACT_APP_API_URL}/generate-pdf`,
         { orders: [order] },
         {
           responseType: "blob", 
