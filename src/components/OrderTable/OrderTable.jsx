@@ -116,7 +116,7 @@ const OrderTable = ({
               <td className="px-2 py-2 text-xs truncate">
                 {renderLogo(order.paymentType)}
               </td>
-              <td className="px-2 py-2 text-right">
+              <td className="px-2 py-2 text-center">
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
