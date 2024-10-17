@@ -68,7 +68,7 @@ const Home = () => {
   };
 
   const getStatusBadge = (status) => {
-    console.log(status)
+    console.log(status);
     switch (status) {
       case "НЕ ОПЛАЧЕНО":
         return (
@@ -156,7 +156,6 @@ const Home = () => {
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
                   {currentOrders.length > 0 ? (
-<<<<<<< HEAD
                     currentOrders.map((order, index) => {
                       console.log(order); // Log the order object to inspect the structure
                       return (
@@ -193,41 +192,6 @@ const Home = () => {
                     <tr>
                       <td colSpan="6" className="text-center py-4">
                         Заказы не найдены
-=======
-                    currentOrders.map((order, index) => (
-                      <tr
-                        key={index}
-                        className="hover:bg-gray-50 transition-colors duration-200"
-                      >
-                        <td className="px-4 py-2">
-                          {order.user_id?.invoiceNumber || t("no-data")}
-                        </td>
-                        <td className="px-4 py-2">
-                          {order.user_id?.clientName || t("no-data")}
-                        </td>
-                        <td className="px-4 py-2">
-                          {order.course_id?.title || t("no-data")}
-                        </td>
-                        <td className="px-4 py-2">
-                          {order.amount
-                            ? `${order.amount} ${t("currency")}`
-                            : t("no-data")}
-                        </td>
-                        <td className="px-4 py-2">
-                          {getStatusBadge(order.status)}
-                        </td>
-                        <td className="px-4 py-2">
-                          {order.createdAt
-                            ? new Date(order.createdAt).toLocaleDateString()
-                            : t("no-data")}
-                        </td>
-                      </tr>
-                    ))
-                  ) : (
-                    <tr>
-                      <td colSpan="6" className="text-center py-4">
-                        {t("orders-not-found")}
->>>>>>> b030153a4e6edc373000177796a1a81cf14840ac
                       </td>
                     </tr>
                   )}
@@ -252,13 +216,8 @@ const Home = () => {
                     {order.user_id?.clientName || t("no-data")}
                   </p>
                   <p className="mb-2">
-<<<<<<< HEAD
                     <strong>Курс:</strong>{" "}
                     {order.course_id?.title || "нет данных"}
-=======
-                    <strong>{t("course")}:</strong>{" "}
-                    {order.course_id?.title || t("no-data")}
->>>>>>> b030153a4e6edc373000177796a1a81cf14840ac
                   </p>
                   <p className="mb-2">
                     <strong>{t("amount")}:</strong>{" "}
@@ -282,7 +241,6 @@ const Home = () => {
               <div className="text-center py-4">{t("orders-not-found")}</div>
             )}
           </div>
-<<<<<<< HEAD
 
           {/* Pagination */}
           <div className="flex justify-between items-center mt-4">
@@ -318,49 +276,8 @@ const Home = () => {
               Вперед
             </button>
           </div>
-=======
->>>>>>> b030153a4e6edc373000177796a1a81cf14840ac
         </div>
       )}
-
-{totalPages > 1 && (
-  <div className="flex justify-center mt-4">
-    <nav className="flex items-center w-full justify-between space-x-2">
-      <button
-        onClick={() => handlePageChange(currentPage - 1)}
-        className="px-3 py-1 border rounded-md text-sm md:text-base"
-        disabled={currentPage === 1}
-      >
-        {t("pagination-previous")}
-      </button>
-
-      <div className="flex gap-1 md:gap-2">
-        {Array.from({ length: totalPages }, (_, index) => (
-          <button
-            key={index}
-            onClick={() => handlePageChange(index + 1)}
-            className={`px-2 py-1 border rounded-md text-sm md:px-3 md:py-1 md:text-base ${
-              currentPage === index + 1
-                ? "bg-blue-500 text-white"
-                : "bg-white text-gray-700"
-            }`}
-          >
-            {index + 1}
-          </button>
-        ))}
-      </div>
-
-      <button
-        onClick={() => handlePageChange(currentPage + 1)}
-        className="px-3 py-1 border rounded-md text-sm md:text-base"
-        disabled={currentPage === totalPages}
-      >
-        {t("pagination-next")}
-      </button>
-    </nav>
-  </div>
-)}
-
     </div>
   );
 };
