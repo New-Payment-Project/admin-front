@@ -158,6 +158,7 @@ const Home = () => {
   const closeModal = () => setSelectedOrder(null);
 
   const getStatusBadge = (status) => {
+    console.log(status);
     switch (status) {
       case "НЕ ОПЛАЧЕНО":
         return (

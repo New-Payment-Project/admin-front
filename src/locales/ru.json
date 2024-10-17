@@ -103,6 +103,15 @@
     "client-address": "Адрес клиента",
     "tg-username": "Телеграм имя пользователя",
     "passport": "Паспорт",
-    "table-course-prefix": "Префикс"
+    "table-course-prefix": "Префикс",
+    "course-not-found": "Курсы не найдены",
+    "confirmation": "Подтверждение",
+  "confirm": "Подтвердить",
+  "cancel": "Отмена",
+  "edit-course": "Редактировать курс",
+  "edit": "Редактировать",
+  "delete": "Удалить",
+  "confirm-delete-course": "Вы точно хотите удалить курс - ",
+  "actions": "Действия"
     }
   

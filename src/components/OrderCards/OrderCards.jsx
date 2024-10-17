@@ -1,4 +1,47 @@
-const OrderCards = ({ currentOrders, getStatusBadge, renderLogo, t, handleItemsPerPageChange, itemsPerPage }) => {
+import axios from 'axios';
+import { VscFilePdf } from "react-icons/vsc";
+
+
+const OrderCards = ({
+  currentOrders,
+  getStatusBadge,
+  renderLogo,
+  t,
+  handleItemsPerPageChange,
+  itemsPerPage,
+}) => {
+
+  const generatePDF = async (order) => {
+    try {
+      const response = await axios.post(
+        `${process.env.REACT_APP_API_URL_TEST}/generate-pdf`,
+        { orders: [order] },
+        {
+          responseType: "blob", 
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      const contentType = response.headers["content-type"];
+      if (contentType !== "application/pdf") {
+        throw new Error("Invalid PDF response");
+      }
+
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", `${order.invoiceNumber}.pdf`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (err) {
+      console.error("Error generating PDF:", err);
+      alert("Error downloading the PDF. Please try again later.");
+    }
+  };
+
   return (
     <div className="md:hidden">
       <div className="grid grid-cols-1 gap-4">
@@ -11,7 +54,14 @@ const OrderCards = ({ currentOrders, getStatusBadge, renderLogo, t, handleItemsP
               <h2 className="font-bold break-all">{t("invoice-number")}: {order.invoiceNumber || t("no-data")}</h2>
               <p className="break-all"><strong>{t("client")}:</strong> {order.clientName || t("no-data")}</p>
               <p className="break-all"><strong>{t("course")}:</strong> {order?.course_id?.title || t("no-data")}</p>
-              <p className="break-all"><strong>{t("amount")}:</strong> {order.amount ? `${order.amount / 100} ${t("currency")}` : t("no-data")}</p>
+              <p className="break-all">
+                <strong>{t("amount")}:</strong>
+                {order.amount
+                  ? order.status === "ОПЛАЧЕНО"
+                    ? `${order.amount / 100} ${t("currency")}` 
+                    : `${order.amount} ${t("currency")}`
+                  : t("no-data")}
+              </p>
               <p className="break-all"><strong>{t("created-date")}:</strong> {order.create_time ? new Date(order.create_time).toLocaleDateString() : t("no-data")}</p>
               <p className="break-all"><strong>{t("client-phone")}:</strong> {order.clientPhone || t("no-data")}</p>
               <p className="break-all"><strong>{t("client-address")}:</strong> {order.clientAddress || t("no-data")}</p>
@@ -19,6 +69,14 @@ const OrderCards = ({ currentOrders, getStatusBadge, renderLogo, t, handleItemsP
               <p className="break-all"><strong>{t("passport")}:</strong> {order.passport || t("no-data")}</p>
               <div><strong>{t("service")}:</strong> {renderLogo(order.paymentType)}</div>
 
+              <div className="mt-4 text-right">
+                <button
+                  onClick={() => generatePDF(order)}
+                  className="px-4 py-2 bg-blue-500 text-white rounded-lg"
+                >
+                  <VscFilePdf className="text-2xl" />
+                </button>
+              </div>
             </div>
           ))
         ) : (
@@ -26,7 +84,6 @@ const OrderCards = ({ currentOrders, getStatusBadge, renderLogo, t, handleItemsP
         )}
       </div>
 
-      {/* Items per page dropdown */}
       <div className="flex justify-end mt-4">
         <select
           value={itemsPerPage}

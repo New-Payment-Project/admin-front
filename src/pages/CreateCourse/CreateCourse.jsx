@@ -6,8 +6,7 @@ import { useTranslation } from "react-i18next";
 
 const CreateCourse = () => {
   const [loading, setLoading] = useState(false);
-  const [showPrefixInput, setShowPrefixInput] = useState(false);
-  const [prefix, setPrefix] = useState("");
+  const [prefix, setPrefix] = useState(""); // Start with an empty string
   const { t } = useTranslation();
   const [courseData, setCourseData] = useState({
     title: "",
@@ -37,9 +36,13 @@ const CreateCourse = () => {
     e.preventDefault();
     setLoading(true);
 
+    // If prefix is empty, use "U" as the default value
+    const finalPrefix = prefix.trim() === "" ? "U" : prefix;
+
+    // Include the final prefix in the course data
     const finalCourseData = {
       ...courseData,
-      prefix: prefix || ""
+      prefix: finalPrefix // Use the final prefix value
     };
 
     try {
@@ -66,8 +69,7 @@ const CreateCourse = () => {
           route: "",
           prefix: ""
         });
-        setPrefix("");
-        setShowPrefixInput(false);
+        setPrefix(""); // Reset prefix to empty after submission
       } else {
         toast.error(t("course-error"));
       }
@@ -128,36 +130,19 @@ const CreateCourse = () => {
           required
         />
 
-        <div
-          className={`${
-            showPrefixInput ? "max-h-28 opacity-100" : "max-h-0 opacity-0"
-          } transition-all duration-500 ease-in-out overflow-hidden mt-4 py-1 px-[3px]`}
-        >
-          <label className="label">
-            <span className="label-text font-semibold text-gray-700">{t("course-prefix")}</span>
-          </label>
-          <input
-            type="text"
-            value={prefix}
-            onChange={handlePrefixChange}
-            placeholder={t("enter-prefix")}
-            className="input input-bordered w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
-          />
-        </div>
+        {/* Prefix input with placeholder "U", value hidden unless edited */}
+        <label className="label">
+          <span className="label-text font-semibold text-gray-700">{t("course-prefix")}</span>
+        </label>
+        <input
+          type="text"
+          value={prefix}
+          onChange={handlePrefixChange}
+          placeholder="U" // Placeholder shows "U" but input is initially empty
+          className="input input-bordered w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+        />
 
         <div className="flex gap-4 justify-end flex-col md:flex-row">
-          <button
-            type="button"
-            onClick={() => setShowPrefixInput(!showPrefixInput)}
-            className={`md:w-1/4 w-full text-white font-semibold py-3 rounded-lg flex justify-center items-center ${
-              showPrefixInput
-                ? "bg-red-600 hover:bg-red-700 focus:ring-red-400"
-                : "bg-blue-600 hover:bg-blue-700 focus:ring-blue-400"
-            }`}
-          >
-            {showPrefixInput ? t("hide-prefix") : t("add-prefix")}
-          </button>
-
           <button
             type="submit"
             className="md:w-1/4 w-full  text-white font-semibold py-3 rounded-lg  focus:outline-none focus:ring-4  bg-green-600 hover:bg-green-700 focus:ring-green-400 flex justify-center items-center"

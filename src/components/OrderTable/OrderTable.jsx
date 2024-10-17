@@ -1,3 +1,8 @@
+import React from "react";
+import axios from "axios";
+import { VscFilePdf } from "react-icons/vsc";
+
+
 const OrderTable = ({
   currentOrders,
   t,
@@ -5,7 +10,41 @@ const OrderTable = ({
   renderLogo,
   handleItemsPerPageChange,
   itemsPerPage,
+  setSelectedOrder,
 }) => {
+  const generatePDF = async (order) => {
+    try {
+      const response = await axios.post(
+        `${process.env.REACT_APP_API_URL_TEST}/generate-pdf`,
+        { orders: [order] },
+        {
+          responseType: "blob",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      const contentType = response.headers["content-type"];
+      if (contentType !== "application/pdf") {
+        throw new Error("Invalid PDF response");
+      }
+
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", `${order.invoiceNumber}.pdf`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (err) {
+      console.error("Error generating PDF:", err);
+      alert("Ошибка при загрузке PDF-документа. Пожалуйста, попробуйте позже.");
+    }
+  };
+
+
+
   return (
     <div className="hidden md:block max-w-full overflow-x-auto shadow-md rounded-lg">
       <table className="min-w-full table-auto text-xs md:text-sm text-left border border-gray-200">
@@ -32,6 +71,9 @@ const OrderTable = ({
             <th className="px-2 py-2 text-xs font-medium uppercase tracking-wider">
               {t("service")}
             </th>
+            <th className="px-2 py-2 text-xs font-medium uppercase tracking-wider">
+              {t("action")}
+            </th>
           </tr>
         </thead>
         <tbody className="bg-white divide-y divide-gray-200">
@@ -39,8 +81,10 @@ const OrderTable = ({
             <tr
               key={index}
               className="hover:bg-gray-50 transition-colors duration-200 cursor-pointer"
+              onClick={() => setSelectedOrder(order)}
             >
               <td className="px-2 py-2 truncate">
+                {order?.course_id?.prefix ? order?.course_id?.prefix : "U"}
                 {order.invoiceNumber || t("no-data")}
               </td>
               <td className="px-2 py-2 truncate">
@@ -51,7 +95,9 @@ const OrderTable = ({
               </td>
               <td className="px-2 py-2 truncate">
                 {order.amount
-                  ? `${order.amount / 100} ${t("currency")}`
+                  ? order.status === "ОПЛАЧЕНО"
+                    ? `${order.amount / 100} ${t("currency")}`
+                    : `${order.amount} ${t("currency")}`
                   : t("no-data")}
               </td>
               <td className="px-2 py-2 text-xs truncate">
@@ -70,22 +116,19 @@ const OrderTable = ({
               <td className="px-2 py-2 text-xs truncate">
                 {renderLogo(order.paymentType)}
               </td>
+              <td className="px-2 py-2 text-right">
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    generatePDF(order);
+                  }}
+                  className="px-1 py-1 bg-blue-500 text-white rounded-lg"
+                >
+                  <VscFilePdf className="text-2xl" />
+                </button>
+              </td>
             </tr>
           ))}
-          <tr>
-            <td colSpan="7" className="text-right p-3">
-              <select
-                value={itemsPerPage}
-                onChange={handleItemsPerPageChange}
-                className="select select-bordered w-full max-w-20"
-              >
-                <option value={10}>10</option>
-                <option value={50}>50</option>
-                <option value={100}>100</option>
-                <option value={200}>200</option>
-              </select>
-            </td>
-          </tr>
         </tbody>
       </table>
     </div>
