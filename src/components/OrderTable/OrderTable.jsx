@@ -1,7 +1,7 @@
-// OrderTable.js
-
 import React from "react";
 import axios from "axios";
+import { VscFilePdf } from "react-icons/vsc";
+
 
 const OrderTable = ({
   currentOrders,
@@ -12,7 +12,6 @@ const OrderTable = ({
   itemsPerPage,
   setSelectedOrder,
 }) => {
-  // Function to trigger PDF generation for a single order
   const generatePDF = async (order) => {
     try {
       const response = await axios.post(
@@ -30,8 +29,8 @@ const OrderTable = ({
       if (contentType !== "application/pdf") {
         throw new Error("Invalid PDF response");
       }
+
       const url = window.URL.createObjectURL(new Blob([response.data]));
-      console.log(url);
       const link = document.createElement("a");
       link.href = url;
       link.setAttribute("download", `${order.invoiceNumber}.pdf`);
@@ -43,6 +42,8 @@ const OrderTable = ({
       alert("Ошибка при загрузке PDF-документа. Пожалуйста, попробуйте позже.");
     }
   };
+
+
 
   return (
     <div className="hidden md:block max-w-full overflow-x-auto shadow-md rounded-lg">
@@ -105,10 +106,10 @@ const OrderTable = ({
               <td className="px-2 py-2 truncate">
                 {order.create_time
                   ? new Date(order.create_time).toLocaleDateString("en-GB") +
-                    " | " +
-                    new Date(order.create_time).toLocaleTimeString("en-GB", {
-                      hour12: false,
-                    })
+                  " | " +
+                  new Date(order.create_time).toLocaleTimeString("en-GB", {
+                    hour12: false,
+                  })
                   : t("no-data")}
               </td>
               <td className="px-2 py-2 text-xs truncate">
@@ -117,12 +118,12 @@ const OrderTable = ({
               <td className="px-2 py-2 text-right">
                 <button
                   onClick={(e) => {
-                    e.stopPropagation(); // Prevent triggering row click
-                    generatePDF(order); // Generate PDF for this order
+                    e.stopPropagation();
+                    generatePDF(order);
                   }}
-                  className="px-4 py-2 bg-blue-500 text-white rounded-lg"
+                  className="px-1 py-1 bg-blue-500 text-white rounded-lg"
                 >
-                  {t("download-pdf")}
+                  <VscFilePdf className="text-2xl" />
                 </button>
               </td>
             </tr>
