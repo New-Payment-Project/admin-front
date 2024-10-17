@@ -3,27 +3,32 @@ import { Doughnut } from "react-chartjs-2";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-const DoughnutChart = ({ accounts }) => {
+const DoughnutChart = ({ paymentData }) => {
     const data = {
         datasets: [
             {
-                label: 'Banks',
-                data: [1250, 2500, 3750],
-                backgroundColor: ['#0747b6', '#2265d8', '#2f91fa']
+                label: 'Payment Methods',
+                data: paymentData, 
+                backgroundColor: ['#1437AD', '#35C0CD', '#7F44D6']
             }
         ],
-        labels: ['UZUM', 'PAYME', 'CLICK']
-    }
-    return <Doughnut data={data}
+        labels: ['Click', 'Payme', 'Uzum']
+    };
+    
+    return <Doughnut 
+        data={data}
         options={{
             cutout: '60%',
             plugins: {
                 legend: {
-                    display: false
+                    display: false,
+                },
+                tooltip: {
+                    enabled: true, 
                 }
             }
         }}
-    />
-}
+    />;
+};
 
-export default DoughnutChart
+export default DoughnutChart;

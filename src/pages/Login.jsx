@@ -20,7 +20,7 @@ const Login = () => {
   const onSubmit = async (data) => {
     setLoading(true);  
     try {
-      const response = await axios.post('https://payment-server-vo2y.onrender.com/api/auth/login', data);
+      const response = await axios.post('https://api.norbekovgroup.uz/api/auth/login', data);
       const token = response.data.token;
       const userLogin = data.login;
 
@@ -130,9 +130,9 @@ const Login = () => {
         </form>
       </div>
 
-      <div className='w-1/2 h-full flex justify-center items-center rounded-r-lg relative'>
-        <img src={loginImg} alt="Login visual" className='object-contain h-3/4 w-3/4' />
-      </div>
+      <div className='hidden sm:flex w-1/2 h-full justify-center items-center rounded-r-lg relative'>
+  <img src={loginImg} alt="Login visual" className='object-contain h-3/4 w-3/4' />
+</div>
     </div>
   );
 }

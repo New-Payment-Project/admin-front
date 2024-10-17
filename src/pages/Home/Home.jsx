@@ -1,6 +1,12 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
+import Filter from "../../components/Filter/Filter";
+import OrderTable from "../../components/OrderTable/OrderTable";
+import Pagination from "../../components/Pagination/Pagination";
+import OrderCards from "../../components/OrderCards/OrderCards";
+import OrderDetailsModal from "../../components/OrderFetailsModal/OrderDetailsModal";
 
 const Home = () => {
   const [orders, setOrders] = useState([]);
@@ -8,19 +14,30 @@ const Home = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [statusFilter, setStatusFilter] = useState("");
-  const [dateFilter, setDateFilter] = useState("");
-  const itemsPerPage = 5;
+  const [selectedOrder, setSelectedOrder] = useState(null);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [courses, setCourses] = useState([]);
   const { t } = useTranslation();
+
+  const {
+    statusFilter,
+    paymentTypeFilter,
+    startDate,
+    endDate,
+    courseNameFilter,
+  } = useSelector((state) => state.filter);
 
   useEffect(() => {
     const fetchOrders = async () => {
       try {
         const response = await axios.get(
-          "https://course-server-327v.onrender.com/api/v1/orders"
+          `${process.env.REACT_APP_API_URL}/orders`
         );
-        setOrders(response.data.data);
-        setFilteredOrders(response.data.data);
+
+        const reversedOrders = response.data.data.reverse();
+        setOrders(reversedOrders);
+        console.log("aassssssss", reversedOrders);
+        setFilteredOrders(reversedOrders);
         setLoading(false);
       } catch (err) {
         setError(t("fetch-failed"));
@@ -28,8 +45,29 @@ const Home = () => {
       }
     };
 
+    const fetchCourses = async () => {
+      try {
+        const response = await axios.get(
+          `${process.env.REACT_APP_API_URL}/courses`
+        );
+        setCourses(response.data);
+      } catch (error) {
+        console.error("Error fetching courses:", error);
+      }
+    };
+
     fetchOrders();
+    fetchCourses();
   }, [t]);
+
+  const handleNewOrder = (newOrder) => {
+    setOrders((prevOrders) => [newOrder, ...prevOrders]);
+    setFilteredOrders((prevFilteredOrders) => [
+      newOrder,
+      ...prevFilteredOrders,
+    ]);
+    setCurrentPage(1);
+  };
 
   useEffect(() => {
     let filtered = orders;
@@ -38,21 +76,38 @@ const Home = () => {
       filtered = filtered.filter((order) => order.status === statusFilter);
     }
 
-    if (dateFilter) {
-      const selectedDate = new Date(dateFilter);
+    if (paymentTypeFilter) {
+      filtered = filtered.filter(
+        (order) => order.paymentType === paymentTypeFilter
+      );
+    }
+
+    if (startDate && endDate) {
+      const start = new Date(startDate);
+      const end = new Date(endDate);
+
       filtered = filtered.filter((order) => {
-        const orderDate = new Date(order.createdAt);
-        return (
-          orderDate.getFullYear() === selectedDate.getFullYear() &&
-          orderDate.getMonth() === selectedDate.getMonth() &&
-          orderDate.getDate() === selectedDate.getDate()
-        );
+        const orderDate = new Date(order.create_time);
+        return orderDate >= start && orderDate <= end;
       });
+    }
+
+    if (courseNameFilter) {
+      filtered = filtered.filter(
+        (order) => order.course_id?.title === courseNameFilter
+      );
     }
 
     setFilteredOrders(filtered);
     setCurrentPage(1);
-  }, [statusFilter, dateFilter, orders]);
+  }, [
+    statusFilter,
+    paymentTypeFilter,
+    startDate,
+    endDate,
+    courseNameFilter,
+    orders,
+  ]);
 
   const totalPages = Math.ceil(filteredOrders.length / itemsPerPage);
 
@@ -67,25 +122,38 @@ const Home = () => {
     }
   };
 
+  const handleItemsPerPageChange = (e) => {
+    setItemsPerPage(parseInt(e.target.value, 10));
+    setCurrentPage(1);
+  };
+
+  const closeModal = () => setSelectedOrder(null);
+
   const getStatusBadge = (status) => {
     console.log(status);
     switch (status) {
       case "НЕ ОПЛАЧЕНО":
         return (
-          <span className="px-2 py-1 rounded bg-red-100 text-red-700 text-xs font-semibold">
+          <span className="px-2 py-1 rounded bg-red-100 text-red-700 text-[10px] font-semibold">
             {t("failed")}
           </span>
         );
       case "ВЫСТАВЛЕНО":
         return (
-          <span className="px-2 py-1 rounded bg-yellow-100 text-yellow-700 text-xs font-semibold">
+          <span className="px-2 py-1 rounded bg-yellow-100 text-yellow-700 text-[10px] font-semibold">
             {t("process")}
           </span>
         );
       case "ОПЛАЧЕНО":
         return (
-          <span className="px-2 py-1 rounded bg-green-100 text-green-700 text-xs font-semibold">
+          <span className="px-2 py-1 rounded bg-green-100 text-green-700 text-[10px] font-semibold">
             {t("success")}
+          </span>
+        );
+      case "ОТМЕНЕНО":
+        return (
+          <span className="px-2 py-1 rounded bg-red-500 text-red-100 text-[10px] font-semibold">
+            {t("cancelled")}
           </span>
         );
       default:
@@ -93,32 +161,28 @@ const Home = () => {
     }
   };
 
+  const renderLogo = (paymentType) => {
+    switch (paymentType) {
+      case "Payme":
+        return <img src="/payme.png" alt="Payme Logo" className="w-12 h-4" />;
+      case "Click":
+        return (
+          <img src="/click.png" alt="Click Logo" className="w-12 h-[14px]" />
+        );
+      case "Uzum":
+        return (
+          <img src="/uzum-bank.png" alt="Uzum Bank Logo" className="w-12 h-5" />
+        );
+      default:
+        return <span>{t("no-service")}</span>;
+    }
+  };
+
   return (
     <div className="px-4 md:px-8 py-2">
-      <div className="mb-4 flex flex-col md:flex-row md:justify-between">
-        <div>
-          <select
-            value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value)}
-            className="px-3 py-2 border-2 border-slate-200 rounded select"
-          >
-            <option value="">{t("all-statuses")}</option>
-            <option value="НЕ ОПЛАЧЕНО">{t("failed")}</option>
-            <option value="ВЫСТАВЛЕНО">{t("process")}</option>
-            <option value="ОПЛАЧЕНО">{t("success")}</option>
-          </select>
-        </div>
+      <h1 className="text-2xl mb-2 font-semibold">{t("orders")}</h1>
 
-        <div className="mt-4 md:mt-0">
-          <input
-            type="date"
-            value={dateFilter}
-            onChange={(e) => setDateFilter(e.target.value)}
-            className="px-3 py-2 border-2 border-slate-200 rounded outline-none"
-          />
-        </div>
-      </div>
-
+      <Filter courses={courses} t={t} />
       {loading ? (
         <div className="text-center py-4 mx-auto">
           <span className="loading loading-spinner loading-lg"></span>
@@ -126,9 +190,18 @@ const Home = () => {
       ) : error ? (
         <div className="text-center py-4 text-red-500">{error}</div>
       ) : (
-        <div className="overflow-x-auto mb-10">
-          <h1 className="text-2xl mb-2 font-semibold">{t("orders")}</h1>
+        <>
+          <OrderTable
+            currentOrders={currentOrders}
+            t={t}
+            getStatusBadge={getStatusBadge}
+            renderLogo={renderLogo}
+            handleItemsPerPageChange={handleItemsPerPageChange}
+            itemsPerPage={itemsPerPage}
+            setSelectedOrder={setSelectedOrder} // Pass the setSelectedOrder function
+          />
 
+<<<<<<< HEAD
           <div className="hidden md:block">
             <div className="max-w-full overflow-x-auto shadow-md rounded-lg">
               <table className="min-w-full table-auto text-xs md:text-sm text-left border border-gray-200">
@@ -278,6 +351,31 @@ const Home = () => {
           </div>
         </div>
       )}
+=======
+          <OrderCards
+            currentOrders={currentOrders}
+            getStatusBadge={getStatusBadge}
+            renderLogo={renderLogo}
+            t={t}
+            handleItemsPerPageChange={handleItemsPerPageChange}
+            itemsPerPage={itemsPerPage}
+          />
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            handlePageChange={handlePageChange}
+            t={t}
+          />
+        </>
+      )}
+      <OrderDetailsModal
+        selectedOrder={selectedOrder}
+        t={t}
+        getStatusBadge={getStatusBadge}
+        renderLogo={renderLogo}
+        closeModal={closeModal}
+      />
+>>>>>>> c35650ca7e06db6a159d64a3b54130116e5bb9a9
     </div>
   );
 };
