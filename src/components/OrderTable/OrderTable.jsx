@@ -1,5 +1,7 @@
-import React from 'react';
-import axios from 'axios';
+// OrderTable.js
+
+import React from "react";
+import axios from "axios";
 
 const OrderTable = ({
   currentOrders,
@@ -10,24 +12,35 @@ const OrderTable = ({
   itemsPerPage,
   setSelectedOrder,
 }) => {
-
-  // Function to trigger PDF generation
-  const generatePDF = async (filteredOrders) => {
+  // Function to trigger PDF generation for a single order
+  const generatePDF = async (order) => {
     try {
-      const response = await axios.post(`${process.env.REACT_APP_API_URL_TEST}/generate-pdf`, {
-        orders: filteredOrders  // Send the current orders data
-      }, { responseType: 'blob' });  // Ensure responseType is 'blob'
+      const response = await axios.post(
+        `${process.env.REACT_APP_API_URL_TEST}/generate-pdf`,
+        { orders: [order] },
+        {
+          responseType: "blob",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
-      // Create a link to download the PDF
+      const contentType = response.headers["content-type"];
+      if (contentType !== "application/pdf") {
+        throw new Error("Invalid PDF response");
+      }
       const url = window.URL.createObjectURL(new Blob([response.data]));
-      const link = document.createElement('a');
+      console.log(url);
+      const link = document.createElement("a");
       link.href = url;
-      link.setAttribute('download', 'orders.pdf');
+      link.setAttribute("download", `${order.invoiceNumber}.pdf`);
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
     } catch (err) {
-      console.error('Error generating PDF:', err);
+      console.error("Error generating PDF:", err);
+      alert("Ошибка при загрузке PDF-документа. Пожалуйста, попробуйте позже.");
     }
   };
 
@@ -57,6 +70,9 @@ const OrderTable = ({
             <th className="px-2 py-2 text-xs font-medium uppercase tracking-wider">
               {t("service")}
             </th>
+            <th className="px-2 py-2 text-xs font-medium uppercase tracking-wider">
+              {t("action")}
+            </th>
           </tr>
         </thead>
         <tbody className="bg-white divide-y divide-gray-200">
@@ -64,16 +80,17 @@ const OrderTable = ({
             <tr
               key={index}
               className="hover:bg-gray-50 transition-colors duration-200 cursor-pointer"
-              onClick={() => setSelectedOrder(order)} // Open modal with selected order
+              onClick={() => setSelectedOrder(order)}
             >
               <td className="px-2 py-2 truncate">
-                {order?.course_id?.prefix ? order?.course_id?.prefix : "U"}{order.invoiceNumber || t("no-data")}
+                {order?.course_id?.prefix ? order?.course_id?.prefix : "U"}
+                {order.invoiceNumber || t("no-data")}
               </td>
               <td className="px-2 py-2 truncate">
                 {order.clientName || t("no-data")}
               </td>
               <td className="px-2 py-2 truncate">
-                {order?.course_id?.title ? order?.course_id?.title : t("no-data")}
+                {order?.course_id?.title || t("no-data")}
               </td>
               <td className="px-2 py-2 truncate">
                 {order.amount
@@ -88,16 +105,21 @@ const OrderTable = ({
               <td className="px-2 py-2 truncate">
                 {order.create_time
                   ? new Date(order.create_time).toLocaleDateString("en-GB") +
-                  " | " +
-                  new Date(order.create_time).toLocaleTimeString("en-GB", { hour12: false })
+                    " | " +
+                    new Date(order.create_time).toLocaleTimeString("en-GB", {
+                      hour12: false,
+                    })
                   : t("no-data")}
               </td>
               <td className="px-2 py-2 text-xs truncate">
                 {renderLogo(order.paymentType)}
               </td>
-              <td className="text-right mt-4">
+              <td className="px-2 py-2 text-right">
                 <button
-                  onClick={() => generatePDF([order])}  // Trigger the PDF generation
+                  onClick={(e) => {
+                    e.stopPropagation(); // Prevent triggering row click
+                    generatePDF(order); // Generate PDF for this order
+                  }}
                   className="px-4 py-2 bg-blue-500 text-white rounded-lg"
                 >
                   {t("download-pdf")}
@@ -107,9 +129,6 @@ const OrderTable = ({
           ))}
         </tbody>
       </table>
-
-      {/* Add button to download PDF */}
-
     </div>
   );
 };
