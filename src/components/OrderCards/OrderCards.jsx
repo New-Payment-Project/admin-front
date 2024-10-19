@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from "axios";
 import { VscFilePdf } from "react-icons/vsc";
 
 const OrderCards = ({
@@ -49,9 +49,17 @@ const OrderCards = ({
               <div className="flex justify-end">
                 <p className="text-xs">{getStatusBadge(order.status)}</p>
               </div>
-              <h2 className="font-bold break-all">{t("invoice-number")}: {order.invoiceNumber || t("no-data")}</h2>
-              <p className="break-all"><strong>{t("client")}:</strong> {order.clientName || t("no-data")}</p>
-              <p className="break-all"><strong>{t("course")}:</strong> {order?.course_id?.title || t("no-data")}</p>
+              <h2 className="font-bold break-all">
+                {t("invoice-number")}: {order.invoiceNumber || t("no-data")}
+              </h2>
+              <p className="break-all">
+                <strong>{t("client")}:</strong>{" "}
+                {order.clientName || t("no-data")}
+              </p>
+              <p className="break-all">
+                <strong>{t("course")}:</strong>{" "}
+                {order?.course_id?.title || t("no-data")}
+              </p>
               <p className="break-all">
                 <strong>{t("amount")}:</strong>
                 {order.amount
@@ -60,12 +68,31 @@ const OrderCards = ({
                     : `${order.amount} ${t("currency")}`
                   : t("no-data")}
               </p>
-              <p className="break-all"><strong>{t("created-date")}:</strong> {order.create_time ? new Date(order.create_time).toLocaleDateString() : t("no-data")}</p>
-              <p className="break-all"><strong>{t("client-phone")}:</strong> {order.clientPhone || t("no-data")}</p>
-              <p className="break-all"><strong>{t("client-address")}:</strong> {order.clientAddress || t("no-data")}</p>
-              <p className="break-all"><strong>{t("tg-username")}:</strong> {order.tgUsername || t("no-data")}</p>
-              <p className="break-all"><strong>{t("passport")}:</strong> {order.passport || t("no-data")}</p>
-              <div><strong>{t("service")}:</strong> {renderLogo(order.paymentType)}</div>
+              <p className="break-all">
+                <strong>{t("created-date")}:</strong>{" "}
+                {order.create_time
+                  ? new Date(order.create_time).toLocaleDateString()
+                  : t("no-data")}
+              </p>
+              <p className="break-all">
+                <strong>{t("client-phone")}:</strong>{" "}
+                {order.clientPhone || t("no-data")}
+              </p>
+              <p className="break-all">
+                <strong>{t("client-address")}:</strong>{" "}
+                {order.clientAddress || t("no-data")}
+              </p>
+              <p className="break-all">
+                <strong>{t("tg-username")}:</strong>{" "}
+                {order.tgUsername || t("no-data")}
+              </p>
+              <p className="break-all">
+                <strong>{t("passport")}:</strong>{" "}
+                {order.passport || t("no-data")}
+              </p>
+              <div>
+                <strong>{t("service")}:</strong> {renderLogo(order.paymentType)}
+              </div>
 
               <div className="mt-4 text-right">
                 <button
