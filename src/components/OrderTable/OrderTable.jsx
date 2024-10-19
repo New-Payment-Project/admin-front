@@ -42,7 +42,6 @@ const OrderTable = ({
     }
   };
 
-
   return (
     <div className="hidden md:block max-w-full overflow-x-auto shadow-md rounded-lg">
       <table className="min-w-full table-auto text-xs md:text-sm text-left border border-gray-200">
@@ -104,10 +103,10 @@ const OrderTable = ({
               <td className="px-2 py-2 truncate">
                 {order.create_time
                   ? new Date(order.create_time).toLocaleDateString("en-GB") +
-                  " | " +
-                  new Date(order.create_time).toLocaleTimeString("en-GB", {
-                    hour12: false,
-                  })
+                    " | " +
+                    new Date(order.create_time).toLocaleTimeString("en-GB", {
+                      hour12: false,
+                    })
                   : t("no-data")}
               </td>
               <td className="px-2 py-2 text-xs truncate">
