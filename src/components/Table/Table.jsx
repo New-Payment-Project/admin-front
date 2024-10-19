@@ -18,7 +18,7 @@ const Table = () => {
     const fetchTransactions = async () => {
       try {
         const response = await axios.get(
-          `${process.env.REACT_APP_API_URL_TEST}/orders`
+          `${process.env.REACT_APP_API_URL}/orders`
         );
         setTransactions(response.data);
         setFilteredTransactions(response.data);

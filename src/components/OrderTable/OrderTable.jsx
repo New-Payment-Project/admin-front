@@ -105,10 +105,10 @@ const OrderTable = ({
               <td className="px-2 py-2 truncate">
                 {order.create_time
                   ? new Date(order.create_time).toLocaleDateString("en-GB") +
-                    " | " +
-                    new Date(order.create_time).toLocaleTimeString("en-GB", {
-                      hour12: false,
-                    })
+                  " | " +
+                  new Date(order.create_time).toLocaleTimeString("en-GB", {
+                    hour12: false,
+                  })
                   : t("no-data")}
               </td>
               <td className="px-2 py-2 text-xs truncate">
@@ -118,13 +118,12 @@ const OrderTable = ({
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
-                    generateContractPDF(order); 
+                    generateContractPDF(order);
                   }}
-                  className={`px-1 py-1 ${
-                    order.status === "ОПЛАЧЕНО"
-                      ? "bg-blue-500"
-                      : "bg-gray-300 cursor-not-allowed"
-                  } text-white rounded-lg`}
+                  className={`px-1 py-1 ${order.status === "ОПЛАЧЕНО"
+                    ? "bg-blue-500"
+                    : "bg-gray-300 cursor-not-allowed"
+                    } text-white rounded-lg`}
                   disabled={order.status !== "ОПЛАЧЕНО"}
                 >
                   <VscFilePdf className="text-2xl" />
