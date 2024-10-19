@@ -23,7 +23,6 @@ const OrderTable = ({
           },
         }
       );
-
       const contentType = response.headers["content-type"];
       if (contentType !== "application/pdf") {
         throw new Error("Invalid PDF response");
