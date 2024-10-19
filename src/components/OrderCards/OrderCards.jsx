@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { VscFilePdf } from "react-icons/vsc";
 
-
 const OrderCards = ({
   currentOrders,
   getStatusBadge,
@@ -11,13 +10,13 @@ const OrderCards = ({
   itemsPerPage,
 }) => {
 
-  const generatePDF = async (order) => {
+  const generateContractPDF = async (order) => {
     try {
       const response = await axios.post(
-        `${process.env.REACT_APP_API_URL}/generate-pdf`,
+        `${process.env.REACT_APP_API_URL_TEST}/generate-pdf`,
         { orders: [order] },
         {
-          responseType: "blob", 
+          responseType: "blob",
           headers: {
             "Content-Type": "application/json",
           },
@@ -37,8 +36,8 @@ const OrderCards = ({
       link.click();
       document.body.removeChild(link);
     } catch (err) {
-      console.error("Error generating PDF:", err);
-      alert("Error downloading the PDF. Please try again later.");
+      console.error("Error generating contract PDF:", err);
+      alert("Ошибка при загрузке PDF-документа. Пожалуйста, попробуйте позже.");
     }
   };
 
@@ -58,7 +57,7 @@ const OrderCards = ({
                 <strong>{t("amount")}:</strong>
                 {order.amount
                   ? order.status === "ОПЛАЧЕНО"
-                    ? `${order.amount / 100} ${t("currency")}` 
+                    ? `${order.amount / 100} ${t("currency")}`
                     : `${order.amount} ${t("currency")}`
                   : t("no-data")}
               </p>
@@ -71,10 +70,11 @@ const OrderCards = ({
 
               <div className="mt-4 text-right">
                 <button
-                  onClick={() => generatePDF(order)}
-                  className="px-4 py-2 bg-blue-500 text-white rounded-lg"
+                  onClick={() => generateContractPDF(order)}
+                  className="px-4 py-2 bg-blue-500 text-white rounded-lg flex items-center justify-center"
                 >
-                  <VscFilePdf className="text-2xl" />
+                  <VscFilePdf className="text-2xl mr-2" />
+                  {t("download-pdf")}
                 </button>
               </div>
             </div>

@@ -2,7 +2,6 @@ import React from "react";
 import axios from "axios";
 import { VscFilePdf } from "react-icons/vsc";
 
-
 const OrderTable = ({
   currentOrders,
   t,
@@ -12,10 +11,10 @@ const OrderTable = ({
   itemsPerPage,
   setSelectedOrder,
 }) => {
-  const generatePDF = async (order) => {
+  const generateContractPDF = async (order) => {
     try {
       const response = await axios.post(
-        `${process.env.REACT_APP_API_URL}/generate-pdf`,
+        `${process.env.REACT_APP_API_URL_TEST}//generate-pdf`,
         { orders: [order] },
         {
           responseType: "blob",
@@ -38,11 +37,10 @@ const OrderTable = ({
       link.click();
       document.body.removeChild(link);
     } catch (err) {
-      console.error("Error generating PDF:", err);
+      console.error("Error generating contract PDF:", err);
       alert("Ошибка при загрузке PDF-документа. Пожалуйста, попробуйте позже.");
     }
   };
-
 
 
   return (
@@ -112,7 +110,6 @@ const OrderTable = ({
                   })
                   : t("no-data")}
               </td>
-
               <td className="px-2 py-2 text-xs truncate">
                 {renderLogo(order.paymentType)}
               </td>
@@ -120,7 +117,7 @@ const OrderTable = ({
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
-                    generatePDF(order);
+                    generateContractPDF(order); // Используем новую функцию
                   }}
                   className="px-1 py-1 bg-blue-500 text-white rounded-lg"
                 >
