@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from 'axios';
 import { VscFilePdf } from "react-icons/vsc";
 
 const OrderCards = ({
@@ -9,11 +9,10 @@ const OrderCards = ({
   handleItemsPerPageChange,
   itemsPerPage,
 }) => {
-
   const generateContractPDF = async (order) => {
     try {
       const response = await axios.post(
-        `${process.env.REACT_APP_API_URL_TEST}/generate-pdf`,
+        `${process.env.REACT_APP_API_URL}/generate-pdf`,
         { orders: [order] },
         {
           responseType: "blob",
@@ -50,63 +49,38 @@ const OrderCards = ({
               <div className="flex justify-end">
                 <p className="text-xs">{getStatusBadge(order.status)}</p>
               </div>
-              <h2 className="font-bold break-all">
-                {t("invoice-number")}:{" "}
-                {order?.course_id?.prefix || t("no-data")}
-                {order.invoiceNumber || t("no-data")}
-              </h2>
-              <p className="break-all">
-                <strong>{t("client")}:</strong>{" "}
-                {order.clientName || t("no-data")}
-              </p>
-              <p className="break-all">
-                <strong>{t("course")}:</strong>{" "}
-                {order?.course_id?.title || t("no-data")}
-              </p>
+              <h2 className="font-bold break-all">{t("invoice-number")}: {order.course_id.prefix || t("no-data")}{order.invoiceNumber || t("no-data")}</h2>
+              <p className="break-all"><strong>{t("client")}:</strong> {order.clientName || t("no-data")}</p>
+              <p className="break-all"><strong>{t("course")}:</strong> {order?.course_id?.title || t("no-data")}</p>
               <p className="break-all">
                 <strong>{t("amount")}:</strong>
                 {order.amount
                   ? order.status === "ОПЛАЧЕНО"
-                    ? order.paymentType !== "Click"
-                      ? `${order.amount / 100} ${t("currency")}`
-                      : `${order.amount} ${t("currency")}`
-                    : t("no-data")
+                    ? `${order.amount / 100} ${t("currency")}`
+                    : `${order.amount} ${t("currency")}`
                   : t("no-data")}
               </p>
-
-              <p className="break-all">
-                <strong>{t("created-date")}:</strong>{" "}
-                {order.create_time
-                  ? new Date(order.create_time).toLocaleDateString()
-                  : t("no-data")}
-              </p>
-              <p className="break-all">
-                <strong>{t("client-phone")}:</strong>{" "}
-                {order.clientPhone || t("no-data")}
-              </p>
-              <p className="break-all">
-                <strong>{t("client-address")}:</strong>{" "}
-                {order.clientAddress || t("no-data")}
-              </p>
-              <p className="break-all">
-                <strong>{t("tg-username")}:</strong>{" "}
-                {order.tgUsername || t("no-data")}
-              </p>
-              <p className="break-all">
-                <strong>{t("passport")}:</strong>{" "}
-                {order.passport || t("no-data")}
-              </p>
-              <div>
-                <strong>{t("service")}:</strong> {renderLogo(order.paymentType)}
-              </div>
+              <p className="break-all"><strong>{t("created-date")}:</strong> {order.create_time ? new Date(order.create_time).toLocaleDateString() : t("no-data")}</p>
+              <p className="break-all"><strong>{t("client-phone")}:</strong> {order.clientPhone || t("no-data")}</p>
+              <p className="break-all"><strong>{t("client-address")}:</strong> {order.clientAddress || t("no-data")}</p>
+              <p className="break-all"><strong>{t("tg-username")}:</strong> {order.tgUsername || t("no-data")}</p>
+              <p className="break-all"><strong>{t("passport")}:</strong> {order.passport || t("no-data")}</p>
+              <div><strong>{t("service")}:</strong> {renderLogo(order.paymentType)}</div>
 
               <div className="mt-4 text-right">
                 <button
-                  onClick={() => generateContractPDF(order)}
-                  className="px-4 py-2 bg-blue-500 text-white rounded-lg flex items-center justify-center"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    generateContractPDF(order); // Используем новую функцию
+                  }}
+                  className={`px-1 py-1 ${
+                    order.status === "ОПЛАЧЕНО"
+                      ? "bg-blue-500"
+                      : "bg-gray-300 cursor-not-allowed"
+                  } text-white rounded-lg`}
+                  disabled={order.status !== "ОПЛАЧЕНО"}
                 >
-                  <VscFilePdf className="text-2xl mr-2" />
-                  {t("download-pdf")}
+                  <VscFilePdf className="text-2xl" />
                 </button>
               </div>
             </div>
