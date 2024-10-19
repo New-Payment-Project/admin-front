@@ -1,6 +1,5 @@
-import axios from 'axios';
+import axios from "axios";
 import { VscFilePdf } from "react-icons/vsc";
-
 
 const OrderCards = ({
   currentOrders,
@@ -10,14 +9,13 @@ const OrderCards = ({
   handleItemsPerPageChange,
   itemsPerPage,
 }) => {
-
   const generatePDF = async (order) => {
     try {
       const response = await axios.post(
-        `${process.env.REACT_APP_API_URL}/generate-pdf`,
+        `${process.env.REACT_APP_API_URL_TEST}/generate-pdf`,
         { orders: [order] },
         {
-          responseType: "blob", 
+          responseType: "blob",
           headers: {
             "Content-Type": "application/json",
           },
@@ -51,23 +49,55 @@ const OrderCards = ({
               <div className="flex justify-end">
                 <p className="text-xs">{getStatusBadge(order.status)}</p>
               </div>
-              <h2 className="font-bold break-all">{t("invoice-number")}: {order.invoiceNumber || t("no-data")}</h2>
-              <p className="break-all"><strong>{t("client")}:</strong> {order.clientName || t("no-data")}</p>
-              <p className="break-all"><strong>{t("course")}:</strong> {order?.course_id?.title || t("no-data")}</p>
+              <h2 className="font-bold break-all">
+                {t("invoice-number")}:{" "}
+                {order?.course_id?.prefix || t("no-data")}
+                {order.invoiceNumber || t("no-data")}
+              </h2>
+              <p className="break-all">
+                <strong>{t("client")}:</strong>{" "}
+                {order.clientName || t("no-data")}
+              </p>
+              <p className="break-all">
+                <strong>{t("course")}:</strong>{" "}
+                {order?.course_id?.title || t("no-data")}
+              </p>
               <p className="break-all">
                 <strong>{t("amount")}:</strong>
                 {order.amount
                   ? order.status === "ОПЛАЧЕНО"
-                    ? `${order.amount / 100} ${t("currency")}` 
-                    : `${order.amount} ${t("currency")}`
+                    ? order.paymentType !== "Click"
+                      ? `${order.amount / 100} ${t("currency")}`
+                      : `${order.amount} ${t("currency")}`
+                    : t("no-data")
                   : t("no-data")}
               </p>
-              <p className="break-all"><strong>{t("created-date")}:</strong> {order.create_time ? new Date(order.create_time).toLocaleDateString() : t("no-data")}</p>
-              <p className="break-all"><strong>{t("client-phone")}:</strong> {order.clientPhone || t("no-data")}</p>
-              <p className="break-all"><strong>{t("client-address")}:</strong> {order.clientAddress || t("no-data")}</p>
-              <p className="break-all"><strong>{t("tg-username")}:</strong> {order.tgUsername || t("no-data")}</p>
-              <p className="break-all"><strong>{t("passport")}:</strong> {order.passport || t("no-data")}</p>
-              <div><strong>{t("service")}:</strong> {renderLogo(order.paymentType)}</div>
+
+              <p className="break-all">
+                <strong>{t("created-date")}:</strong>{" "}
+                {order.create_time
+                  ? new Date(order.create_time).toLocaleDateString()
+                  : t("no-data")}
+              </p>
+              <p className="break-all">
+                <strong>{t("client-phone")}:</strong>{" "}
+                {order.clientPhone || t("no-data")}
+              </p>
+              <p className="break-all">
+                <strong>{t("client-address")}:</strong>{" "}
+                {order.clientAddress || t("no-data")}
+              </p>
+              <p className="break-all">
+                <strong>{t("tg-username")}:</strong>{" "}
+                {order.tgUsername || t("no-data")}
+              </p>
+              <p className="break-all">
+                <strong>{t("passport")}:</strong>{" "}
+                {order.passport || t("no-data")}
+              </p>
+              <div>
+                <strong>{t("service")}:</strong> {renderLogo(order.paymentType)}
+              </div>
 
               <div className="mt-4 text-right">
                 <button

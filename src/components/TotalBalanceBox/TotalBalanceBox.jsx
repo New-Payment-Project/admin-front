@@ -37,5 +37,5 @@ const TotalBalanceBox = ({ accoounts = [], totalBanks, totalCurrentBalance, load
     </section>
   );
 };
-
+  
 export default TotalBalanceBox;

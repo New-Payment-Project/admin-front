@@ -15,7 +15,7 @@ const OrderTable = ({
   const generatePDF = async (order) => {
     try {
       const response = await axios.post(
-        `${process.env.REACT_APP_API_URL}/generate-pdf`,
+        `${process.env.REACT_APP_API_URL_TEST}/generate-pdf`,
         { orders: [order] },
         {
           responseType: "blob",
@@ -96,8 +96,10 @@ const OrderTable = ({
               <td className="px-2 py-2 truncate">
                 {order.amount
                   ? order.status === "ОПЛАЧЕНО"
+                  ? order.paymentType !== "Click"
                     ? `${order.amount / 100} ${t("currency")}`
                     : `${order.amount} ${t("currency")}`
+                  : t("no-data")
                   : t("no-data")}
               </td>
               <td className="px-2 py-2 text-xs truncate">

@@ -22,7 +22,7 @@ const App = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await axios.get(`${process.env.REACT_APP_API_URL}/orders`);
+        const response = await axios.get(`${process.env.REACT_APP_API_URL_TEST}/orders`);
         const fetchedOrders = response.data.data;
         setOrders(fetchedOrders);
         setFilteredOrders(fetchedOrders); // Initially set all orders to filteredOrders

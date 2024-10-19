@@ -47,7 +47,7 @@ const CreateCourse = () => {
 
     try {
       const response = await fetch(
-        `${process.env.REACT_APP_API_URL}/courses`,
+        `${process.env.REACT_APP_API_URL_TEST}/courses`,
         {
           method: "POST",
           headers: {
