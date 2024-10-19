@@ -9,7 +9,6 @@ const OrderCards = ({
   handleItemsPerPageChange,
   itemsPerPage,
 }) => {
-
   const generateContractPDF = async (order) => {
     try {
       const response = await axios.post(
