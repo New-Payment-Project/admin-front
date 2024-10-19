@@ -45,7 +45,7 @@ export default function Component() {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await axios.get(`${process.env.REACT_APP_API_URL}/orders`)
+        const response = await axios.get(`${process.env.REACT_APP_API_URL_TEST}/orders`)
         processOrders(response.data.data)
         setLoading(false)
       } catch (err) {
@@ -78,14 +78,15 @@ export default function Component() {
     filteredOrders.forEach((order) => {
       const paymentType = order.paymentType;
       if (!paymentType) {
-        console.log(`Missing paymentType for order:`);
+        console.log(`Missing paymentType for order:`, order);
         return;
       }
   
       if (totals.hasOwnProperty(paymentType)) {
         const amount = Number(order.amount);
         if (!isNaN(amount)) {
-          totals[paymentType] += amount / 100;
+          // Check if paymentType is not "Click", divide by 100
+          totals[paymentType] += paymentType !== "Click" ? amount / 100 : amount;
         } else {
           console.error(`Invalid amount for order:`, order);
         }

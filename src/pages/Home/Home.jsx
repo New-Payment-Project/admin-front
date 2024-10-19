@@ -59,7 +59,7 @@ const Home = () => {
     const fetchOrders = async () => {
       try {
         const response = await axios.get(
-          `${process.env.REACT_APP_API_URL}/orders`
+          `${process.env.REACT_APP_API_URL_TEST}/orders`
         );
 
         const reversedOrders = response.data.data.reverse();
@@ -76,7 +76,7 @@ const Home = () => {
     const fetchCourses = async () => {
       try {
         const response = await axios.get(
-          `${process.env.REACT_APP_API_URL}/courses`
+          `${process.env.REACT_APP_API_URL_TEST}/courses`
         );
         setCourses(response.data);
       } catch (error) {
