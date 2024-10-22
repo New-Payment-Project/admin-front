@@ -12,7 +12,7 @@ const CreateIndividualLink = () => {
   useEffect(() => {
     const fetchCourses = async () => {
       try {
-        const response = await fetch(`${process.env.REACT_APP_API_URL_TEST}/courses`);
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/courses`);
         const data = await response.json();
         setCourses(data);
       } catch (error) {

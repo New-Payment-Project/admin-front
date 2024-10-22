@@ -22,7 +22,7 @@ const CoursesTable = () => {
     const fetchCourses = async () => {
       try {
         const response = await axios.get(
-          `${process.env.REACT_APP_API_URL_TEST}/courses`
+          `${process.env.REACT_APP_API_URL}/courses`
         );
         setCourses(response.data);
         setFilteredCourses(response.data);
@@ -40,7 +40,7 @@ const CoursesTable = () => {
     const fetchOrders = async () => {
       try {
         const response = await axios.get(
-          `${process.env.REACT_APP_API_URL_TEST}/orders`
+          `${process.env.REACT_APP_API_URL}/orders`
         );
         const orders = response.data.data;
         const successfulOrders = orders.filter(

@@ -45,7 +45,7 @@ export default function Component() {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await axios.get(`${process.env.REACT_APP_API_URL_TEST}/orders`)
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/orders`)
         processOrders(response.data.data)
         setLoading(false)
       } catch (err) {

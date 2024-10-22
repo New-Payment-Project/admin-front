@@ -62,9 +62,7 @@ const OrderCards = ({
               </p>
               <p className="break-all"><strong>{t("created-date")}:</strong> {order.create_time ? new Date(order.create_time).toLocaleDateString() : t("no-data")}</p>
               <p className="break-all"><strong>{t("client-phone")}:</strong> {order.clientPhone || t("no-data")}</p>
-              <p className="break-all"><strong>{t("client-address")}:</strong> {order.clientAddress || t("no-data")}</p>
               <p className="break-all"><strong>{t("tg-username")}:</strong> {order.tgUsername || t("no-data")}</p>
-              <p className="break-all"><strong>{t("passport")}:</strong> {order.passport || t("no-data")}</p>
               <div><strong>{t("service")}:</strong> {renderLogo(order.paymentType)}</div>
 
               <div className="mt-4 text-right">
