@@ -74,8 +74,8 @@ const OrderCards = ({
                     generateContractPDF(order);
                   }}
                   className={`px-1 py-1 ${order.status === "ОПЛАЧЕНО"
-                      ? "bg-blue-500"
-                      : "bg-gray-300 cursor-not-allowed"
+                    ? "bg-blue-500"
+                    : "bg-gray-300 cursor-not-allowed"
                     } text-white rounded-lg`}
                   disabled={order.status !== "ОПЛАЧЕНО"}
                 >
