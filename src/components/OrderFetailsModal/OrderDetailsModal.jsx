@@ -42,18 +42,8 @@ const OrderDetailsModal = ({ selectedOrder, t, getStatusBadge, renderLogo, close
           </div>
 
           <div className="flex justify-between">
-            <p className="text-right font-bold">{t("client-address")}:</p>
-            <p>{selectedOrder.clientAddress || t("no-data")}</p>
-          </div>
-
-          <div className="flex justify-between">
             <p className="text-right font-bold">{t("tg-username")}:</p>
             <p>{selectedOrder.tgUsername || t("no-data")}</p>
-          </div>
-
-          <div className="flex justify-between">
-            <p className="text-right font-bold">{t("passport")}:</p>
-            <p>{selectedOrder.passport || t("no-data")}</p>
           </div>
         </div>
 
