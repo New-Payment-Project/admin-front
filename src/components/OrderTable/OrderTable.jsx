@@ -14,7 +14,7 @@ const OrderTable = ({
   const generateContractPDF = async (order) => {
     try {
       const response = await axios.post(
-        `${process.env.REACT_APP_API_URL}//generate-pdf`,
+        `${process.env.REACT_APP_API_URL}/generate-pdf`,
         { orders: [order] },
         {
           responseType: "blob",
@@ -41,6 +41,7 @@ const OrderTable = ({
       alert("Ошибка при загрузке PDF-документа. Пожалуйста, попробуйте позже.");
     }
   };
+
 
   return (
     <div className="hidden md:block max-w-full overflow-x-auto shadow-md rounded-lg">

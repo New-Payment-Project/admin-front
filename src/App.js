@@ -25,7 +25,7 @@ const App = () => {
         const response = await axios.get(`${process.env.REACT_APP_API_URL}/orders`);
         const fetchedOrders = response.data.data;
         setOrders(fetchedOrders);
-        setFilteredOrders(fetchedOrders); // Initially set all orders to filteredOrders
+        setFilteredOrders(fetchedOrders); 
         setLoading(false);
       } catch (err) {
         setError(t('fetch-failed'));
