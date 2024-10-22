@@ -69,13 +69,12 @@ const OrderCards = ({
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
-                    generateContractPDF(order); // Используем новую функцию
+                    generateContractPDF(order);
                   }}
-                  className={`px-1 py-1 ${
-                    order.status === "ОПЛАЧЕНО"
+                  className={`px-1 py-1 ${order.status === "ОПЛАЧЕНО"
                       ? "bg-blue-500"
                       : "bg-gray-300 cursor-not-allowed"
-                  } text-white rounded-lg`}
+                    } text-white rounded-lg`}
                   disabled={order.status !== "ОПЛАЧЕНО"}
                 >
                   <VscFilePdf className="text-2xl" />
