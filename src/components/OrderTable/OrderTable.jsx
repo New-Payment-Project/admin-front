@@ -92,7 +92,7 @@ const OrderTable = ({
                 {order.clientName || t("no-data")}
               </td>
               <td className="px-2 py-2 truncate">
-                {shortCourseTitle(order?.course_id?.title, 45) || t("no-data")}
+                {shortCourseTitle(order?.course_id?.title, 40) || t("no-data")}
               </td>
               <td className="px-2 py-2 truncate">
                 {order.amount
