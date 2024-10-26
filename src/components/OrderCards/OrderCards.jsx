@@ -21,7 +21,6 @@ const OrderCards = ({
           },
         }
       );
-
       const contentType = response.headers["content-type"];
       if (contentType !== "application/pdf") {
         throw new Error("Invalid PDF response");
@@ -49,7 +48,7 @@ const OrderCards = ({
               <div className="flex justify-end">
                 <p className="text-xs">{getStatusBadge(order.status)}</p>
               </div>
-              <h2 className="font-bold break-all">{t("invoice-number")}: {order.course_id.prefix || t("no-data")}{order.invoiceNumber || t("no-data")}</h2>
+              {/* <h2 className="font-bold break-all">{t("invoice-number")}: {order.course_id.prefix || t("no-data")}{order.invoiceNumber || t("no-data")}</h2> */}
               <p className="break-all"><strong>{t("client")}:</strong> {order.clientName || t("no-data")}</p>
               <p className="break-all"><strong>{t("course")}:</strong> {order?.course_id?.title || t("no-data")}</p>
               <p className="break-all">
@@ -72,8 +71,8 @@ const OrderCards = ({
                     generateContractPDF(order);
                   }}
                   className={`px-1 py-1 ${order.status === "ОПЛАЧЕНО"
-                      ? "bg-blue-500"
-                      : "bg-gray-300 cursor-not-allowed"
+                    ? "bg-blue-500"
+                    : "bg-gray-300 cursor-not-allowed"
                     } text-white rounded-lg`}
                   disabled={order.status !== "ОПЛАЧЕНО"}
                 >
