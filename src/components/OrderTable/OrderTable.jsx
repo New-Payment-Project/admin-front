@@ -48,6 +48,12 @@ const OrderTable = ({
     return text.length > maxLength ? text.slice(0, maxLength) + "..." : text;
   };
 
+  const truncateToTwoWords = (text) => {
+    if (!text) return ""; // Handle null or undefined values
+    const words = text.split(" ");
+    return words.length > 2 ? `${words[0]} ${words[1]} ...` : text;
+  };
+
   return (
     <div className="hidden md:block max-w-full overflow-x-auto shadow-md rounded-lg">
       <table className="min-w-full table-auto text-xs md:text-sm text-left border border-gray-200">
@@ -91,10 +97,10 @@ const OrderTable = ({
                 {order.invoiceNumber || t("no-data")}
               </td>
               <td className="px-2 py-2 truncate">
-                {order.clientName || t("no-data")}
+              {truncateToTwoWords(order.clientName) || t("no-data")}
               </td>
               <td className="px-2 py-2 truncate">
-                {truncateText(order?.course_id?.title || t("no-data"), 44)}
+                {truncateText(order?.course_id?.title || t("no-data"), 40)}
               </td>
               <td className="px-2 py-2 truncate">
                 {order.amount
