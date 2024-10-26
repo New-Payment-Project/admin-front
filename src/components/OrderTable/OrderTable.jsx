@@ -100,7 +100,7 @@ const OrderTable = ({
               {truncateToTwoWords(order.clientName) || t("no-data")}
               </td>
               <td className="px-2 py-2 truncate">
-                {truncateText(order?.course_id?.title || t("no-data"), 40)}
+                {truncateText(order?.course_id?.title || t("no-data"), 30)}
               </td>
               <td className="px-2 py-2 truncate">
                 {order.amount
