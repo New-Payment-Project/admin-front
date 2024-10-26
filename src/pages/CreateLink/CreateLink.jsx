@@ -179,7 +179,7 @@ const CoursesTable = () => {
                       {t("table-successful-purchases")}
                     </th>
                     <th className="px-4 py-2 text-xs font-medium uppercase tracking-wider">
-                      {t("actions")}
+                      {t("action")}
                     </th>
                   </tr>
                 </thead>

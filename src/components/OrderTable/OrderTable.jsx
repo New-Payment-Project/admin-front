@@ -14,7 +14,7 @@ const OrderTable = ({
   const generateContractPDF = async (order) => {
     try {
       const response = await axios.post(
-        `${process.env.REACT_APP_API_URL}//generate-pdf`,
+        `${process.env.REACT_APP_API_URL}/generate-pdf`,
         { orders: [order] },
         {
           responseType: "blob",
@@ -40,6 +40,12 @@ const OrderTable = ({
       console.error("Error generating contract PDF:", err);
       alert("Ошибка при загрузке PDF-документа. Пожалуйста, попробуйте позже.");
     }
+  };
+
+  // Truncate function
+  const truncateText = (text, maxLength) => {
+    if (!text) return ""; // Handle null or undefined values
+    return text.length > maxLength ? text.slice(0, maxLength) + "..." : text;
   };
 
   return (
@@ -88,13 +94,15 @@ const OrderTable = ({
                 {order.clientName || t("no-data")}
               </td>
               <td className="px-2 py-2 truncate">
-                {order?.course_id?.title || t("no-data")}
+                {truncateText(order?.course_id?.title || t("no-data"), 44)}
               </td>
               <td className="px-2 py-2 truncate">
                 {order.amount
                   ? order.status === "ОПЛАЧЕНО"
-                    ? `${order.amount / 100} ${t("currency")}`
-                    : `${order.amount} ${t("currency")}`
+                    ? order.paymentType !== "Click"
+                      ? `${order.amount / 100} ${t("currency")}`
+                      : `${order.amount} ${t("currency")}`
+                    : t("no-data")
                   : t("no-data")}
               </td>
               <td className="px-2 py-2 text-xs truncate">
@@ -116,9 +124,14 @@ const OrderTable = ({
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
-                    generateContractPDF(order); // Используем новую функцию
+                    generateContractPDF(order);
                   }}
-                  className="px-1 py-1 bg-blue-500 text-white rounded-lg"
+                  className={`px-1 py-1 ${
+                    order.status === "ОПЛАЧЕНО"
+                      ? "bg-blue-500"
+                      : "bg-gray-300 cursor-not-allowed"
+                  } text-white rounded-lg`}
+                  disabled={order.status !== "ОПЛАЧЕНО"}
                 >
                   <VscFilePdf className="text-2xl" />
                 </button>

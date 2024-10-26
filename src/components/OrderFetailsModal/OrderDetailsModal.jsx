@@ -3,6 +3,7 @@ const OrderDetailsModal = ({ selectedOrder, t, getStatusBadge, renderLogo, close
 
   // Check if the status is "ОПЛАЧЕНО" (paid in Russian)
   const isPaid = selectedOrder.status === "ОПЛАЧЕНО";
+  const isClick = selectedOrder.paymentType !== "Click";
 
   return (
     <div className="modal modal-open">
@@ -41,18 +42,8 @@ const OrderDetailsModal = ({ selectedOrder, t, getStatusBadge, renderLogo, close
           </div>
 
           <div className="flex justify-between">
-            <p className="text-right font-bold">{t("client-address")}:</p>
-            <p>{selectedOrder.clientAddress || t("no-data")}</p>
-          </div>
-
-          <div className="flex justify-between">
             <p className="text-right font-bold">{t("tg-username")}:</p>
             <p>{selectedOrder.tgUsername || t("no-data")}</p>
-          </div>
-
-          <div className="flex justify-between">
-            <p className="text-right font-bold">{t("passport")}:</p>
-            <p>{selectedOrder.passport || t("no-data")}</p>
           </div>
         </div>
 
@@ -73,8 +64,10 @@ const OrderDetailsModal = ({ selectedOrder, t, getStatusBadge, renderLogo, close
             <p className="text-xl font-extrabold">
               {selectedOrder.amount
                 ? isPaid
+                ? isClick
                   ? `${selectedOrder.amount / 100} ${t("currency")}` // Divide by 100 if status is "ОПЛАЧЕНО"
                   : `${selectedOrder.amount} ${t("currency")}`
+                : t("no-data")
                 : t("no-data")}
             </p>
           </div>

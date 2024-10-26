@@ -28,7 +28,7 @@ const TotalBalanceBox = ({ accoounts = [], totalBanks, totalCurrentBalance, load
               {loading ? (
                 <div className="skeleton h-8 w-full  bg-gray-300 animate-pulse"></div>
               ) : (
-                <AnimatedCounter amount={totalCurrentBalance / 100}/>
+                <AnimatedCounter amount={(totalCurrentBalance / 100)}/>
               )}
             </div>
           </div>
@@ -37,5 +37,5 @@ const TotalBalanceBox = ({ accoounts = [], totalBanks, totalCurrentBalance, load
     </section>
   );
 };
-
+  
 export default TotalBalanceBox;
