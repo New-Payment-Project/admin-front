@@ -42,6 +42,11 @@ const OrderTable = ({
     }
   };
 
+  // Truncate function
+  const truncateText = (text, maxLength) => {
+    if (!text) return ""; // Handle null or undefined values
+    return text.length > maxLength ? text.slice(0, maxLength) + "..." : text;
+  };
 
   return (
     <div className="hidden md:block max-w-full overflow-x-auto shadow-md rounded-lg">
@@ -89,7 +94,7 @@ const OrderTable = ({
                 {order.clientName || t("no-data")}
               </td>
               <td className="px-2 py-2 truncate">
-                {order?.course_id?.title || t("no-data")}
+                {truncateText(order?.course_id?.title || t("no-data"), 44)}
               </td>
               <td className="px-2 py-2 truncate">
                 {order.amount
@@ -106,10 +111,10 @@ const OrderTable = ({
               <td className="px-2 py-2 truncate">
                 {order.create_time
                   ? new Date(order.create_time).toLocaleDateString("en-GB") +
-                  " | " +
-                  new Date(order.create_time).toLocaleTimeString("en-GB", {
-                    hour12: false,
-                  })
+                    " | " +
+                    new Date(order.create_time).toLocaleTimeString("en-GB", {
+                      hour12: false,
+                    })
                   : t("no-data")}
               </td>
               <td className="px-2 py-2 text-xs truncate">
@@ -121,10 +126,11 @@ const OrderTable = ({
                     e.stopPropagation();
                     generateContractPDF(order);
                   }}
-                  className={`px-1 py-1 ${order.status === "ОПЛАЧЕНО"
-                    ? "bg-blue-500"
-                    : "bg-gray-300 cursor-not-allowed"
-                    } text-white rounded-lg`}
+                  className={`px-1 py-1 ${
+                    order.status === "ОПЛАЧЕНО"
+                      ? "bg-blue-500"
+                      : "bg-gray-300 cursor-not-allowed"
+                  } text-white rounded-lg`}
                   disabled={order.status !== "ОПЛАЧЕНО"}
                 >
                   <VscFilePdf className="text-2xl" />
