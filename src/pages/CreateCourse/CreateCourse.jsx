@@ -145,7 +145,7 @@ const CreateCourse = () => {
         <div className="flex gap-4 justify-end flex-col md:flex-row">
           <button
             type="submit"
-            className="md:w-1/4 w-full  text-white font-semibold py-3 rounded-lg  focus:outline-none focus:ring-4  bg-green-600 hover:bg-green-700 focus:ring-green-400 flex justify-center items-center"
+            className="md:w-1/4 w-full  text-white font-semibold py-3 rounded-lg  bg-bank-gradient active:scale-95 transition duration-300 flex justify-center items-center"
             disabled={loading}
           >
             {loading ? (

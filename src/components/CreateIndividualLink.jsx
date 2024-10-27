@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { PiLinkBold } from "react-icons/pi";
+
 
 const CreateIndividualLink = () => {
   const [courses, setCourses] = useState([]);
@@ -61,9 +63,10 @@ const CreateIndividualLink = () => {
   return (
     <div className="w-full p-6 space-y-6 justify-end flex">
       <button
-        className="btn btn-primary btn-outline"
+        className="btn text-white bg-bank-gradient"
         onClick={() => document.getElementById('my_modal_1').showModal()}
       >
+        <PiLinkBold />
         {t('create-link')}
       </button>
 
