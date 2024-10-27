@@ -42,20 +42,21 @@ const OrderTable = ({
     }
   };
 
-  // Truncate function
   const truncateText = (text, maxLength) => {
-    if (!text) return ""; // Handle null or undefined values
+    if (!text) return ""; 
     return text.length > maxLength ? text.slice(0, maxLength) + "..." : text;
   };
 
   const truncateToTwoWords = (text) => {
-    if (!text) return ""; // Handle null or undefined values
+    if (!text) return ""; 
     const words = text.split(" ");
     return words.length > 2 ? `${words[0]} ${words[1]} ...` : text;
   };
 
   return (
     <div className="hidden md:block max-w-full overflow-x-auto shadow-md rounded-lg">
+      
+      
       <table className="min-w-full table-auto text-xs md:text-sm text-left border border-gray-200">
         <thead className="bg-gray-50 text-gray-600">
           <tr>
@@ -146,6 +147,18 @@ const OrderTable = ({
           ))}
         </tbody>
       </table>
+      <div className="flex justify-end p-2">
+                <select
+                  value={itemsPerPage}
+                  onChange={handleItemsPerPageChange}
+                  className="select select-bordered w-full max-w-20"
+                >
+                  <option value={10}>10</option>
+                  <option value={25}>25</option>
+                  <option value={50}>50</option>
+                  <option value={100}>100</option>
+                </select>
+              </div>
     </div>
   );
 };
