@@ -36,7 +36,6 @@ const App = () => {
     fetchOrders();
   }, [t]);
 
-  // Function to filter orders based on date and calculate the total balance
   useEffect(() => {
     const filterOrders = () => {
       let filtered = orders;
@@ -53,12 +52,10 @@ const App = () => {
 
       setFilteredOrders(filtered);
 
-      // Calculate total for filtered orders
       const paidOrders = filtered.filter((order) => order.status === 'ОПЛАЧЕНО');
       const total = paidOrders.reduce((acc, order) => acc + order.amount, 0);
       dispatch(setTotalAmount(total));
 
-      // Update payment data for the chart
       const clickCount = filtered.filter((order) => order.paymentType === 'Click').length;
       const paymeCount = filtered.filter((order) => order.paymentType === 'Payme').length;
       const uzumCount = filtered.filter((order) => order.paymentType === 'Uzum').length;
