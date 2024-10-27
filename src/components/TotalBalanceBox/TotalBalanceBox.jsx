@@ -8,10 +8,10 @@ const TotalBalanceBox = ({ accoounts = [], totalBanks, totalCurrentBalance, load
 
   return (
     <section className='total-balance overflow-hidden max-w-full mx-auto p-4'>
-      <div className='flex flex-col md:flex-row justify-between items-start gap-6'>
+      <div className='flex flex-row justify-between items-start gap-6'>
         <div className='total-balance-chart w-full md:w-1/2'>
           {loading ? (
-            <div className="skeleton h-32 w-32 rounded-full bg-gray-300 animate-pulse"></div>
+            <div className="skeleton h-24 lg:h-32 w-32 rounded-full bg-gray-300 animate-pulse"></div>
           ) : (
             <DoughnutChart paymentData={paymentData} /> 
           )}
