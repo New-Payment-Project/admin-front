@@ -14,9 +14,9 @@ const CoursesTable = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [itemsPerPage, setItemsPerPage] = useState(10); // State for items per page
-  const [selectedCourse, setSelectedCourse] = useState(null); // State for the course to edit
-  const [courseToDelete, setCourseToDelete] = useState(null); // State for the course to delete
+  const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [selectedCourse, setSelectedCourse] = useState(null);
+  const [courseToDelete, setCourseToDelete] = useState(null);
 
   useEffect(() => {
     const fetchCourses = async () => {
@@ -79,15 +79,15 @@ const CoursesTable = () => {
 
   const handleItemsPerPageChange = (e) => {
     setItemsPerPage(Number(e.target.value));
-    setCurrentPage(1); // Reset to page 1 when items per page changes
+    setCurrentPage(1);
   };
 
   const handleEditClick = (course) => {
-    setSelectedCourse(course); // Set the selected course for editing
+    setSelectedCourse(course);
   };
 
   const handleDeleteClick = (course) => {
-    setCourseToDelete(course); // Set the selected course for deletion
+    setCourseToDelete(course);
   };
 
   const handleConfirmEdit = async (updatedData) => {
@@ -110,8 +110,7 @@ const CoursesTable = () => {
 
       setCourses(updatedCourses);
       setFilteredCourses(updatedFilteredCourses);
-
-      setSelectedCourse(null); // Close modal after success
+      setSelectedCourse(null);
     } catch (error) {
       console.error(t("course-error"), error);
     }
@@ -123,7 +122,6 @@ const CoursesTable = () => {
         `https://api.norbekovgroup.uz/api/v1/courses/${courseToDelete._id}`
       );
 
-      // Remove the deleted course from the lists
       const updatedCourses = courses.filter(
         (course) => course._id !== courseToDelete._id
       );
@@ -133,7 +131,7 @@ const CoursesTable = () => {
 
       setCourses(updatedCourses);
       setFilteredCourses(updatedFilteredCourses);
-      setCourseToDelete(null); // Close the confirmation modal
+      setCourseToDelete(null);
     } catch (error) {
       console.error(t("course-fail"), error);
     }
@@ -145,7 +143,6 @@ const CoursesTable = () => {
         <h1 className="text-2xl font-semibold text-gray-800 mb-2 w-full">
           {t("course-list")}
         </h1>
-
         <CreateIndividualLink />
       </div>
 
@@ -224,8 +221,6 @@ const CoursesTable = () => {
                   )}
                 </tbody>
               </table>
-
-              {/* Items Per Page Select */}
               <div className="flex justify-end p-2">
                 <select
                   value={itemsPerPage}
@@ -239,6 +234,45 @@ const CoursesTable = () => {
                 </select>
               </div>
             </div>
+          </div>
+
+          {/* Card Layout for Mobile */}
+          <div className="block md:hidden">
+            {currentCourses.map((course, index) => (
+              <div
+                key={index}
+                className="p-4 mb-4 bg-white border border-gray-200 rounded-lg shadow-md"
+              >
+                <h2 className="font-semibold text-lg">{course.title}</h2>
+                <p className="text-sm text-gray-600">
+                  {t("table-course-prefix")}: {course.prefix}
+                </p>
+                <p className="text-sm text-gray-600">
+                  {t("table-course-price")}: {course.price} {t("currency")}
+                </p>
+                <p className="text-sm text-gray-600">
+                  {t("table-course-route")}: {course.route}
+                </p>
+                <p className="text-sm text-gray-600">
+                  {t("table-successful-purchases")}:{" "}
+                  {successfulPurchases[course.title] || 0}
+                </p>
+                <div className="mt-2 flex space-x-2">
+                  <button
+                    className="btn text-blue-500 hover:text-blue-700"
+                    onClick={() => handleEditClick(course)}
+                  >
+                    {t("edit")}
+                  </button>
+                  <button
+                    className="btn text-red-500 hover:text-red-700"
+                    onClick={() => handleDeleteClick(course)}
+                  >
+                    {t("delete")}
+                  </button>
+                </div>
+              </div>
+            ))}
           </div>
 
           <Pagination
