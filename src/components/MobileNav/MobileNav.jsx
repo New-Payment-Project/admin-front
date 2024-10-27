@@ -9,7 +9,7 @@ const MobileNav = ({ user }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const location = useLocation();
   const pathName = location.pathname;
-  const { t } = useTranslation()
+  const { t } = useTranslation();
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -29,7 +29,7 @@ const MobileNav = ({ user }) => {
       </div>
 
       <div
-        className={`fixed top-0 left-0 z-50 h-full w-64 bg-white shadow-lg flex flex-col justify-between  transition-transform transform ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}
+        className={`fixed top-0 left-0 z-50 h-full w-72 bg-white shadow-lg flex flex-col justify-between transition-transform transform ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}
       >
         <div>
           <Link to="/" className="mb-12 flex items-center gap-1 px-4">
@@ -47,15 +47,13 @@ const MobileNav = ({ user }) => {
           {/* Navigation Links */}
           <nav className="flex flex-col gap-6 pt-4 px-4 flex-grow">
             {sidebarLinks.map((item) => {
-              // Check if the current route matches the link's route
               const isActive = pathName === item.route || pathName.startsWith(`${item.route}/`);
 
               return (
                 <Link
                   to={item.route}
                   key={t(item.label)}
-                  className={`rounded-lg py-3 flex items-center gap-2 px-4 transition-colors duration-300 ${isActive ? 'bg-bank-gradient text-white bg-white' : 'text-gray-700 hover:bg-gray-200'
-                    }`}
+                  className={`rounded-lg py-3 flex items-center gap-2 px-4 transition-colors duration-300 ${isActive ? 'bg-bank-gradient text-white bg-white' : 'text-gray-700 hover:bg-gray-200'}`}
                   onClick={toggleSidebar}
                 >
                   <img
@@ -70,11 +68,13 @@ const MobileNav = ({ user }) => {
           </nav>
         </div>
 
-        {/* Bottom Section: LanguageSwitcher and UserInfo */}
-        <div className="p-4 flex flex-col items-start">
-          <LanguageSwitcher />
-          <UserInfo user={user} />
-        </div>
+        {/* Conditionally Rendered Bottom Section */}
+        {isSidebarOpen && (
+          <div className="p-4 flex flex-col items-start">
+            <LanguageSwitcher />
+            <UserInfo user={user} />
+          </div>
+        )}
       </div>
     </div>
   );
