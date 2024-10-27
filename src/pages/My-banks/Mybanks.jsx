@@ -110,7 +110,7 @@ export default function Component() {
 
   return (
     <div className="max-w-6xl mx-auto p-6 min-h-screen">
-      <h1 className="text-3xl font-bold mb-5 text-gray-800">{t('my-bank-cards')}</h1>
+      <h1 className="text-2xl font-semibold mb-5 text-gray-800">{t('my-bank-cards')}</h1>
 
       <div className="bg-white rounded-lg shadow-md p-6 mb-8">
         <div className="flex flex-wrap gap-4 mb-6">
