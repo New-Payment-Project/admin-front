@@ -3,6 +3,9 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { IoIosAddCircleOutline } from "react-icons/io";
 import { useTranslation } from "react-i18next";
+import CryptoJS from 'crypto-js';
+import axios from "axios";
+
 
 const CreateCourse = () => {
   const [loading, setLoading] = useState(false);
@@ -32,34 +35,36 @@ const CreateCourse = () => {
     setPrefix(e.target.value);
   };
 
+  const secretKey = process.env.REACT_APP_SECRET_KEY || 'your-secret-key';
+
+  const decryptToken = () => {
+    const encryptedToken = localStorage.getItem('token');
+    const bytes = CryptoJS.AES.decrypt(encryptedToken, secretKey);
+    return bytes.toString(CryptoJS.enc.Utf8);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
 
-    // If prefix is empty, use "U" as the default value
     const finalPrefix = prefix.trim() === "" ? "U" : prefix;
-
-    // Include the final prefix in the course data
-    const finalCourseData = {
-      ...courseData,
-      prefix: finalPrefix // Use the final prefix value
-    };
+    const finalCourseData = { ...courseData, prefix: finalPrefix };
 
     try {
-      const response = await fetch(
+      const token = decryptToken();
+      const response = await axios.post(
         `${process.env.REACT_APP_API_URL}/courses`,
+        finalCourseData,
         {
-          method: "POST",
           headers: {
-            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
           },
-          body: JSON.stringify(finalCourseData),
         }
       );
 
       if (response.status === 409) {
         toast.error(t("course-route-exists"));
-      } else if (response.ok) {
+      } else if (response.status === 201) { // Assuming 201 for success
         toast.success(t("course-success"));
         setCourseData({
           title: "",
@@ -75,6 +80,7 @@ const CreateCourse = () => {
       }
     } catch (error) {
       toast.error(t("course-fail"));
+      console.log(error);
     } finally {
       setLoading(false);
     }
