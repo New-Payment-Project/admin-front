@@ -1,6 +1,7 @@
 import React from "react";
 import axios from "axios";
 import { VscFilePdf } from "react-icons/vsc";
+import CryptoJS from 'crypto-js';
 
 const OrderTable = ({
   currentOrders,
@@ -11,36 +12,45 @@ const OrderTable = ({
   itemsPerPage,
   setSelectedOrder,
 }) => {
-  const generateContractPDF = async (order) => {
-    try {
-      const response = await axios.post(
-        `${process.env.REACT_APP_API_URL}/generate-pdf`,
-        { orders: [order] },
-        {
-          responseType: "blob",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
 
-      const contentType = response.headers["content-type"];
-      if (contentType !== "application/pdf") {
-        throw new Error("Invalid PDF response");
+const generateContractPDF = async (order) => {
+  try {
+    // Retrieve and decrypt the token
+    const secretKey = process.env.REACT_APP_SECRET_KEY || 'your-secret-key';
+    const encryptedToken = localStorage.getItem('token');
+    const bytes = CryptoJS.AES.decrypt(encryptedToken, secretKey);
+    const token = bytes.toString(CryptoJS.enc.Utf8);
+
+    const response = await axios.post(
+      `${process.env.REACT_APP_API_URL}/generate-pdf`,
+      { orders: [order] },
+      {
+        responseType: "blob",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
       }
+    );
 
-      const url = window.URL.createObjectURL(new Blob([response.data]));
-      const link = document.createElement("a");
-      link.href = url;
-      link.setAttribute("download", `${order.invoiceNumber}.pdf`);
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    } catch (err) {
-      console.error("Error generating contract PDF:", err);
-      alert("Ошибка при загрузке PDF-документа. Пожалуйста, попробуйте позже.");
+    const contentType = response.headers["content-type"];
+    if (contentType !== "application/pdf") {
+      throw new Error("Invalid PDF response");
     }
-  };
+
+    const url = window.URL.createObjectURL(new Blob([response.data]));
+    const link = document.createElement("a");
+    link.href = url;
+    link.setAttribute("download", `${order.invoiceNumber}.pdf`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  } catch (err) {
+    console.error("Error generating contract PDF:", err);
+    alert("Ошибка при загрузке PDF-документа. Пожалуйста, попробуйте позже.");
+  }
+};
+
 
   const truncateText = (text, maxLength) => {
     if (!text) return ""; 

@@ -9,6 +9,7 @@ import OrderCards from "../../components/OrderCards/OrderCards";
 import OrderDetailsModal from "../../components/OrderFetailsModal/OrderDetailsModal";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
+import CryptoJS from "crypto-js";
 
 const Home = () => {
   const [orders, setOrders] = useState([]);
@@ -21,6 +22,14 @@ const Home = () => {
   const [courses, setCourses] = useState([]);
   const { t } = useTranslation();
   const printRef = useRef();
+
+  const secretKey = process.env.REACT_APP_SECRET_KEY || 'your-secret-key';
+
+  const decryptToken = () => {
+    const encryptedToken = localStorage.getItem('token');
+    const bytes = CryptoJS.AES.decrypt(encryptedToken, secretKey);
+    return bytes.toString(CryptoJS.enc.Utf8);
+  };
 
   const handleDownloadPdf = async () => {
     const element = printRef.current;
@@ -46,7 +55,6 @@ const Home = () => {
     pdf.save('transactions.pdf');
   };
 
-
   const {
     statusFilter,
     paymentTypeFilter,
@@ -58,13 +66,18 @@ const Home = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
+        const token = decryptToken();
         const response = await axios.get(
-          `${process.env.REACT_APP_API_URL}/orders`
+          `${process.env.REACT_APP_API_URL}/orders`,
+          {
+            headers: {
+              Authorization: "Bearer " + token,
+            },
+          }
         );
 
         const reversedOrders = response.data.data.reverse();
         setOrders(reversedOrders);
-        console.log("aassssssss", reversedOrders);
         setFilteredOrders(reversedOrders);
         setLoading(false);
       } catch (err) {
@@ -75,8 +88,14 @@ const Home = () => {
 
     const fetchCourses = async () => {
       try {
+        const token = decryptToken();
         const response = await axios.get(
-          `${process.env.REACT_APP_API_URL}/courses`
+          `${process.env.REACT_APP_API_URL}/courses`,
+          {
+            headers: {
+              Authorization: "Bearer " + token,
+            },
+          }
         );
         setCourses(response.data);
       } catch (error) {
@@ -158,7 +177,6 @@ const Home = () => {
   const closeModal = () => setSelectedOrder(null);
 
   const getStatusBadge = (status) => {
-    console.log(status);
     switch (status) {
       case "НЕ ОПЛАЧЕНО":
         return (

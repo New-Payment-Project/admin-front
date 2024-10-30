@@ -1,20 +1,33 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { PiLinkBold } from "react-icons/pi";
-
+import CryptoJS from 'crypto-js';
 
 const CreateIndividualLink = () => {
   const [courses, setCourses] = useState([]);
   const [selectedCourse, setSelectedCourse] = useState(null);
   const [showLinkInput, setShowLinkInput] = useState(false);
   const [copied, setCopied] = useState(false);
-  const [generatedLink, setGeneratedLink] = useState(''); // Store the generated link in state
+  const [generatedLink, setGeneratedLink] = useState('');
   const { t } = useTranslation();
+
+  // Function to decrypt the token
+  const decryptToken = () => {
+    const secretKey = process.env.REACT_APP_SECRET_KEY || 'your-secret-key';
+    const encryptedToken = localStorage.getItem('token');
+    const bytes = CryptoJS.AES.decrypt(encryptedToken, secretKey);
+    return bytes.toString(CryptoJS.enc.Utf8);
+  };
 
   useEffect(() => {
     const fetchCourses = async () => {
       try {
-        const response = await fetch(`${process.env.REACT_APP_API_URL}/courses`);
+        const token = decryptToken();
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/courses`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         const data = await response.json();
         setCourses(data);
       } catch (error) {
@@ -29,30 +42,26 @@ const CreateIndividualLink = () => {
     const courseId = event.target.value;
     const course = courses.find((c) => c._id === courseId);
     setSelectedCourse(course);
-    setShowLinkInput(false); // Reset link input when changing courses
-    setGeneratedLink(''); // Reset the generated link
+    setShowLinkInput(false); 
+    setGeneratedLink(''); 
   };
 
   const handleCreateLink = () => {
     if (selectedCourse) {
       const prefix = selectedCourse.prefix;
-      console.log(prefix)
       let baseUrl = 'https://markaz.norbekovgroup.uz/';
 
-      if (prefix === 'U') {
-        baseUrl = 'https://markaz.norbekovgroup.uz/';
-      } else if (prefix === 'F') {
+      if (prefix === 'F') {
         baseUrl = 'https://forum.norbekovgroup.uz/';
       }
 
-      // Set the generated link in state
       setGeneratedLink(`${baseUrl}${selectedCourse.route}`);
-      setShowLinkInput(true); // Show the link input
+      setShowLinkInput(true); 
     }
   };
 
   const handleCopyLink = () => {
-    navigator.clipboard.writeText(generatedLink); // Use the Clipboard API to copy the link
+    navigator.clipboard.writeText(generatedLink);
     setCopied(true);
 
     setTimeout(() => {

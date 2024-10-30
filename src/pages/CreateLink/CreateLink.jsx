@@ -5,6 +5,7 @@ import Pagination from "../../components/Pagination/Pagination";
 import Modal from "./Modal";
 import ConfirmModal from "./ConfirmModal";
 import CreateIndividualLink from "../../components/CreateIndividualLink";
+import CryptoJS from 'crypto-js';
 
 const CoursesTable = () => {
   const { t } = useTranslation();
@@ -18,13 +19,28 @@ const CoursesTable = () => {
   const [selectedCourse, setSelectedCourse] = useState(null);
   const [courseToDelete, setCourseToDelete] = useState(null);
 
+  const secretKey = process.env.REACT_APP_SECRET_KEY || 'your-secret-key';
+
+  const decryptToken = () => {
+    const encryptedToken = localStorage.getItem('token');
+    const bytes = CryptoJS.AES.decrypt(encryptedToken, secretKey);
+    return bytes.toString(CryptoJS.enc.Utf8);
+  };
+
   useEffect(() => {
     const fetchCourses = async () => {
       try {
+        const token = decryptToken();
         const response = await axios.get(
-          `${process.env.REACT_APP_API_URL}/courses`
+          `${process.env.REACT_APP_API_URL}/courses`,
+          {
+            headers: {
+              Authorization: "Bearer " + token,
+            },
+          }
         );
         setCourses(response.data);
+        console.log(response.data);
         setFilteredCourses(response.data);
         setLoading(false);
       } catch (err) {
@@ -39,8 +55,14 @@ const CoursesTable = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
+        const token = decryptToken();
         const response = await axios.get(
-          `${process.env.REACT_APP_API_URL}/orders`
+          `${process.env.REACT_APP_API_URL}/orders`,
+          {
+            headers: {
+              Authorization: "Bearer " + token,
+            },
+          }
         );
         const orders = response.data.data;
         const successfulOrders = orders.filter(
@@ -53,7 +75,6 @@ const CoursesTable = () => {
           );
           successfulOrdersCount[course.title] = courseOrders.length;
         });
-
         setSuccessfulPurchases(successfulOrdersCount);
       } catch (err) {
         console.error(t("fetch-failed"), err);
@@ -64,6 +85,63 @@ const CoursesTable = () => {
       fetchOrders();
     }
   }, [courses, t]);
+
+  const handleConfirmEdit = async (updatedData) => {
+    try {
+      const token = decryptToken();
+      const response = await axios.put(
+        `https://api.norbekovgroup.uz/api/v1/courses/${selectedCourse._id}`,
+        updatedData,
+        {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+      const updatedCourses = courses.map((course) =>
+        course._id === selectedCourse._id
+          ? { ...course, ...updatedData }
+          : course
+      );
+      const updatedFilteredCourses = filteredCourses.map((course) =>
+        course._id === selectedCourse._id
+          ? { ...course, ...updatedData }
+          : course
+      );
+
+      setCourses(updatedCourses);
+      setFilteredCourses(updatedFilteredCourses);
+      setSelectedCourse(null);
+    } catch (error) {
+      console.error(t("course-error"), error);
+    }
+  };
+
+  const handleConfirmDelete = async () => {
+    try {
+      const token = decryptToken();
+      await axios.delete(
+        `https://api.norbekovgroup.uz/api/v1/courses/${courseToDelete._id}`,
+        {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+      const updatedCourses = courses.filter(
+        (course) => course._id !== courseToDelete._id
+      );
+      const updatedFilteredCourses = filteredCourses.filter(
+        (course) => course._id !== courseToDelete._id
+      );
+      console.log(updatedFilteredCourses)
+      setCourses(updatedCourses);
+      setFilteredCourses(updatedFilteredCourses);
+      setCourseToDelete(null);
+    } catch (error) {
+      console.error(t("course-fail"), error);
+    }
+  };
 
   const totalPages = Math.ceil(filteredCourses.length / itemsPerPage);
   const currentCourses = filteredCourses.slice(
@@ -88,53 +166,6 @@ const CoursesTable = () => {
 
   const handleDeleteClick = (course) => {
     setCourseToDelete(course);
-  };
-
-  const handleConfirmEdit = async (updatedData) => {
-    try {
-      const response = await axios.put(
-        `https://api.norbekovgroup.uz/api/v1/courses/${selectedCourse._id}`,
-        updatedData
-      );
-
-      const updatedCourses = courses.map((course) =>
-        course._id === selectedCourse._id
-          ? { ...course, ...updatedData }
-          : course
-      );
-      const updatedFilteredCourses = filteredCourses.map((course) =>
-        course._id === selectedCourse._id
-          ? { ...course, ...updatedData }
-          : course
-      );
-
-      setCourses(updatedCourses);
-      setFilteredCourses(updatedFilteredCourses);
-      setSelectedCourse(null);
-    } catch (error) {
-      console.error(t("course-error"), error);
-    }
-  };
-
-  const handleConfirmDelete = async () => {
-    try {
-      await axios.delete(
-        `https://api.norbekovgroup.uz/api/v1/courses/${courseToDelete._id}`
-      );
-
-      const updatedCourses = courses.filter(
-        (course) => course._id !== courseToDelete._id
-      );
-      const updatedFilteredCourses = filteredCourses.filter(
-        (course) => course._id !== courseToDelete._id
-      );
-
-      setCourses(updatedCourses);
-      setFilteredCourses(updatedFilteredCourses);
-      setCourseToDelete(null);
-    } catch (error) {
-      console.error(t("course-fail"), error);
-    }
   };
 
   return (

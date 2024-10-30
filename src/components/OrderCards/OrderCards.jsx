@@ -1,5 +1,6 @@
 import axios from "axios";
 import { VscFilePdf } from "react-icons/vsc";
+import CryptoJS from 'crypto-js';
 
 const OrderCards = ({
   currentOrders,
@@ -11,6 +12,11 @@ const OrderCards = ({
 }) => {
   const generateContractPDF = async (order) => {
     try {
+      const secretKey = process.env.REACT_APP_SECRET_KEY || "your-secret-key";
+      const encryptedToken = localStorage.getItem("token");
+      const bytes = CryptoJS.AES.decrypt(encryptedToken, secretKey);
+      const token = bytes.toString(CryptoJS.enc.Utf8);
+
       const response = await axios.post(
         `${process.env.REACT_APP_API_URL}/generate-pdf`,
         { orders: [order] },
@@ -18,6 +24,7 @@ const OrderCards = ({
           responseType: "blob",
           headers: {
             "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
           },
         }
       );
