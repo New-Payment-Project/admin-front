@@ -119,7 +119,7 @@ const generateContractPDF = async (order) => {
                     ? order.paymentType !== "Click"
                       ? `${order.amount / 100} ${t("currency")}`
                       : `${order.amount} ${t("currency")}`
-                    : t("no-data")
+                    : `${order.amount} ${t("currency")}`
                   : t("no-data")}
               </td>
               <td className="px-2 py-2 text-xs truncate">
