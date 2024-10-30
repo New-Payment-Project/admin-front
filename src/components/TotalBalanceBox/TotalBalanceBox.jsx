@@ -30,6 +30,9 @@ const TotalBalanceBox = ({ accoounts = [], totalBanks, totalCurrentBalance, load
               ) : (
                 <div>
                   <AnimatedCounter amount={(totalCurrentBalance / 100)}/>
+                  <p className='total-balance-label'>
+              {t('total-profit')}
+            </p>
                   <AnimatedCounter amount={(totalCurrentBalance / 100 / 100 * 98)}/>
                 </div>
               )}
