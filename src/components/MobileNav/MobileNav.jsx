@@ -39,7 +39,7 @@ const MobileNav = ({ user }) => {
               height={64}
               alt="Logo"
             />
-            <h1 className="text-26 font-ibm-plex-serif font-bold text-black-1">
+            <h1 className="2xl:text-26 font-ibm-plex-serif text-[26px] font-bold text-transparent bg-clip-text bg-gradient-to-b from-[#333c5f] to-[#1dbef5]">
               Norbekov
             </h1>
           </Link>

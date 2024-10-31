@@ -70,7 +70,7 @@ const CreateIndividualLink = () => {
   };
 
   return (
-    <div className="w-full p-6 space-y-6 justify-end flex">
+    <div className="w-full py-6 space-y-6 justify-end flex">
       <button
         className="btn text-white bg-bank-gradient"
         onClick={() => document.getElementById('my_modal_1').showModal()}

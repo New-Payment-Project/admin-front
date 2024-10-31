@@ -169,7 +169,7 @@ const CoursesTable = () => {
   };
 
   return (
-    <div className="px-4 md:px-8 py-2">
+    <div className="px-5 md:px-8 py-2">
       <div className="flex justify-between items-center w-full">
         <h1 className="text-2xl font-semibold text-gray-800 mb-2 w-full">
           {t("course-list")}

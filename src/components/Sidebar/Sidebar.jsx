@@ -51,9 +51,9 @@ const Sidebar = ({ user }) => {
         </div>
       </nav>
 
-      <div className="flex flex-col items-start gap-2">
+      <div className="flex flex-col items-center lg:items-start gap-2">
         <LanguageSwitcher />
-        <div className='hidden lg:block'>
+        <div className='hidden md:block'>
         <UserInfo />
         </div>
       </div>

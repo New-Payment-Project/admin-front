@@ -11,8 +11,8 @@ const LanguageSwitcher = () => {
 
   return (
     <div className="dropdown dropdown-top text-[#000] z-50">
-      <label tabIndex={0} className="btn m-1 rounded-full">
-        <span className="">{t("language-change")}</span><img src={t("language")} className="h-[15px] w-[15px]" alt="" />
+      <label tabIndex={0} className="btn m-1 bg-transparent rounded-full">
+        <span className="hidden lg:block">{t("language-change")}</span><img src={t("language")} className="h-[15px] w-[15px]" alt="" />
       </label>
       <ul
         tabIndex={0}

@@ -225,7 +225,7 @@ const Home = () => {
   };
 
   return (
-    <div className="px-4 md:px-8 py-2">
+    <div className="px-5 md:px-8 py-2">
       <h1 className="text-2xl mb-2 font-semibold">{t("orders")}</h1>
 
       <Filter courses={courses} t={t} />

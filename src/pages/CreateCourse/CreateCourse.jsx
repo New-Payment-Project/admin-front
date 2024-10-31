@@ -87,7 +87,7 @@ const CreateCourse = () => {
   };
 
   return (
-    <div className="px-8 pb-12 bg-white rounded-lg shadow-lg max-w-full mx-auto">
+    <div className="px-5 md:px-8 pb-12 bg-white rounded-lg shadow-lg max-w-full mx-auto">
       <ToastContainer />
 
       <h1 className="text-2xl font-semibold text-gray-800 mb-2">{t("create-course")}</h1>

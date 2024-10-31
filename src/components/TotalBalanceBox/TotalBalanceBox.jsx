@@ -27,7 +27,7 @@ const TotalBalanceBox = ({ accounts = [], totalBanks, totalCurrentBalance, loadi
           {/* Counters Row */}
           <div className='total-balance-amount w-full flex flex-col sm:flex-row gap-4 items-start'>
             {loading ? (
-              <div className='flex gap-4'>
+              <div className='flex gap-4 flex-col sm:flex-row'>
                 {/* Skeleton for Total Balance */}
                 <div className='flex flex-col items-start w-1/2 gap-2'>
                   <div className="skeleton h-4 w-20 bg-gray-300 animate-pulse"></div> {/* Label skeleton */}

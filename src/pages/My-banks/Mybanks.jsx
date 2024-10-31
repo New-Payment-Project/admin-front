@@ -116,7 +116,7 @@ export default function Component() {
   };
 
   return (
-    <div className="max-w-6xl mx-auto p-6 min-h-screen">
+    <div className="px-5 md:px-8 mx-auto min-h-screen">
       <h1 className="text-2xl font-semibold mb-5 text-gray-800">{t('my-bank-cards')}</h1>
 
       <div className="bg-white rounded-lg shadow-md p-6 mb-8">

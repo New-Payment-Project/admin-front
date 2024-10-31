@@ -49,8 +49,8 @@ const UserInfo = () => {
   return (
     <div>
       <div className='flex items-center lg:justify-between justify-center w-full'>
-        {username && <p className='text-gray-600 px-1 py-2 rounded-lg'>{username}</p>}
-        <button onClick={openModal} className='text-red-500 text-2xl hover:bg-base-300 p-2 rounded-full duration-300'>
+        {username && <p className='text-gray-600 px-1 py-2 rounded-lg hidden lg:block'>{username}</p>}
+        <button onClick={openModal} className='text-red-500 menu text-2xl shadow lg:shadow-none hover:bg-base-300 mx-auto p-3 items-center justify-center flex rounded-full duration-300'>
             <TbLogout/> 
         </button>
       </div>
