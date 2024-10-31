@@ -375,14 +375,15 @@ input[type='number'] {
   }
 
   .sidebar-logo {
-    @apply 2xl:text-26 font-ibm-plex-serif text-[26px] font-bold text-black-1 max-xl:hidden;
+    @apply 2xl:text-26 font-ibm-plex-serif text-[26px] font-bold text-transparent bg-clip-text bg-gradient-to-b from-[#333c5f] to-[#1dbef5] max-lg:hidden;
   }
+  
 
   .sidebar-link {
-    @apply flex gap-3 items-center py-1 md:p-3 2xl:p-4 rounded-lg justify-center xl:justify-start;
+    @apply flex gap-3 items-center py-1 md:p-3 2xl:p-4 rounded-lg justify-center lg:justify-start;
   }
 
-  .sidebar-label {
-    @apply text-16 font-semibold text-black-2 max-xl:hidden;
+  .sidebar-label {  
+    @apply text-16 font-semibold text-black-2 max-lg:hidden;
   }
 }
