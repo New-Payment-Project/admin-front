@@ -66,7 +66,7 @@ const CoursesTable = () => {
         );
         const orders = response.data.data;
         const successfulOrders = orders.filter(
-          (order) => order.status === t("success")
+          (order) => order.status === 'ОПЛАЧЕНО'
         );
         const successfulOrdersCount = {};
         courses.forEach((course) => {
