@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { PiLinkBold } from "react-icons/pi";
 import CryptoJS from 'crypto-js';
 import { motion } from 'framer-motion';
-import { FiCheck } from 'react-icons/fi'; // Import new icons for copy and check
+import { FiCheck } from 'react-icons/fi';
 import { TbCopy } from 'react-icons/tb';
 
 const CreateIndividualLink = () => {
@@ -15,7 +15,6 @@ const CreateIndividualLink = () => {
   const [generatedLink, setGeneratedLink] = useState('');
   const { t } = useTranslation();
 
-  // Function to decrypt the token
   const decryptToken = () => {
     const secretKey = process.env.REACT_APP_SECRET_KEY || 'your-secret-key';
     const encryptedToken = localStorage.getItem('token');
@@ -46,8 +45,8 @@ const CreateIndividualLink = () => {
     const courseId = event.target.value;
     const course = courses.find((c) => c._id === courseId);
     setSelectedCourse(course);
-    setShowPrice(true); // Show the price input smoothly
-    setShowLinkInput(false); // Hide link input when changing course
+    setShowPrice(true);
+    setShowLinkInput(false);
     setGeneratedLink('');
   };
 
@@ -61,7 +60,7 @@ const CreateIndividualLink = () => {
       }
 
       setGeneratedLink(`${baseUrl}${selectedCourse.route}`);
-      setShowLinkInput(true); // Show the link input smoothly
+      setShowLinkInput(true); 
     }
   };
 
@@ -69,13 +68,11 @@ const CreateIndividualLink = () => {
     navigator.clipboard.writeText(generatedLink);
     setCopied(true);
 
-    // Reset copied state after 3 seconds
     setTimeout(() => {
       setCopied(false);
     }, 3000);
   };
 
-  // Framer Motion variant for a bounce-in effect
   const bounceVariants = {
     hidden: { opacity: 0, y: -30 },
     visible: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 500, damping: 15 } },
