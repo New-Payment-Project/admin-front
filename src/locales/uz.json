@@ -105,5 +105,6 @@
   "confirm": "Tasdiqlash",
   "cancel": "Bekor qilish",
   "action": "O'zgarma",
-  "total-profit": "Jami foyda (98%)"
-  }
+  "total-profit": "Jami foyda (98%)",
+  "course-prefix": "Kurs prefiksi"
+}
