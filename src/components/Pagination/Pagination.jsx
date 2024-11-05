@@ -70,7 +70,7 @@ const Pagination = ({ currentPage, totalPages, handlePageChange, t }) => {
           {t("pagination-page")} {currentPage} / {totalPages}
         </div>
 
-        <div className="flex items-center justify-between w-full space-x-4">
+        <div className="flex items-center justify-between w-full mb-6 space-x-4">
           <button
             onClick={() => handlePageChange(currentPage - 1)}
             className="px-3 py-1 border rounded-md bg-gray-100 disabled:opacity-50"
