@@ -113,6 +113,10 @@
   "delete": "Удалить",
   "confirm-delete-course": "Вы точно хотите удалить курс - ",
   "action": "Действия",
-  "total-profit": "Общая прибыль (98%)"
+  "total-profit": "Общая прибыль (98%)",
+  "course-updated-success": "Курс успешно обновлен",
+  "course-update-failed": "Не удалось обновить курс",
+  "course-deleted-success": "Курс успешно удален",
+  "course-delete-failed": "Не удалось удалить курс"
     }
   

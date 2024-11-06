@@ -6,6 +6,9 @@ import Modal from "./Modal";
 import ConfirmModal from "./ConfirmModal";
 import CreateIndividualLink from "../../components/CreateIndividualLink";
 import CryptoJS from 'crypto-js';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 
 const CoursesTable = () => {
   const { t } = useTranslation();
@@ -89,7 +92,7 @@ const CoursesTable = () => {
   const handleConfirmEdit = async (updatedData) => {
     try {
       const token = decryptToken();
-      const response = await axios.put(
+      await axios.put(
         `https://api.norbekovgroup.uz/api/v1/courses/${selectedCourse._id}`,
         updatedData,
         {
@@ -99,24 +102,25 @@ const CoursesTable = () => {
         }
       );
       const updatedCourses = courses.map((course) =>
-        course._id === selectedCourse._id
-          ? { ...course, ...updatedData }
-          : course
+        course._id === selectedCourse._id ? { ...course, ...updatedData } : course
       );
       const updatedFilteredCourses = filteredCourses.map((course) =>
-        course._id === selectedCourse._id
-          ? { ...course, ...updatedData }
-          : course
+        course._id === selectedCourse._id ? { ...course, ...updatedData } : course
       );
-
+  
       setCourses(updatedCourses);
       setFilteredCourses(updatedFilteredCourses);
       setSelectedCourse(null);
+  
+      // Show success toast
+      toast.success(t("course-updated-success"));
     } catch (error) {
       console.error(t("course-error"), error);
+      // Show error toast
+      toast.error(t("course-update-failed"));
     }
   };
-
+  
   const handleConfirmDelete = async () => {
     try {
       const token = decryptToken();
@@ -134,14 +138,20 @@ const CoursesTable = () => {
       const updatedFilteredCourses = filteredCourses.filter(
         (course) => course._id !== courseToDelete._id
       );
-      console.log(updatedFilteredCourses)
+  
       setCourses(updatedCourses);
       setFilteredCourses(updatedFilteredCourses);
       setCourseToDelete(null);
+  
+      // Show success toast
+      toast.success(t("course-deleted-success"));
     } catch (error) {
       console.error(t("course-fail"), error);
+      // Show error toast
+      toast.error(t("course-delete-failed"));
     }
   };
+  
 
   const totalPages = Math.ceil(filteredCourses.length / itemsPerPage);
   const currentCourses = filteredCourses.slice(
@@ -170,6 +180,7 @@ const CoursesTable = () => {
 
   return (
     <div className="px-5 md:px-8 py-2">
+      <ToastContainer />
       <div className="flex justify-between items-center w-full">
         <h1 className="text-2xl font-semibold text-gray-800 mb-2 w-full">
           {t("course-list")}

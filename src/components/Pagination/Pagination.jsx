@@ -16,14 +16,12 @@ const Pagination = ({ currentPage, totalPages, handlePageChange, t }) => {
           pageNumbers.push(i);
         }
         pageNumbers.push('...', totalPages - 4, totalPages - 3, totalPages - 2, totalPages - 1, totalPages);
-      }
-      else if (currentPage <= leftSide) {
+      } else if (currentPage <= leftSide) {
         for (let i = 1; i <= leftSide; i++) {
           pageNumbers.push(i);
         }
         pageNumbers.push('...', totalPages - 4, totalPages - 3, totalPages - 2, totalPages - 1, totalPages);
-      }
-      else if (currentPage >= rightSide) {
+      } else if (currentPage >= rightSide) {
         pageNumbers.push(1, 2, 3, 4, 5, '...');
         for (let i = rightSide; i <= totalPages; i++) {
           pageNumbers.push(i);
@@ -35,16 +33,18 @@ const Pagination = ({ currentPage, totalPages, handlePageChange, t }) => {
   };
 
   return (
-    <div className="flex justify-center mt-4">
-      <div className="hidden md:flex items-center space-x-2">
-        <button 
-          onClick={() => handlePageChange(currentPage - 1)} 
-          className="px-3 py-1 border rounded-md" 
-          disabled={currentPage === 1}
-        >
-          {t("pagination-previous")}
-        </button>
+    <div className="flex items-center justify-between w-full py-4">
+      {/* Previous Button */}
+      <button
+        onClick={() => handlePageChange(currentPage - 1)}
+        className="px-3 py-1 border rounded-md"
+        disabled={currentPage === 1}
+      >
+        {t("pagination-previous")}
+      </button>
 
+      {/* Numeric Pagination for Desktop and Tablet */}
+      <div className="hidden md:flex items-center space-x-2">
         {getPageNumbers().map((page, index) => (
           <button
             key={index}
@@ -55,50 +55,34 @@ const Pagination = ({ currentPage, totalPages, handlePageChange, t }) => {
             {page}
           </button>
         ))}
-
-        <button 
-          onClick={() => handlePageChange(currentPage + 1)} 
-          className="px-3 py-1 border rounded-md" 
-          disabled={currentPage === totalPages}
-        >
-          {t("pagination-next")}
-        </button>
       </div>
 
-      <div className="md:hidden flex flex-col items-center sm:w-full">
-        <div className="mb-2 text-lg font-semibold">
+      {/* Mobile View: Page Label and Progress Bar */}
+      <div className="md:hidden flex flex-col items-center justify-center mx-4 w-full">
+        {/* Page Label */}
+        <div className="mb-2 text-md font-medium">
           {t("pagination-page")} {currentPage} / {totalPages}
         </div>
-
-        <div className="flex items-center justify-between w-full mb-6 space-x-4">
-          <button
-            onClick={() => handlePageChange(currentPage - 1)}
-            className="px-3 py-1 border rounded-md bg-gray-100 disabled:opacity-50"
-            disabled={currentPage === 1}
-          >
-            {t("pagination-previous")}
-          </button>
-
-          <div className="w-full max-w-xs">
-            <input
-              type="range"
-              min="1"
-              max={totalPages}
-              value={currentPage}
-              onChange={(e) => handlePageChange(parseInt(e.target.value, 10))}
-              className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
-            />
-          </div>
-
-          <button
-            onClick={() => handlePageChange(currentPage + 1)}
-            className="px-3 py-1 border rounded-md bg-gray-100 disabled:opacity-50"
-            disabled={currentPage === totalPages}
-          >
-            {t("pagination-next")}
-          </button>
-        </div>
+        
+        {/* Progress Bar */}
+        <input
+          type="range"
+          min="1"
+          max={totalPages}
+          value={currentPage}
+          onChange={(e) => handlePageChange(parseInt(e.target.value, 10))}
+          className="w-full h-2 bg-gray-200 rounded-lg mb-6 appearance-none cursor-pointer"
+        />
       </div>
+
+      {/* Next Button */}
+      <button
+        onClick={() => handlePageChange(currentPage + 1)}
+        className="px-3 py-1 border rounded-md"
+        disabled={currentPage === totalPages}
+      >
+        {t("pagination-next")}
+      </button>
     </div>
   );
 };
