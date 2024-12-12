@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import Sidebar from './components/Sidebar/Sidebar';
@@ -9,20 +9,34 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { setStartDate, setEndDate, setTotalAmount, setPaymentData } from './slices/filterSlice';
 import axios from 'axios';
+import CryptoJS from 'crypto-js';
 
 const App = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const { startDate, endDate, totalAmount, paymentData } = useSelector((state) => state.filter);
-  const [orders, setOrders] = React.useState([]);
-  const [filteredOrders, setFilteredOrders] = React.useState([]);
-  const [loading, setLoading] = React.useState(true);
-  const [error, setError] = React.useState(null);
+  const [orders, setOrders] = useState([]);
+  const [filteredOrders, setFilteredOrders] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const secretKey = process.env.REACT_APP_SECRET_KEY || 'your-secret-key';
+
+  const decryptToken = () => {
+    const encryptedToken = localStorage.getItem('token');
+    const bytes = CryptoJS.AES.decrypt(encryptedToken, secretKey);
+    return bytes.toString(CryptoJS.enc.Utf8);
+  };
 
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await axios.get(`${process.env.REACT_APP_API_URL}/orders`);
+        const token = decryptToken();
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/orders`, {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        });
         const fetchedOrders = response.data.data;
         setOrders(fetchedOrders);
         setFilteredOrders(fetchedOrders); 

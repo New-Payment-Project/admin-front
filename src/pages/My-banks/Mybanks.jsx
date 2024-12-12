@@ -1,20 +1,21 @@
-import React, { useState, useEffect } from 'react'
-import { useTranslation } from 'react-i18next'
-import axios from 'axios'
+import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
+import axios from 'axios';
+import CryptoJS from 'crypto-js';
 
 const BankCard = ({ card }) => {
   const getCardStyle = (issuer) => {
     switch (issuer) {
       case 'Payme':
-        return 'from-blue-400 to-teal-400'
+        return 'from-blue-400 to-teal-400';
       case 'Click':
-        return 'from-blue-500 to-blue-700'
+        return 'from-blue-500 to-blue-700';
       case 'Uzum Bank':
-        return 'from-purple-400 to-purple-700'
+        return 'from-purple-400 to-purple-700';
       default:
-        return 'from-gray-400 to-gray-600'
+        return 'from-gray-400 to-gray-600';
     }
-  }
+  };
 
   return (
     <div className={`bg-gradient-to-br ${getCardStyle(card.issuer)} rounded-2xl p-6 text-white shadow-lg`}>
@@ -26,36 +27,49 @@ const BankCard = ({ card }) => {
         <p className="text-3xl font-bold">{card.price.toLocaleString()} uzs</p>
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default function Component() {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
   const [cards, setCards] = useState([
-    { issuer: 'Payme', icon: 'https://api.logobank.uz/media/logos_png/payme-01.png', price: 0 },
-    { issuer: 'Click', icon: 'https://pr.uz/wp-content/uploads/2023/04/click-01.png', price: 0 },
-    { issuer: 'Uzum Bank', icon: 'https://depozit.uz/image_uploads/banks/55/original/1f135319fd6cc7502052a2a5b74831b5_webp.webp', price: 0 },
-  ])
-  const [startDate, setStartDate] = useState('')
-  const [endDate, setEndDate] = useState('')
-  const [totalAmount, setTotalAmount] = useState(0)
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(null)
+    { issuer: 'Payme', icon: 'payme.png', price: 0 },
+    { issuer: 'Click', icon: 'click.png', price: 0 },
+    { issuer: 'Uzum Bank', icon: 'uzumbank-logo.svg', price: 0 },
+  ]);
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
+  const [totalAmount, setTotalAmount] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const secretKey = process.env.REACT_APP_SECRET_KEY || 'your-secret-key';
+
+  const decryptToken = () => {
+    const encryptedToken = localStorage.getItem('token');
+    const bytes = CryptoJS.AES.decrypt(encryptedToken, secretKey);
+    return bytes.toString(CryptoJS.enc.Utf8);
+  };
 
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await axios.get(`${process.env.REACT_APP_API_URL}/orders`)
-        processOrders(response.data.data)
-        setLoading(false)
+        const token = decryptToken();
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/orders`, {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        });
+        processOrders(response.data.data);
+        setLoading(false);
       } catch (err) {
-        setError(t('fetch-failed'))
-        setLoading(false)
+        setError(t('fetch-failed'));
+        setLoading(false);
       }
-    }
+    };
 
-    fetchOrders()
-  }, [t])
+    fetchOrders();
+  }, [t, startDate, endDate]);
 
   const processOrders = (orders) => {
     const filteredOrders = orders.filter((order) => {
@@ -68,37 +82,31 @@ export default function Component() {
         (!end || orderDate <= end)
       );
     });
-  
+
     const totals = {
       Payme: 0,
       Click: 0,
       'Uzum Bank': 0,
     };
-  
+
     filteredOrders.forEach((order) => {
       const paymentType = order.paymentType;
-      if (!paymentType) {
-        console.log(`Missing paymentType for order:`, order);
-        return;
-      }
-  
-      if (totals.hasOwnProperty(paymentType)) {
+      if (paymentType && totals.hasOwnProperty(paymentType)) {
         const amount = Number(order.amount);
         if (!isNaN(amount)) {
-          // Check if paymentType is not "Click", divide by 100
           totals[paymentType] += paymentType !== "Click" ? amount / 100 : amount;
         } else {
           console.error(`Invalid amount for order:`, order);
         }
       } else {
-        console.error(`Unexpected paymentType: ${paymentType}`);
+        console.error(`Unexpected or missing paymentType: ${paymentType}`);
       }
     });
-  
+
     const totalSum = Object.values(totals).reduce((acc, val) => acc + val, 0);
-  
+
     setTotalAmount(totalSum);
-  
+
     setCards((prevCards) =>
       prevCards.map((card) => ({
         ...card,
@@ -106,11 +114,10 @@ export default function Component() {
       }))
     );
   };
-  
 
   return (
-    <div className="max-w-6xl mx-auto p-6 min-h-screen">
-      <h1 className="text-3xl font-bold mb-5 text-gray-800">{t('my-bank-cards')}</h1>
+    <div className="px-5 md:px-8 mx-auto min-h-screen">
+      <h1 className="text-2xl font-semibold mb-5 text-gray-800">{t('my-bank-cards')}</h1>
 
       <div className="bg-white rounded-lg shadow-md p-6 mb-8">
         <div className="flex flex-wrap gap-4 mb-6">
@@ -153,5 +160,5 @@ export default function Component() {
         </div>
       )}
     </div>
-  )
+  );
 }

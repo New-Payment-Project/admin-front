@@ -1,18 +1,36 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { PiLinkBold } from "react-icons/pi";
+import CryptoJS from 'crypto-js';
+import { motion } from 'framer-motion';
+import { FiCheck } from 'react-icons/fi';
+import { TbCopy } from 'react-icons/tb';
 
 const CreateIndividualLink = () => {
   const [courses, setCourses] = useState([]);
   const [selectedCourse, setSelectedCourse] = useState(null);
+  const [showPrice, setShowPrice] = useState(false);
   const [showLinkInput, setShowLinkInput] = useState(false);
   const [copied, setCopied] = useState(false);
-  const [generatedLink, setGeneratedLink] = useState(''); // Store the generated link in state
+  const [generatedLink, setGeneratedLink] = useState('');
   const { t } = useTranslation();
+
+  const decryptToken = () => {
+    const secretKey = process.env.REACT_APP_SECRET_KEY || 'your-secret-key';
+    const encryptedToken = localStorage.getItem('token');
+    const bytes = CryptoJS.AES.decrypt(encryptedToken, secretKey);
+    return bytes.toString(CryptoJS.enc.Utf8);
+  };
 
   useEffect(() => {
     const fetchCourses = async () => {
       try {
-        const response = await fetch(`${process.env.REACT_APP_API_URL}/courses`);
+        const token = decryptToken();
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/courses`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         const data = await response.json();
         setCourses(data);
       } catch (error) {
@@ -27,30 +45,27 @@ const CreateIndividualLink = () => {
     const courseId = event.target.value;
     const course = courses.find((c) => c._id === courseId);
     setSelectedCourse(course);
-    setShowLinkInput(false); // Reset link input when changing courses
-    setGeneratedLink(''); // Reset the generated link
+    setShowPrice(true);
+    setShowLinkInput(false);
+    setGeneratedLink('');
   };
 
   const handleCreateLink = () => {
     if (selectedCourse) {
       const prefix = selectedCourse.prefix;
-      console.log(prefix)
       let baseUrl = 'https://markaz.norbekovgroup.uz/';
 
-      if (prefix === 'U') {
-        baseUrl = 'https://markaz.norbekovgroup.uz/';
-      } else if (prefix === 'F') {
+      if (prefix === 'F') {
         baseUrl = 'https://forum.norbekovgroup.uz/';
       }
 
-      // Set the generated link in state
       setGeneratedLink(`${baseUrl}${selectedCourse.route}`);
-      setShowLinkInput(true); // Show the link input
+      setShowLinkInput(true); 
     }
   };
 
   const handleCopyLink = () => {
-    navigator.clipboard.writeText(generatedLink); // Use the Clipboard API to copy the link
+    navigator.clipboard.writeText(generatedLink);
     setCopied(true);
 
     setTimeout(() => {
@@ -58,12 +73,18 @@ const CreateIndividualLink = () => {
     }, 3000);
   };
 
+  const bounceVariants = {
+    hidden: { opacity: 0, y: -30 },
+    visible: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 500, damping: 15 } },
+  };
+
   return (
-    <div className="w-full p-6 space-y-6 justify-end flex">
+    <div className="w-full py-6 space-y-6 justify-end flex">
       <button
-        className="btn btn-primary btn-outline"
+        className="btn text-white bg-bank-gradient"
         onClick={() => document.getElementById('my_modal_1').showModal()}
       >
+        <PiLinkBold />
         {t('create-link')}
       </button>
 
@@ -102,8 +123,13 @@ const CreateIndividualLink = () => {
               </div>
             </div>
 
-            {selectedCourse && (
-              <div className="space-y-2">
+            {showPrice && selectedCourse && (
+              <motion.div
+                initial="hidden"
+                animate="visible"
+                variants={bounceVariants}
+                className="space-y-2"
+              >
                 <label htmlFor="coursePrice" className="block text-sm font-medium text-gray-700">
                   {t('course-price')}:
                 </label>
@@ -114,20 +140,25 @@ const CreateIndividualLink = () => {
                   value={`${selectedCourse.price} so'm`}
                   readOnly
                 />
-              </div>
+              </motion.div>
             )}
 
-            {!showLinkInput && (
+            {showPrice && !showLinkInput && (
               <button
                 onClick={handleCreateLink}
-                className="w-full px-4 py-3 text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-300"
+                className="w-full px-4 py-3 text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-300 mt-4"
               >
                 {t('create-individual-link')}
               </button>
             )}
 
             {showLinkInput && selectedCourse && (
-              <div className="mt-4 space-y-2">
+              <motion.div
+                initial="hidden"
+                animate="visible"
+                variants={bounceVariants}
+                className="mt-4 space-y-2"
+              >
                 <label htmlFor="courseLinkInput" className="block text-sm font-medium text-gray-700">
                   {t('generated-link')}:
                 </label>
@@ -143,40 +174,20 @@ const CreateIndividualLink = () => {
                     onClick={handleCopyLink}
                     className="absolute inset-y-0 right-0 px-4 py-2 text-gray-700 bg-gray-200 hover:bg-gray-300 rounded-r-lg focus:outline-none"
                   >
-                    {copied ? (
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth={2}
-                        stroke="green"
-                        className="w-6 h-6"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M5 13l4 4L19 7"
-                        />
-                      </svg>
-                    ) : (
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth={1.5}
-                        stroke="currentColor"
-                        className="w-6 h-6"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M16.5 7.5V6.75A2.25 2.25 0 0014.25 4.5h-7.5A2.25 2.25 0 004.5 6.75v10.5a2.25 2.25 0 002.25 2.25h7.5a2.25 2.25 0 002.25-2.25V16.5m-6-7.5h7.5M9 12h7.5M6 16.5h7.5"
-                        />
-                      </svg>
-                    )}
+                    <motion.div
+                      initial={{ rotate: 0 }}
+                      animate={copied ? { rotate: 360 } : { rotate: 0 }}
+                      transition={{ duration: 0.15, ease: "easeInOut" }}
+                    >
+                      {copied ? (
+                        <FiCheck className="w-6 h-6 text-green-500" />
+                      ) : (
+                        <TbCopy className="w-6 h-6 text-gray-700" />
+                      )}
+                    </motion.div>
                   </button>
                 </div>
-              </div>
+              </motion.div>
             )}
           </div>
 

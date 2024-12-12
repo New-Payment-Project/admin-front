@@ -10,16 +10,16 @@ const Sidebar = ({ user }) => {
   const pathName = location.pathname;
 
   return (
-    <section className="sidebar min-w-[100%] z-50 h-full flex flex-col justify-between">
+    <section className="sidebar min-w-[100%] z-50 h-screen flex flex-col justify-between">
       <nav className="flex flex-col gap-4 z-50">
         <div className="flex flex-col lg:flex-row">
-          <Link to="/" className="lg:mb-12 flex items-center gap-2">
+          <Link to="/" className="lg:mb-12 flex items-center">
             <img
               src="/norbekov-logo.png"
               width={64}
               height={64}
               alt="Logo"
-              className="w-16 xl:h-16 max-xl:w-14 max-xl:h-14 md:h-12"
+              className="w-16 xl:h-16 max-xl:w-14 max-xl:h-14 md:h-14 mx-auto"
             />
             <h1 className="sidebar-logo">Norbekov</h1>
           </Link>
@@ -51,9 +51,9 @@ const Sidebar = ({ user }) => {
         </div>
       </nav>
 
-      <div className="flex flex-col items-start gap-2">
+      <div className="flex flex-col items-center lg:items-start gap-2">
         <LanguageSwitcher />
-        <div className='hidden lg:block'>
+        <div className='hidden md:block'>
         <UserInfo />
         </div>
       </div>

@@ -5,6 +5,10 @@ import Pagination from "../../components/Pagination/Pagination";
 import Modal from "./Modal";
 import ConfirmModal from "./ConfirmModal";
 import CreateIndividualLink from "../../components/CreateIndividualLink";
+import CryptoJS from 'crypto-js';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 
 const CoursesTable = () => {
   const { t } = useTranslation();
@@ -14,17 +18,32 @@ const CoursesTable = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [itemsPerPage, setItemsPerPage] = useState(10); // State for items per page
-  const [selectedCourse, setSelectedCourse] = useState(null); // State for the course to edit
-  const [courseToDelete, setCourseToDelete] = useState(null); // State for the course to delete
+  const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [selectedCourse, setSelectedCourse] = useState(null);
+  const [courseToDelete, setCourseToDelete] = useState(null);
+
+  const secretKey = process.env.REACT_APP_SECRET_KEY || 'your-secret-key';
+
+  const decryptToken = () => {
+    const encryptedToken = localStorage.getItem('token');
+    const bytes = CryptoJS.AES.decrypt(encryptedToken, secretKey);
+    return bytes.toString(CryptoJS.enc.Utf8);
+  };
 
   useEffect(() => {
     const fetchCourses = async () => {
       try {
+        const token = decryptToken();
         const response = await axios.get(
-          `${process.env.REACT_APP_API_URL}/courses`
+          `${process.env.REACT_APP_API_URL}/courses`,
+          {
+            headers: {
+              Authorization: "Bearer " + token,
+            },
+          }
         );
         setCourses(response.data);
+        console.log(response.data);
         setFilteredCourses(response.data);
         setLoading(false);
       } catch (err) {
@@ -39,12 +58,18 @@ const CoursesTable = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
+        const token = decryptToken();
         const response = await axios.get(
-          `${process.env.REACT_APP_API_URL}/orders`
+          `${process.env.REACT_APP_API_URL}/orders`,
+          {
+            headers: {
+              Authorization: "Bearer " + token,
+            },
+          }
         );
         const orders = response.data.data;
         const successfulOrders = orders.filter(
-          (order) => order.status === t("success")
+          (order) => order.status === 'ОПЛАЧЕНО'
         );
         const successfulOrdersCount = {};
         courses.forEach((course) => {
@@ -53,7 +78,6 @@ const CoursesTable = () => {
           );
           successfulOrdersCount[course.title] = courseOrders.length;
         });
-
         setSuccessfulPurchases(successfulOrdersCount);
       } catch (err) {
         console.error(t("fetch-failed"), err);
@@ -64,6 +88,70 @@ const CoursesTable = () => {
       fetchOrders();
     }
   }, [courses, t]);
+
+  const handleConfirmEdit = async (updatedData) => {
+    try {
+      const token = decryptToken();
+      await axios.put(
+        `https://api.norbekovgroup.uz/api/v1/courses/${selectedCourse._id}`,
+        updatedData,
+        {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+      const updatedCourses = courses.map((course) =>
+        course._id === selectedCourse._id ? { ...course, ...updatedData } : course
+      );
+      const updatedFilteredCourses = filteredCourses.map((course) =>
+        course._id === selectedCourse._id ? { ...course, ...updatedData } : course
+      );
+  
+      setCourses(updatedCourses);
+      setFilteredCourses(updatedFilteredCourses);
+      setSelectedCourse(null);
+  
+      // Show success toast
+      toast.success(t("course-updated-success"));
+    } catch (error) {
+      console.error(t("course-error"), error);
+      // Show error toast
+      toast.error(t("course-update-failed"));
+    }
+  };
+  
+  const handleConfirmDelete = async () => {
+    try {
+      const token = decryptToken();
+      await axios.delete(
+        `https://api.norbekovgroup.uz/api/v1/courses/${courseToDelete._id}`,
+        {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+      const updatedCourses = courses.filter(
+        (course) => course._id !== courseToDelete._id
+      );
+      const updatedFilteredCourses = filteredCourses.filter(
+        (course) => course._id !== courseToDelete._id
+      );
+  
+      setCourses(updatedCourses);
+      setFilteredCourses(updatedFilteredCourses);
+      setCourseToDelete(null);
+  
+      // Show success toast
+      toast.success(t("course-deleted-success"));
+    } catch (error) {
+      console.error(t("course-fail"), error);
+      // Show error toast
+      toast.error(t("course-delete-failed"));
+    }
+  };
+  
 
   const totalPages = Math.ceil(filteredCourses.length / itemsPerPage);
   const currentCourses = filteredCourses.slice(
@@ -79,73 +167,24 @@ const CoursesTable = () => {
 
   const handleItemsPerPageChange = (e) => {
     setItemsPerPage(Number(e.target.value));
-    setCurrentPage(1); // Reset to page 1 when items per page changes
+    setCurrentPage(1);
   };
 
   const handleEditClick = (course) => {
-    setSelectedCourse(course); // Set the selected course for editing
+    setSelectedCourse(course);
   };
 
   const handleDeleteClick = (course) => {
-    setCourseToDelete(course); // Set the selected course for deletion
-  };
-
-  const handleConfirmEdit = async (updatedData) => {
-    try {
-      const response = await axios.put(
-        `https://api.norbekovgroup.uz/api/v1/courses/${selectedCourse._id}`,
-        updatedData
-      );
-
-      const updatedCourses = courses.map((course) =>
-        course._id === selectedCourse._id
-          ? { ...course, ...updatedData }
-          : course
-      );
-      const updatedFilteredCourses = filteredCourses.map((course) =>
-        course._id === selectedCourse._id
-          ? { ...course, ...updatedData }
-          : course
-      );
-
-      setCourses(updatedCourses);
-      setFilteredCourses(updatedFilteredCourses);
-
-      setSelectedCourse(null); // Close modal after success
-    } catch (error) {
-      console.error(t("course-error"), error);
-    }
-  };
-
-  const handleConfirmDelete = async () => {
-    try {
-      await axios.delete(
-        `https://api.norbekovgroup.uz/api/v1/courses/${courseToDelete._id}`
-      );
-
-      // Remove the deleted course from the lists
-      const updatedCourses = courses.filter(
-        (course) => course._id !== courseToDelete._id
-      );
-      const updatedFilteredCourses = filteredCourses.filter(
-        (course) => course._id !== courseToDelete._id
-      );
-
-      setCourses(updatedCourses);
-      setFilteredCourses(updatedFilteredCourses);
-      setCourseToDelete(null); // Close the confirmation modal
-    } catch (error) {
-      console.error(t("course-fail"), error);
-    }
+    setCourseToDelete(course);
   };
 
   return (
-    <div className="px-4 md:px-8 py-2">
+    <div className="px-5 md:px-8 py-2">
+      <ToastContainer />
       <div className="flex justify-between items-center w-full">
         <h1 className="text-2xl font-semibold text-gray-800 mb-2 w-full">
           {t("course-list")}
         </h1>
-
         <CreateIndividualLink />
       </div>
 
@@ -224,8 +263,6 @@ const CoursesTable = () => {
                   )}
                 </tbody>
               </table>
-
-              {/* Items Per Page Select */}
               <div className="flex justify-end p-2">
                 <select
                   value={itemsPerPage}
@@ -239,6 +276,45 @@ const CoursesTable = () => {
                 </select>
               </div>
             </div>
+          </div>
+
+          {/* Card Layout for Mobile */}
+          <div className="block md:hidden">
+            {currentCourses.map((course, index) => (
+              <div
+                key={index}
+                className="p-4 mb-4 bg-white border border-gray-200 rounded-lg shadow-md"
+              >
+                <h2 className="font-semibold text-lg">{course.title}</h2>
+                <p className="text-sm text-gray-600">
+                  {t("table-course-prefix")}: {course.prefix}
+                </p>
+                <p className="text-sm text-gray-600">
+                  {t("table-course-price")}: {course.price} {t("currency")}
+                </p>
+                <p className="text-sm text-gray-600">
+                  {t("table-course-route")}: {course.route}
+                </p>
+                <p className="text-sm text-gray-600">
+                  {t("table-successful-purchases")}:{" "}
+                  {successfulPurchases[course.title] || 0}
+                </p>
+                <div className="mt-2 flex space-x-2">
+                  <button
+                    className="btn text-blue-500 hover:text-blue-700"
+                    onClick={() => handleEditClick(course)}
+                  >
+                    {t("edit")}
+                  </button>
+                  <button
+                    className="btn text-red-500 hover:text-red-700"
+                    onClick={() => handleDeleteClick(course)}
+                  >
+                    {t("delete")}
+                  </button>
+                </div>
+              </div>
+            ))}
           </div>
 
           <Pagination

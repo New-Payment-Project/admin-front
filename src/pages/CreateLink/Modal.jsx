@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 
 const Modal = ({ course, onClose, onConfirm }) => {
   const { t } = useTranslation();
@@ -82,7 +85,7 @@ const Modal = ({ course, onClose, onConfirm }) => {
 
           {/* Action Buttons */}
           <div className="modal-action justify-between">
-            <button onClick={onClose} className="btn text-white btn-error">
+            <button onClick={onClose} className="btn">
               {t("cancel")}
             </button>
             <button onClick={handleConfirm} className="btn text-white btn-primary">

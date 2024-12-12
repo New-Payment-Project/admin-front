@@ -1,5 +1,8 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 
 const ConfirmModal = ({ message, onClose, onConfirm }) => {
   const { t } = useTranslation();
@@ -13,10 +16,10 @@ const ConfirmModal = ({ message, onClose, onConfirm }) => {
 
           {/* Action Buttons */}
           <div className="modal-action justify-between">
-            <button onClick={onClose} className="btn text-white btn-error">
+            <button onClick={onClose} className="btn">
               {t("cancel")}
             </button>
-            <button onClick={onConfirm} className="btn text-white btn-primary">
+            <button onClick={onConfirm} className="btn text-white btn-error">
               {t("confirm")}
             </button>
           </div>
