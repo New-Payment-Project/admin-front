@@ -8,7 +8,7 @@ module.exports = {
     "./app/**/*.{ts,tsx}",
     "./constants/**/*.{ts,tsx}",
   ],
-  theme: {
+  theme: { 
     color: { mode: 'hex' },
     container: {
       center: true,
