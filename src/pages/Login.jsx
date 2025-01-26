@@ -20,7 +20,7 @@ const Login = () => {
   const onSubmit = async (data) => {
     setLoading(true);  
     try {
-      const response = await axios.post('https://api.norbekovgroup.uz/api/auth/login', data);
+      const response = await axios.post(`${process.env.REACT_APP_API_AUTH_URL}/login`, data);
       const token = response.data.token;
       const userLogin = data.login;
 

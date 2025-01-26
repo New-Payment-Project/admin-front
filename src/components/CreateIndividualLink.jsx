@@ -53,11 +53,11 @@ const CreateIndividualLink = () => {
   const handleCreateLink = () => {
     if (selectedCourse) {
       const prefix = selectedCourse.prefix;
-      let baseUrl = 'https://markaz.norbekovgroup.uz/';
+      let baseUrl = process.env.REACT_APP_FORUM_URL;
 
-      if (prefix === 'F') {
-        baseUrl = 'https://forum.norbekovgroup.uz/';
-      }
+      // if (prefix !== 'F') {
+      //   baseUrl = process.env.REACT_APP_MARKAZ_URL;
+      // }
 
       setGeneratedLink(`${baseUrl}${selectedCourse.route}`);
       setShowLinkInput(true); 

@@ -93,7 +93,7 @@ const CoursesTable = () => {
     try {
       const token = decryptToken();
       await axios.put(
-        `https://api.norbekovgroup.uz/api/v1/courses/${selectedCourse._id}`,
+        `${process.env.REACT_APP_API_URL}/courses/${selectedCourse._id}`,
         updatedData,
         {
           headers: {
@@ -125,7 +125,7 @@ const CoursesTable = () => {
     try {
       const token = decryptToken();
       await axios.delete(
-        `https://api.norbekovgroup.uz/api/v1/courses/${courseToDelete._id}`,
+        `${process.env.REACT_APP_API_URL}/courses/${courseToDelete._id}`,
         {
           headers: {
             Authorization: "Bearer " + token,
