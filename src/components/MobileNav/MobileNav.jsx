@@ -33,14 +33,14 @@ const MobileNav = ({ user }) => {
       >
         <div>
           <Link to="/" className="mb-12 flex items-center gap-1 px-4">
-            <img
+            {/* <img
               src="/norbekov-logo.png"
               width={64}
               height={64}
               alt="Logo"
-            />
+            /> */}
             <h1 className="2xl:text-26 font-ibm-plex-serif text-[26px] font-bold text-transparent bg-clip-text bg-gradient-to-b from-[#333c5f] to-[#1dbef5]">
-              Norbekov
+              DMA
             </h1>
           </Link>
 
