@@ -55,9 +55,9 @@ const CreateIndividualLink = () => {
       const prefix = selectedCourse.prefix;
       let baseUrl = process.env.REACT_APP_FORUM_URL;
 
-      // if (prefix !== 'F') {
-      //   baseUrl = process.env.REACT_APP_MARKAZ_URL;
-      // }
+      if (prefix !== 'F') {
+        baseUrl = process.env.REACT_APP_MARKAZ_URL;
+      }
 
       setGeneratedLink(`${baseUrl}${selectedCourse.route}`);
       setShowLinkInput(true); 
