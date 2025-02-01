@@ -106,7 +106,7 @@ const CreateIndividualLink = () => {
                 <option value="" disabled>
                   {t('choose-course')}
                 </option>
-                {courses.map((course) => (
+                {courses?.map((course) => (
                   <option key={course._id} value={course._id}>
                     {course.title}
                   </option>

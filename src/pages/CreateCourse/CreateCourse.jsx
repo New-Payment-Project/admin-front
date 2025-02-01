@@ -3,9 +3,8 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { IoIosAddCircleOutline } from "react-icons/io";
 import { useTranslation } from "react-i18next";
-import CryptoJS from 'crypto-js';
+import CryptoJS from "crypto-js";
 import axios from "axios";
-
 
 const CreateCourse = () => {
   const [loading, setLoading] = useState(false);
@@ -17,7 +16,8 @@ const CreateCourse = () => {
     category: "",
     price: "",
     route: "",
-    prefix: ""
+    prefix: "",
+    successMessage: ""
   });
 
   const handleInputChange = (e) => {
@@ -35,10 +35,10 @@ const CreateCourse = () => {
     setPrefix(e.target.value);
   };
 
-  const secretKey = process.env.REACT_APP_SECRET_KEY || 'your-secret-key';
+  const secretKey = process.env.REACT_APP_SECRET_KEY || "your-secret-key";
 
   const decryptToken = () => {
-    const encryptedToken = localStorage.getItem('token');
+    const encryptedToken = localStorage.getItem("token");
     const bytes = CryptoJS.AES.decrypt(encryptedToken, secretKey);
     return bytes.toString(CryptoJS.enc.Utf8);
   };
@@ -64,7 +64,8 @@ const CreateCourse = () => {
 
       if (response.status === 409) {
         toast.error(t("course-route-exists"));
-      } else if (response.status === 201) { // Assuming 201 for success
+      } else if (response.status === 201) {
+        // Assuming 201 for success
         toast.success(t("course-success"));
         setCourseData({
           title: "",
@@ -72,9 +73,11 @@ const CreateCourse = () => {
           category: "",
           price: "",
           route: "",
-          prefix: ""
+          prefix: "",
+          successMessage: ""
         });
-        setPrefix(""); // Reset prefix to empty after submission
+        setPrefix("");
+        console.log(finalCourseData) // Reset prefix to empty after submission
       } else {
         toast.error(t("course-error"));
       }
@@ -90,12 +93,16 @@ const CreateCourse = () => {
     <div className="px-5 md:px-8 pb-12 bg-white rounded-lg shadow-lg max-w-full mx-auto">
       <ToastContainer />
 
-      <h1 className="text-2xl font-semibold text-gray-800 mb-2">{t("create-course")}</h1>
+      <h1 className="text-2xl font-semibold text-gray-800 mb-2">
+        {t("create-course")}
+      </h1>
       <p className="text-gray-600 mb-4">{t("course-desc")}</p>
 
       <form onSubmit={handleSubmit} className="space-y-2">
         <label className="label">
-          <span className="label-text font-semibold text-gray-700">{t("course-title")}</span>
+          <span className="label-text font-semibold text-gray-700">
+            {t("course-title")}
+          </span>
         </label>
         <input
           type="text"
@@ -108,7 +115,9 @@ const CreateCourse = () => {
         />
 
         <label className="label">
-          <span className="label-text font-semibold text-gray-700">{t("course-price")}</span>
+          <span className="label-text font-semibold text-gray-700">
+            {t("course-price")}
+          </span>
         </label>
         <input
           type="number"
@@ -116,7 +125,7 @@ const CreateCourse = () => {
           value={courseData.price}
           onChange={handleInputChange}
           style={{
-            MozAppearance: 'textfield',
+            MozAppearance: "textfield",
           }}
           placeholder={t("course-price-placeholder")}
           className="input input-bordered w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
@@ -124,7 +133,9 @@ const CreateCourse = () => {
         />
 
         <label className="label">
-          <span className="label-text font-semibold text-gray-700">{t("course-route")}</span>
+          <span className="label-text font-semibold text-gray-700">
+            {t("course-route")}
+          </span>
         </label>
         <input
           type="text"
@@ -138,13 +149,29 @@ const CreateCourse = () => {
 
         {/* Prefix input with placeholder "U", value hidden unless edited */}
         <label className="label">
-          <span className="label-text font-semibold text-gray-700">{t("course-prefix")}</span>
+          <span className="label-text font-semibold text-gray-700">
+            {t("course-prefix")}
+          </span>
         </label>
         <input
           type="text"
           value={prefix}
           onChange={handlePrefixChange}
           placeholder="U" // Placeholder shows "U" but input is initially empty
+          className="input input-bordered w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+        />
+
+        <label className="label">
+          <span className="label-text font-semibold text-gray-700">
+            {t("success-message")}
+          </span>
+        </label>
+        <textarea
+          type="text"
+          name="successMessage"
+          value={courseData.successMessage}
+          onChange={handleInputChange}
+          placeholder={t("success-message-placeholder")}
           className="input input-bordered w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
         />
 

@@ -101,10 +101,10 @@ const CoursesTable = () => {
           },
         }
       );
-      const updatedCourses = courses.map((course) =>
+      const updatedCourses = courses?.map((course) =>
         course._id === selectedCourse._id ? { ...course, ...updatedData } : course
       );
-      const updatedFilteredCourses = filteredCourses.map((course) =>
+      const updatedFilteredCourses = filteredCourses?.map((course) =>
         course._id === selectedCourse._id ? { ...course, ...updatedData } : course
       );
   
@@ -224,7 +224,7 @@ const CoursesTable = () => {
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
                   {currentCourses.length > 0 ? (
-                    currentCourses.map((course, index) => (
+                    currentCourses?.map((course, index) => (
                       <tr key={index} className="hover:bg-gray-50">
                         <td className="px-4 py-2">{course.title}</td>
                         <td className="px-4 py-2">{course.prefix}</td>
@@ -280,7 +280,7 @@ const CoursesTable = () => {
 
           {/* Card Layout for Mobile */}
           <div className="block md:hidden">
-            {currentCourses.map((course, index) => (
+            {currentCourses?.map((course, index) => (
               <div
                 key={index}
                 className="p-4 mb-4 bg-white border border-gray-200 rounded-lg shadow-md"

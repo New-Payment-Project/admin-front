@@ -97,7 +97,7 @@ const Filter = ({ courses = [], t }) => {
         >
           <option value="">{t("all-courses")}</option>
           {courses.length > 0 ? (
-            courses.map((course) => (
+            courses?.map((course) => (
               <option key={course._id} value={course.title}>
                 {course.title}
               </option>
